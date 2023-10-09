@@ -1,0 +1,53 @@
+FLAGS legend
+SUPPORT - cannot fight on its own, provides % boost for all other units
+AT - has bonus against ARMOR flag
+AA - has bonus againts AIR flag
+ARMOR - takes reduced damage (50%?)
+AIR - can attack anyone, only AA, AIR, NAVY can attack back
+NAVY - fights other navy, can fight with AIR, if not contested by other navy, provides bonus to ground troops
+
+Dictionary (Přidat co nejdřív) aspoň (EN, DE, CZ)
+
+Weapons											FLAGS
+	Small arms
+		Melee
+		Hand guns
+		Explosives
+		Rifles
+		SMG
+		Assault weapon
+		LMG										SUPPORT
+		Handheld antitank								AT
+	Cannons
+		Light arty									SUPPORT
+		Rocket arty									SUPPORT
+		Heavy arty									SUPPORT
+		Anti tank									AT
+		Anti air									AA
+		Railway gun									SUPPORT
+	Vehicles
+		Light vehicles (Trucks, jeep, etc.)
+		Armored cars								ARMOR
+		Light tank									ARMOR
+		Medium tank									ARMOR
+		Heavy tank									ARMOR
+		Tank destroyer								ARMOR, AT
+		Tank-arty + tank-antiair						ARMOR, SUPPORT
+	Planes
+		Passenger / training / recon						AIR, SUPPORT
+		Fighter planes								AIR
+		Close air support								AIR
+		Bomber									AIR
+		Jet fighter									AIR
+	NAVY
+		Frigate									NAVY
+		Destroyer									NAVY
+		Submarine									NAVY
+		Cruiser									NAVY
+		Battleship									NAVY
+	PAYWALL LOCKED
+		Sturmgewehr 44
+		8.8 cm flak									AT, AA
+		Maus (super heavy tank)							ARMOR
+		Me 262									AIR
+		Aircraft carrier	(deploys planes)					NAVY
