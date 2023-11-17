@@ -223,5 +223,15 @@ public class UIController : MonoBehaviour
         openPrItem.Weapon.Autosell = enabled;
     }
 
+    //public void SendWeaponsToWar()
+    //{ 
+        
+    //}
+
+    public void SellWeaponsButtonOnClick()
+    {
+        SellDialog.Instance.ShowDialog(openPrItem.Weapon);
+    }
+
     #endregion
 }

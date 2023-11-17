@@ -91,12 +91,14 @@
     <Compile Include="Assets\Scripts\Enums\WeaponEnums.cs" />
     <Compile Include="Assets\Scripts\Controllers\ProductionController.cs" />
     <Compile Include="Assets\Scripts\Interface\Dialog.cs" />
+    <Compile Include="Assets\Scripts\Interface\SellDialog.cs" />
     <Compile Include="Assets\Scripts\Interface\SliderColorChange.cs" />
     <Compile Include="Assets\Scripts\Translator.cs" />
     <Compile Include="Assets\Scripts\UIController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\WarClickerDocu.txt" />
+    <None Include="Assets\WarClicker_DB.s3db" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Data">

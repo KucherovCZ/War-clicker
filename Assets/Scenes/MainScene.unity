@@ -1002,7 +1002,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 178432458}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1863927293}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: SellWeaponsButtonOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &178432458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4198,7 +4210,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &789766548
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4237,7 +4249,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 789766547}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83a4da29c9dcb4745a964c5540dfae15, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cf7eefa135d39d468cfcd0123a3c580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &793839690
@@ -12425,7 +12437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2089389642
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12749,7 +12761,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.19999886}
   m_SizeDelta: {x: 50, y: 1.2000012}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12893,15 +12905,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3067533979110879468, guid: 899ddfa7a9da8864694b39403f74eb04, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3067533979110879468, guid: 899ddfa7a9da8864694b39403f74eb04, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3067533979110879468, guid: 899ddfa7a9da8864694b39403f74eb04, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3531487326248490143, guid: 899ddfa7a9da8864694b39403f74eb04, type: 3}
       propertyPath: m_Color.b
