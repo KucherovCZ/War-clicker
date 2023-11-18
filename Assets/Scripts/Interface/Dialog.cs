@@ -13,10 +13,8 @@ public class Dialog : MonoBehaviour
     private bool yesPressed, noPressed, closePressed;
 
     // Use this for initialization
-    void Start()
+    public void Init()
     {
-        Instance = this;
-
         UIObject = gameObject;
         YesButton = transform.Find("YesButton")?.GetComponent<Button>() ?? null;
         NoButton = transform.Find("NoButton")?.GetComponent<Button>() ?? null;

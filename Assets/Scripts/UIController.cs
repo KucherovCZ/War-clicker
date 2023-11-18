@@ -23,9 +23,9 @@ public class UIController : MonoBehaviour
     {
         Instance = this;
 
-        InitControllers();
-
         LoadPlayerItems();
+
+        InitControllers();
         LoadProductionItems();
 
         OnProductionButtonClick("Infantry");
@@ -56,6 +56,11 @@ public class UIController : MonoBehaviour
     {
         ProductionController.Instance.UIController = this;
         PlayerController.Instance.UIController = this;
+
+        Dialog.Instance = transform.Find("Dialog").GetComponent<Dialog>();
+        Dialog.Instance.Init();
+        SellDialog.Instance = transform.Find("SellDialog").GetComponent<SellDialog>();
+        SellDialog.Instance.Init();
     }
 
     private void LoadPlayerItems()

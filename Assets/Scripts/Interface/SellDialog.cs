@@ -16,19 +16,14 @@ public class SellDialog : MonoBehaviour
     private bool yesPressed, noPressed;
 
     // Use this for initialization
-    void Start()
+    public void Init()
     {
-        Instance = this;
-
         UIObject = gameObject;
         YesButton = transform.Find("YesButton")?.GetComponent<Button>() ?? null;
         NoButton = transform.Find("NoButton")?.GetComponent<Button>() ?? null;
 
         StoredText = transform.Find("Stored").GetComponent<TextMeshProUGUI>();
         PriceText = transform.Find("Price").GetComponent<TextMeshProUGUI>();
-
-        StoredText.text = CustomUtils.FormatMoney(Weapon.Stored);
-        PriceText.text = CustomUtils.FormatMoney(Weapon.SellPrice);
     }
 
     int counter = 0;
@@ -46,6 +41,8 @@ public class SellDialog : MonoBehaviour
     public DialogResult ShowDialog(cWeapon weapon)
     {
         this.Weapon = weapon;
+        StoredText.text = CustomUtils.FormatMoney(Weapon.Stored);
+        PriceText.text = CustomUtils.FormatMoney(Weapon.SellPrice);
         return ShowDialog(DialogButtons.YesNo);
     }
 
@@ -60,9 +57,14 @@ public class SellDialog : MonoBehaviour
         if (YesButton != null) YesButton.gameObject.SetActive(buttons == DialogButtons.Yes || buttons == DialogButtons.YesNo || buttons == DialogButtons.YesNoClose);
         if (NoButton != null) NoButton.gameObject.SetActive(buttons == DialogButtons.YesNo || buttons == DialogButtons.YesNoClose);
 
-        // wait for button click
-        while (!yesPressed && !noPressed)
-        { }
+        // TODO While has to be removed, unity thinks its going to crash because
+        // need to find another method to end showDialog Method on button click
+        // sell dialog class also needs to handle slider change and textInput for amount to sell
+
+        //while (!yesPressed && !noPressed)
+        //{
+        //    if (yesPressed || noPressed) break;
+        //}
 
         gameObject.SetActive(false);
 
