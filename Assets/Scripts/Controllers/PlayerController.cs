@@ -25,7 +25,7 @@ public class PlayerController
     #region Fields and properties
 
     public UIController UIController { get; set; }
-    public long Money { get; private set; } = 0;
+    public long Money { get; private set; } = 500;
     public long WarFunds { get; private set; } = 0;
 
     //private double MoneyPerSecond { get; set; }
@@ -34,17 +34,12 @@ public class PlayerController
 
     #region Methods
 
-    public void Init()
+    public void Init(SavedData data)
     {
-        // TODO load Money-Warfund from PlayerPrefs or SerializedFile
-        Money = 100;
-        WarFunds = 500;
+        Money = data.money;
+        WarFunds = data.warFunds;
 
         // try to get player with his GUID from server (to check his real stats) -- AFTER LEADERBOARDS UPDATE
-    }
-    public void SaveContent()
-    {
-        // TODO save Money, Warfund to PLayerPrefs or SerializedFile
     }
 
     public void AddMoney(long amount)

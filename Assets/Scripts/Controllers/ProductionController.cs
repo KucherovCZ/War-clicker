@@ -45,7 +45,7 @@ public class ProductionController
 
     #region Methods
 
-    public void Init(List<cWeapon> weapons)
+    public void Init(List<cWeapon> weapons, SavedData data)
     {
         AllWeapons = weapons;
         ProdItems = new List<ProductionItem>();
@@ -53,13 +53,14 @@ public class ProductionController
         PosYChange = ((RectTransform)ProductionItemPrefab.transform).rect.height + 10;
         PosYChange *= -1;
 
-        LoadContent();
+        LoadContent(data);
         GenerateWeaponContent();
     }
 
-    public void LoadContent()
+    public void LoadContent(SavedData data)
     {
         // TODO load all factories from PlayerPrefs (or sql, doesnt matter)
+        //Factories = data.factories;
 
         // TEMP
         Factories[(int)WeaponType.Infantry] = 5;

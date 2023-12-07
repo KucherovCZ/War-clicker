@@ -73,11 +73,6 @@ public class UIController : MonoBehaviour
         WarXPGlobalPosLabel = topMenu.Find("WarXPGlobalPos").GetComponent<TextMeshProUGUI>();
     }
 
-    public void OnQuickSellButtonClick()
-    {
-        //PlayerController.Instance.QuickSell();
-    }
-
     #endregion
 
     #region Production

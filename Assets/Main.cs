@@ -44,20 +44,24 @@ public class Main : MonoBehaviour
 
     public void InitData()
     {
+        // load serialized player information
+        SavedData data = Serializer.LoadData();
+
         // Admin
         Translator.Init(Database.LoadTranslations(eLanguage.EN), Database.LoadTranslations(eLanguage.CZ)); // TODO - Change localLanguage argument based on PlayerPrefs Settings
 
         // Player
-        PlayerController.Instance.Init();
+        PlayerController.Instance.Init(data);
 
         // Entities
         ProductionController.Instance.InitGameObjects(ProductionItemPrefab, InfantryContent, ArtilleryContent, ArmorContent, AirContent, NavyContent);
-        ProductionController.Instance.Init(Database.LoadWeapons().ToList());
+        ProductionController.Instance.Init(Database.LoadWeapons().ToList(), data);
     }
 
     public void SaveData()
     {
         Database.SaveWeapons(ProductionController.Instance.AllWeapons);
+        Serializer.SaveData();
     }
     #endregion
 
