@@ -53,7 +53,7 @@ namespace Entities
             Icon.sprite = ProductionController.Instance.UIController.GetWeaponIcon(Weapon.Name);
             DisplayNameLabel.text = Weapon.DisplayName;
             FlagsLabel.text = Weapon.FlagsString;
-            PriceLabel.text = CustomUtils.FormatMoney(Weapon.SellPrice);
+            PriceLabel.text = CustomUtils.FormatNumber(Weapon.SellPrice);
             StoredLabel.text = Weapon.Stored.ToString();
 
             // cover UI
@@ -83,6 +83,7 @@ namespace Entities
 
                     
                     TimeLabel.text = CustomUtils.FormatTime(remainingTime);
+                    StoredLabel.text = Weapon.Stored.ToString();
                     LoadingBar.value = 1.1f - (remainingTime / Weapon.ProductionTime);
                 }
             }
@@ -151,12 +152,11 @@ namespace Entities
 
                 if (Weapon.Autosell)
                 {
-                    PlayerController.Instance.Money += Weapon.SellPrice;
+                    PlayerController.Instance.AddMoney(Weapon.SellPrice);
                 }
                 else
                 {
                     Weapon.Stored++;
-                    StoredLabel.text = Weapon.Stored.ToString();
                     UIController.Instance.UpdateDetailStored();
                 }
             } while (prodTime == Weapon.ProductionTime);

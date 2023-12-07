@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Entities;
 using TMPro;
+using Unity.VisualScripting;
+using TreeEditor;
 
 public class SellDialog : MonoBehaviour
 {
@@ -11,19 +13,23 @@ public class SellDialog : MonoBehaviour
     public cWeapon Weapon { get; set; }
 
     private GameObject UIObject;
-    private Button YesButton, NoButton;
-    private TextMeshProUGUI StoredText, PriceText;
-    private bool yesPressed, noPressed;
+    private Slider SliderObject;
+    private TextMeshProUGUI StoredText, PriceText, TotalPriceText;
+    private TMP_InputField InputField;
+    private int selectedAmount = 0;
+    private bool changedWithSlider = true;
 
     // Use this for initialization
     public void Init()
     {
+
         UIObject = gameObject;
-        YesButton = transform.Find("YesButton")?.GetComponent<Button>() ?? null;
-        NoButton = transform.Find("NoButton")?.GetComponent<Button>() ?? null;
+        SliderObject = transform.Find("Slider").GetComponent<Slider>();
+        InputField = transform.Find("Amount").Find("Input").GetComponent<TMP_InputField>();
 
         StoredText = transform.Find("Stored").GetComponent<TextMeshProUGUI>();
         PriceText = transform.Find("Price").GetComponent<TextMeshProUGUI>();
+        TotalPriceText = transform.Find("TotalPrice").GetComponent<TextMeshProUGUI>();
     }
 
     int counter = 0;
@@ -34,52 +40,77 @@ public class SellDialog : MonoBehaviour
         if (counter == framesPerUpdate)
         {
             counter = 0;
-            StoredText.text = CustomUtils.FormatMoney(Weapon.Stored);
+
+            // update selected amount if using slider
+            if (changedWithSlider)
+            {
+                selectedAmount = Mathf.CeilToInt(SliderObject.value * Weapon.Stored);
+                InputField.text = selectedAmount.ToString();
+                TotalPriceText.text = CustomUtils.FormatNumber((int)(selectedAmount * Weapon.SellPrice));
+            }
+            else
+            {
+                SliderObject.SetValueWithoutNotify(selectedAmount / (float)Weapon.Stored);
+            }
+
+            // update UI
+            StoredText.text = CustomUtils.FormatNumber(Weapon.Stored);
         }
     }
 
-    public DialogResult ShowDialog(cWeapon weapon)
+    public void ShowDialog(cWeapon weapon)
     {
         this.Weapon = weapon;
-        StoredText.text = CustomUtils.FormatMoney(Weapon.Stored);
-        PriceText.text = CustomUtils.FormatMoney(Weapon.SellPrice);
-        return ShowDialog(DialogButtons.YesNo);
-    }
+        StoredText.text = CustomUtils.FormatNumber(Weapon.Stored);
+        PriceText.text = CustomUtils.FormatNumber(Weapon.SellPrice);
+        TotalPriceText.text = "0";
 
-    public DialogResult ShowDialog(DialogButtons buttons)
-    {
         // set gameObject to active (maybe add shadow BG to it)
         gameObject.SetActive(true);
 
-        yesPressed = noPressed = false;
+        // TODO reset slider and text input
+        SliderObject.value = 1f;
+    }
 
-        // show buttons based on enum
-        if (YesButton != null) YesButton.gameObject.SetActive(buttons == DialogButtons.Yes || buttons == DialogButtons.YesNo || buttons == DialogButtons.YesNoClose);
-        if (NoButton != null) NoButton.gameObject.SetActive(buttons == DialogButtons.YesNo || buttons == DialogButtons.YesNoClose);
+    public void CloseDialog(bool approved)
+    {
+        if (approved)
+        {
+            PlayerController.Instance.AddMoney(Weapon.SellPrice * selectedAmount);
+            Weapon.Stored -= selectedAmount;
 
-        // TODO While has to be removed, unity thinks its going to crash because
-        // need to find another method to end showDialog Method on button click
-        // sell dialog class also needs to handle slider change and textInput for amount to sell
-
-        //while (!yesPressed && !noPressed)
-        //{
-        //    if (yesPressed || noPressed) break;
-        //}
+            UIController.Instance.UpdateDetailStored();
+        }
 
         gameObject.SetActive(false);
-
-        // send as result
-        if (yesPressed) return DialogResult.Yes;
-        else return DialogResult.No;
     }
 
-    public void YesButtonClicked()
+    public void OnSliderValueChanged()
     {
-        yesPressed = true;
+        selectedAmount = Mathf.CeilToInt(SliderObject.value * Weapon.Stored);
+        changedWithSlider = true;
     }
 
-    public void NoButtonClicked()
+    public void OnInputFieldSelect()
     {
-        noPressed = true;
+        changedWithSlider = false;
+    }
+
+    public void OnInputFieldEndEdit()
+    {
+        if (int.TryParse(InputField.text, out int value))
+        { 
+            value = Mathf.Clamp(value, 0, Weapon.Stored);
+            InputField.text = value.ToString();
+            selectedAmount = value;
+            changedWithSlider = false;
+
+            TotalPriceText.text = CustomUtils.FormatNumber((int)(selectedAmount * Weapon.SellPrice));
+            SliderObject.SetValueWithoutNotify(selectedAmount / (float)Weapon.Stored);
+        }
+        else
+        {
+            Debug.Log("SellDialog - Invalid amount input.");
+        }
     }
 }

@@ -25,8 +25,8 @@ public class PlayerController
     #region Fields and properties
 
     public UIController UIController { get; set; }
-    public long Money { get; set; }
-    public long WarFunds { get; set; }
+    public long Money { get; private set; } = 0;
+    public long WarFunds { get; private set; } = 0;
 
     //private double MoneyPerSecond { get; set; }
     //private double WarFundsPerSecond { get; set; }
@@ -47,6 +47,15 @@ public class PlayerController
         // TODO save Money, Warfund to PLayerPrefs or SerializedFile
     }
 
+    public void AddMoney(long amount)
+    {
+        Money += amount;
+    }
+
+    public void AddWarFunds(long amount)
+    {
+        WarFunds += amount;
+    }
     //public void AddMoneyPerSecond(long oldProduction, long newProduction, int time)
     //{
     //    double difference = ((double)newProduction) - ((double)oldProduction);

@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour
         if (counter == framesPerUpdate)
         {
             counter = 0;
-            MoneyLabel.text = CustomUtils.FormatMoney(PlayerController.Instance.Money);
+            MoneyLabel.text = CustomUtils.FormatNumber(PlayerController.Instance.Money);
             WarXPLabel.text = PlayerController.Instance.WarFunds.ToString();
         }
     }

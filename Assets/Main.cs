@@ -45,7 +45,7 @@ public class Main : MonoBehaviour
     public void InitData()
     {
         // Admin
-        Translator.Init(Database.LoadTranslations(eLanguage.EN), Database.LoadTranslations(eLanguage.CZ)); // TODO - Change localLanguage argument based on PlayerPrefs
+        Translator.Init(Database.LoadTranslations(eLanguage.EN), Database.LoadTranslations(eLanguage.CZ)); // TODO - Change localLanguage argument based on PlayerPrefs Settings
 
         // Player
         PlayerController.Instance.Init();

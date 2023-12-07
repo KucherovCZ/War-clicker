@@ -48,18 +48,7 @@ public static class CustomUtils
         }
     }
 
-    //public static string FormatTime(float seconds)
-    //{
-    //    // TODO IMROVE TO SHOW HOURS? IDK DYNAMIC SELECTION OF SHOWED TIME I GUESS
-    //    // FOR HOURS SHOW 00:00:00 ELSE 00:00
-    //    TimeSpan t = TimeSpan.FromSeconds(seconds);
-
-    //    return string.Format("{0:D2}:{1:D2}",
-    //                         t.Minutes,
-    //                         t.Seconds);
-    //}
-
-    public static string FormatMoney(long money)
+    public static string FormatNumber(long money)
     {
         if (money < 0) money = 0;
 
