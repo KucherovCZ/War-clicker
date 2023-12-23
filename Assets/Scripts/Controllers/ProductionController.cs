@@ -60,12 +60,12 @@ public class ProductionController
     public void LoadContent(SavedData data)
     {
         // TODO load all factories from PlayerPrefs (or sql, doesnt matter)
-        //Factories = data.factories;
+        Factories = data.factories;
 
         // TEMP
-        Factories[(int)WeaponType.Infantry] = 5;
-        Factories[(int)WeaponType.Artillery] = 5;
-        Factories[(int)WeaponType.Armor] = 10;
+        //Factories[(int)WeaponType.Infantry] = 5;
+        //Factories[(int)WeaponType.Artillery] = 5;
+        //Factories[(int)WeaponType.Armor] = 10;
         // TEMP
     }
 
