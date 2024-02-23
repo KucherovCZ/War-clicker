@@ -14,6 +14,7 @@ public enum WeaponType
     [Description("$weapon.type.navy")]
     Navy = 4,
 }
+
 public enum WeaponState
 {
     [Description("$weapon.state.locked")]
@@ -22,6 +23,22 @@ public enum WeaponState
     Researched = 1,
     [Description("$weapon.state.active")]
     Active = 2,
+}
+
+public enum ResearchEra
+{ 
+    [Description("$reserach.era.preww1")]
+    PreWW1 = 2,
+    [Description("$research.era.ww1")]
+    WW1 = 3,
+    [Description("$research.era.interwar")]
+    Interwar = 4,
+    [Description("$research.era.earlyWW2")]
+    EarlyWW2 = 5,
+    [Description("$research.era.lateWW2")]
+    LateWW2 = 6,
+    [Description("$research.era.postwar")]
+    Postwar = 7,
 }
 
 [Flags]
@@ -44,6 +61,7 @@ public enum WeaponFlag
     [Description("$weapon.flag.premium")]
     PREMIUM = 128,
 }
+
 //public enum WeaponCountry
 //{
 //    [Description("Germany")]

@@ -83,13 +83,16 @@
     <Compile Include="Assets\Scripts\CustomUtils.cs" />
     <Compile Include="Assets\Scripts\Database.cs" />
     <Compile Include="Assets\Scripts\Entities\cEntity.cs" />
+    <Compile Include="Assets\Scripts\Entities\cResearchItemWeapon.cs" />
+    <Compile Include="Assets\Scripts\Entities\cResearchItemRelation.cs" />
+    <Compile Include="Assets\Scripts\Entities\cResearchItem.cs" />
     <Compile Include="Assets\Scripts\Serialization\SavedData.cs" />
     <Compile Include="Assets\Scripts\Entities\cTranslationItem.cs" />
     <Compile Include="Assets\Scripts\Entities\cWeapon.cs" />
     <Compile Include="Assets\Scripts\Entities\ProductionItem.cs" />
     <Compile Include="Assets\Scripts\Enums\EnumUtils.cs" />
     <Compile Include="Assets\Scripts\Enums\LanguageEnums.cs" />
-    <Compile Include="Assets\Scripts\Enums\WeaponEnums.cs" />
+    <Compile Include="Assets\Scripts\Enums\GlobalEnums.cs" />
     <Compile Include="Assets\Scripts\Controllers\ProductionController.cs" />
     <Compile Include="Assets\Scripts\Interface\Dialog.cs" />
     <Compile Include="Assets\Scripts\Interface\SellDialog.cs" />

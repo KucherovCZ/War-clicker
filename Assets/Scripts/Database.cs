@@ -27,6 +27,10 @@ public class Database
     private const string dictionaryTable = "Dictionary";
 
     private const string weaponTable = "Weapon";
+
+    private const string researchItemTable = "ResearchItem";
+    private const string researchItemRelationTable = "ResearchItemRelations";
+    private const string researchItemWeaponTable = "ResearchItemWeapon";
     #endregion
 
     #region Table methods
@@ -134,6 +138,93 @@ public class Database
         cmd.Parameters.AddWithValue("@factoriesAssigned", weapon.FactoriesAssigned);
 
         cmd.ExecuteNonQuery();
+    }
+
+    public IEnumerable<cResearchItem> LoadResearchItems()
+    {
+        if (!CheckConnection()) yield break;
+
+        string query = queryStart + researchItemTable;
+
+        SqliteCommand cmd = new SqliteCommand(query, m_Connection);
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            yield return new cResearchItem()
+            {
+                Id = reader.GetInt32("Id"),
+                Researched = reader.GetBoolean("Researched"),
+                Name = reader.GetString("Name"),
+                DisplayName = reader.GetString("DisplayName"),
+                Type = (WeaponType)reader.GetInt32("Type"),
+                Era = (ResearchEra)reader.GetInt32("Era"),
+            };
+        }
+
+        reader.Close();
+        cmd.Dispose();
+    }
+
+    public void SaveResearchItem(cResearchItem researchItem)
+    {
+        if (!CheckConnection()) return;
+
+        string query = "UPDATE " + researchItemTable +
+                       "SET Researched = @researched" +
+                       "WHERE Id = @id";
+
+        SqliteCommand cmd = new SqliteCommand(query, m_Connection);
+        cmd.Parameters.AddWithValue("@id", researchItem.Id);
+        cmd.Parameters.AddWithValue("@researched", researchItem.Researched);
+
+        cmd.ExecuteNonQuery();
+    }
+
+    public IEnumerable<cResearchItemRelation> LoadResearchItemRelations()
+    {
+        if (!CheckConnection()) yield break;
+
+        string query = queryStart + researchItemRelationTable;
+
+        SqliteCommand cmd = new SqliteCommand(query, m_Connection);
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            yield return new cResearchItemRelation()
+            {
+                Id = reader.GetInt32("Id"),
+                ParentId = reader.GetInt32("ParentId"),
+                ChildId = reader.GetInt32("ChildId")
+            };
+        }
+
+        reader.Close();
+        cmd.Dispose();
+    }
+
+    public IEnumerable<cResearchItemWeapon> LoadResearchItemWeapon()
+    {
+        if (!CheckConnection()) yield break;
+
+        string query = queryStart + researchItemWeaponTable;
+
+        SqliteCommand cmd = new SqliteCommand(query, m_Connection);
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            yield return new cResearchItemWeapon()
+            {
+                Id = reader.GetInt32("Id"),
+                ResearchItemId = reader.GetInt32("ResearchItemId"),
+                WeaponId = reader.GetInt32("WeaponId")
+            };
+        }
+
+        reader.Close();
+        cmd.Dispose();
     }
 
 
