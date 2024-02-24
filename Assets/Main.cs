@@ -19,6 +19,11 @@ public class Main : MonoBehaviour
     private Transform AirContent;
     [SerializeField]
     private Transform NavyContent;
+
+    [SerializeField]
+    private GameObject ResearchItemPrefab;
+    [SerializeField]
+    private GameObject ResearchPage;
     #endregion
 
     #region Fields and properties
@@ -56,6 +61,13 @@ public class Main : MonoBehaviour
         // Entities
         ProductionController.Instance.InitGameObjects(ProductionItemPrefab, InfantryContent, ArtilleryContent, ArmorContent, AirContent, NavyContent);
         ProductionController.Instance.Init(Database.LoadWeapons().ToList(), data);
+
+        ResearchController.Instance.InitGameObjects(ResearchItemPrefab, ResearchPage);
+        ResearchController.Instance.Init(
+            Database.LoadResearchItems().ToList(), 
+            Database.LoadResearchItemRelations().ToList(), 
+            Database.LoadResearchItemWeapon().ToList(), 
+            data);
     }
 
     public void SaveData()

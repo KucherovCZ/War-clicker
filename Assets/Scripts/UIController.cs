@@ -27,7 +27,11 @@ public class UIController : MonoBehaviour
 
         InitControllers();
         LoadProductionItems();
+        LoadResearchItems();
 
+        LoadMainMenuItems();
+
+        OnMainMenuButtonClick("Production");
         OnProductionButtonClick("Infantry");
     }
 
@@ -56,6 +60,7 @@ public class UIController : MonoBehaviour
     {
         ProductionController.Instance.UIController = this;
         PlayerController.Instance.UIController = this;
+        ResearchController.Instance.UIController = this;
 
         Dialog.Instance = transform.Find("Dialog").GetComponent<Dialog>();
         Dialog.Instance.Init();
@@ -75,9 +80,11 @@ public class UIController : MonoBehaviour
 
     #endregion
 
+
+
     #region Production
 
-    private bool DetailOpen
+    private bool ProductionDetailOpen
     {
         get
         {
@@ -100,7 +107,7 @@ public class UIController : MonoBehaviour
 
     private void LoadProductionItems()
     {
-        productionView = transform.Find("WeaponProduction");
+        productionView = transform.Find("Production");
         viewport = productionView.Find("Viewport");
         productionScrollView = productionView.GetComponent<ScrollRect>();
         weaponDetail = productionView.Find("WeaponDetail");
@@ -149,7 +156,7 @@ public class UIController : MonoBehaviour
 
     public void UpdateDetailStored()
     {
-        if (DetailOpen)
+        if (ProductionDetailOpen)
             StoredLabel.text = openPrItem.Weapon.Stored.ToString();
     }
 
@@ -233,5 +240,114 @@ public class UIController : MonoBehaviour
         SellDialog.Instance.ShowDialog(openPrItem.Weapon);
     }
 
+    #endregion
+
+    #region Research
+
+    private Transform researchView;
+    private Transform researchViewport;
+    private ScrollRect researchScrollview;
+    private Image lastChangedIconRes = null, lastChangedButtonRes = null;
+
+    private void LoadResearchItems()
+    {
+        researchView = transform.Find("Research");
+        researchViewport = researchView.Find("Viewport");
+        researchScrollview = researchView.GetComponent<ScrollRect>();
+    }
+
+    public void OnResearchButtonClick(string type)
+    {
+        // Update button and icon color
+        if (string.IsNullOrEmpty(type))
+            Debug.LogError("Research button click - passed empty string");
+
+        Transform button = researchView.Find("Button" + type);
+        Image btnBackground = button.GetComponent<Image>();
+        Image btnImage = button.Find("Image").GetComponent<Image>();
+
+        // button
+        if (lastChangedButtonRes != null)
+            lastChangedButtonRes.color = new Color(0.6f, 0.6f, 0.6f);
+        btnBackground.color = new Color(1f, 1f, 1f);
+        lastChangedButtonRes = btnBackground;
+
+        // icon
+        if (lastChangedIconRes != null)
+            lastChangedIconRes.color = new Color(1f, 1f, 1f);
+        btnImage.color = new Color(0.5f, 0.5f, 0.5f);
+        lastChangedIconRes = btnImage;
+
+        // Update scrollView content
+        RectTransform content = (RectTransform)researchViewport.Find(type);
+
+        if (researchScrollview.content != null)
+            researchScrollview.content.localScale = new Vector3(0, 1, 1);
+        researchScrollview.content = content;
+        content.localScale = new Vector3(1, 1, 1);
+    }
+
+
+    public Sprite GetResearchIcon(string researchItemName)
+    {
+        Texture2D tempPic = Resources.Load("Graphics/Research/GE/" + researchItemName) as Texture2D;
+        if (tempPic == null)
+        {
+            Debug.LogWarning("Image for " + researchItemName + " has not been found. Please check Graphics/Research/GE");
+            return null;
+        }
+        return Sprite.Create(tempPic, new Rect(0, 0, 128, 128), new Vector2());
+    }
+
+
+
+
+    #endregion
+
+
+    // Needs to be last - references others
+    #region MainMenu
+
+    public Transform mainMenu;
+    private Image lastChangedIconMain = null, lastChangedButtonMain = null;
+    private GameObject lastOpenedPage = null;
+
+
+    public void LoadMainMenuItems()
+    {
+        mainMenu = transform.Find("MainMenu");
+    }
+
+
+    public void OnMainMenuButtonClick(string btnName)
+    {
+        if (string.IsNullOrEmpty(btnName))
+            Debug.LogError("MainMenu button click - passed empty string");
+
+        Transform button = mainMenu.Find("Button" + btnName);
+        Image btnBackground = button.GetComponent<Image>();
+        Image btnImage = button.Find("Image").GetComponent<Image>();
+
+        // button
+        if (lastChangedButtonMain != null)
+            lastChangedButtonMain.color = new Color(0f, 0f, 0f);
+        btnBackground.color = new Color(1f, 1f, 1f);
+        lastChangedButtonMain = btnBackground;
+
+        // icon
+        if (lastChangedIconMain != null)
+            lastChangedIconMain.color = new Color(1f, 1f, 1f);
+        btnImage.color = new Color(0.5f, 0.5f, 0.5f);
+        lastChangedIconMain = btnImage;
+
+        // production page needs to stay enabled for ProductionItems to work
+        if (lastOpenedPage != null && !lastOpenedPage.name.Equals("Production"))
+            lastOpenedPage.SetActive(false);
+
+        // enable current gameObject
+        var idk = transform.Find("Research");
+        lastOpenedPage = transform.Find(btnName).gameObject;
+        lastOpenedPage.SetActive(true);
+    }
     #endregion
 }

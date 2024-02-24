@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Assets\Main.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\ResearchController.cs" />
     <Compile Include="Assets\Scripts\CustomUtils.cs" />
     <Compile Include="Assets\Scripts\Database.cs" />
     <Compile Include="Assets\Scripts\Entities\cEntity.cs" />
