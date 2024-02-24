@@ -12,5 +12,7 @@ namespace Entities
         public string Description { get; set; }
         public WeaponType Type { get; set; }
         public ResearchEra Era { get; set; }
+        public int Column { get; set; }
+        public int Row { get; set; }
     }
 }

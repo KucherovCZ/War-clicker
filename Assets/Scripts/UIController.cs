@@ -299,9 +299,6 @@ public class UIController : MonoBehaviour
         return Sprite.Create(tempPic, new Rect(0, 0, 128, 128), new Vector2());
     }
 
-
-
-
     #endregion
 
 
@@ -317,7 +314,6 @@ public class UIController : MonoBehaviour
     {
         mainMenu = transform.Find("MainMenu");
     }
-
 
     public void OnMainMenuButtonClick(string btnName)
     {

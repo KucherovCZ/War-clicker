@@ -50,8 +50,7 @@ public class ProductionController
         AllWeapons = weapons;
         ProdItems = new List<ProductionItem>();
         StartPosition.y = -95;
-        PosYChange = ((RectTransform)ProductionItemPrefab.transform).rect.height + 10;
-        PosYChange *= -1;
+        PosYChange = (((RectTransform)ProductionItemPrefab.transform).rect.height + 10)*-1;
 
         LoadContent(data);
         GenerateWeaponContent();

@@ -38,6 +38,9 @@ public class ResearchController
     private Transform AirContent { get; set; }
     private Transform NavyContent { get; set; }
 
+    private float RowYChange = 0;
+    private int[] columnPos = { 0, 100, 200 };
+
     #endregion
 
     #region Methods
@@ -47,6 +50,8 @@ public class ResearchController
         ResearchItems = researchItems;
         Relations = relations;
         ItemWeapons = itemWeapons;
+
+        RowYChange = (((RectTransform)ResearchItemPrefab.transform).rect.height + 10) * -1;
 
         LoadContent(data);
         GenerateResearchItems();
@@ -64,6 +69,23 @@ public class ResearchController
 
     public void GenerateResearchItems()
     {
+        ResearchEra currentEra = ResearchEra.PreWW1;
+
+        List<ResearchItem> Items = new List<ResearchItem>();
+        foreach (cResearchItem item in ResearchItems)
+        {
+            ResearchItem newItem = new ResearchItem(item);
+            newItem.Parents = Relations.Where(r => r.ParentId == newItem.Id).ToList();
+            newItem.Children = Relations.Where(r => r.ChildId == newItem.Id).ToList();
+            newItem.Weapons = ItemWeapons.Where(w => w.ResearchItemId == newItem.Id).ToList();
+        }
+
+        foreach (var item in Items)
+        { 
+            
+        }
+
+        
         //int infCount = 0;
         //int artCount = 0;
         //int armCount = 0;

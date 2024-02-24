@@ -159,6 +159,8 @@ public class Database
                 DisplayName = reader.GetString("DisplayName"),
                 Type = (WeaponType)reader.GetInt32("Type"),
                 Era = (ResearchEra)reader.GetInt32("Era"),
+                Column = reader.GetInt32("Column"),
+                Row = reader.GetInt32("Row"),
             };
         }
 
