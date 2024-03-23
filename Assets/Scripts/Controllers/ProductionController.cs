@@ -68,14 +68,16 @@ public class ProductionController
         // TEMP
     }
 
-    public void InitGameObjects(GameObject prefab, Transform infantry, Transform artillery, Transform armor, Transform air, Transform navy)
+    public void InitGameObjects(GameObject prefab, GameObject productionPage)
     {
         ProductionItemPrefab = prefab;
-        InfantryContent = infantry;
-        ArtilleryContent = artillery;
-        ArmorContent = armor;
-        AirContent = air;
-        NavyContent = navy;
+
+        Transform viewPort = productionPage.transform.Find("Viewport");
+        InfantryContent = viewPort.Find("Infantry");
+        ArtilleryContent = viewPort.Find("Artillery");
+        ArmorContent = viewPort.Find("Armor");
+        AirContent = viewPort.Find("Air");
+        NavyContent = viewPort.Find("Navy");
     }
 
     public void GenerateWeaponContent()

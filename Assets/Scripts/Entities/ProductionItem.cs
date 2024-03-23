@@ -50,7 +50,7 @@ namespace Entities
             StoredLabel = transform.Find("Stored").GetComponent<TextMeshProUGUI>();
             LoadingBar = transform.Find("LoadingBar").GetComponent<Slider>();
 
-            Icon.sprite = ProductionController.Instance.UIController.GetWeaponIcon(Weapon.Name);
+            Icon.sprite = UIController.Instance.GetWeaponIcon(Weapon.Name);
             DisplayNameLabel.text = Weapon.DisplayName;
             FlagsLabel.text = Weapon.FlagsString;
             PriceLabel.text = CustomUtils.FormatNumber(Weapon.SellPrice);

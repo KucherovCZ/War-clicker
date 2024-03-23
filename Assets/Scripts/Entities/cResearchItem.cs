@@ -14,5 +14,6 @@ namespace Entities
         public ResearchEra Era { get; set; }
         public int Column { get; set; }
         public int Row { get; set; }
+        public int Price { get; set; }
     }
 }

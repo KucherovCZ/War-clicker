@@ -161,6 +161,7 @@ public class Database
                 Era = (ResearchEra)reader.GetInt32("Era"),
                 Column = reader.GetInt32("Column"),
                 Row = reader.GetInt32("Row"),
+                Price = reader.GetInt32("Price"),
             };
         }
 

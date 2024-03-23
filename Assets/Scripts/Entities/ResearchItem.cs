@@ -1,36 +1,59 @@
-﻿using UnityEditor;
+﻿using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System.Linq;
 
 namespace Entities
 {
-    public class ResearchItem
+    public class ResearchItem : MonoBehaviour
     {
-        public ResearchItem(cResearchItem item)
-        {
-            Id = item.Id;
-            Researched = item.Researched;
-            Name = item.Name;
-            DisplayName = item.DisplayName;
-            Description = item.Description;
-            Type = item.Type;
-            Era = item.Era;
-            Column = item.Column;
-            Row = item.Row;
-        }
-        public int Id { get; set; }
-        public bool Researched { get; set; }
-        public string Name { get; set; }
-        public string DisplayName { get; set; }
-        public string Description { get; set; }
-        public WeaponType Type { get; set; }
-        public ResearchEra Era { get; set; }
-        public int Column { get; set; }
-        public int Row { get; set; }
+        #region Properties
+        cResearchItem researchItem;
 
         public List<cResearchItemRelation> Parents { get; set; }
         public List<cResearchItemRelation> Children { get; set; }
+        public List<cWeapon> Weapons { get; set; }
 
-        public List<cResearchItemWeapon> Weapons { get; set; }
+        private Image Icon { get; set; }
+        private TextMeshProUGUI DisplayNameLabel { get; set; }
+        private TextMeshProUGUI PriceLabel { get; set; }
+        private Button ResItemButton { get; set; }
+
+        #endregion
+
+        #region Methods
+        public void Init(cResearchItem item)
+        {
+            researchItem = item;
+
+            InitUI();
+        }
+
+        public void InitUI()
+        {
+            // if item.researched show as finished (green?)
+            // if all parents are researched, show as unlocked
+            // else show as locked
+
+            // button
+            ResItemButton = transform.GetComponent<Button>();
+            ResItemButton.onClick.AddListener(OnResearchItemButtonClick);
+
+            // labels
+            Icon = transform.Find("IconBackground").Find("Icon").GetComponent<Image>();
+            DisplayNameLabel = transform.Find("DisplayName").GetComponent<TextMeshProUGUI>();
+            PriceLabel = transform.Find("Price").GetComponent<TextMeshProUGUI>();
+
+            Icon.sprite = UIController.Instance.GetResearchIcon(researchItem.Name);
+            DisplayNameLabel.text = researchItem.DisplayName;
+            PriceLabel.text = CustomUtils.FormatNumber(researchItem.Price);
+        }
+
+        public void OnResearchItemButtonClick()
+        {
+            ProductionController.Instance.UIController.OpenResearchDetail(researchItem, this);
+        }
+        #endregion
     }
 }

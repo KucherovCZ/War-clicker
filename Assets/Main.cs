@@ -10,15 +10,7 @@ public class Main : MonoBehaviour
     [SerializeField]
     private GameObject ProductionItemPrefab;
     [SerializeField]
-    private Transform InfantryContent;
-    [SerializeField]
-    private Transform ArtilleryContent;
-    [SerializeField]
-    private Transform ArmorContent;
-    [SerializeField]
-    private Transform AirContent;
-    [SerializeField]
-    private Transform NavyContent;
+    private GameObject ProductionPage;
 
     [SerializeField]
     private GameObject ResearchItemPrefab;
@@ -59,7 +51,7 @@ public class Main : MonoBehaviour
         PlayerController.Instance.Init(data);
 
         // Entities
-        ProductionController.Instance.InitGameObjects(ProductionItemPrefab, InfantryContent, ArtilleryContent, ArmorContent, AirContent, NavyContent);
+        ProductionController.Instance.InitGameObjects(ProductionItemPrefab, ProductionPage);
         ProductionController.Instance.Init(Database.LoadWeapons().ToList(), data);
 
         ResearchController.Instance.InitGameObjects(ResearchItemPrefab, ResearchPage);

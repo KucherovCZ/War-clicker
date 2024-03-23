@@ -656,13 +656,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProductionItemPrefab: {fileID: 5460389198001291342, guid: 495143348e6f5cb419e9b837b4e48dbe, type: 3}
-  InfantryContent: {fileID: 1794151059}
-  ArtilleryContent: {fileID: 1373519870}
-  ArmorContent: {fileID: 924571831}
-  AirContent: {fileID: 31282405}
-  NavyContent: {fileID: 568211007}
-  ResearchItemPrefab: {fileID: 0}
-  ResearchPage: {fileID: 0}
+  ProductionPage: {fileID: 54999314}
+  ResearchItemPrefab: {fileID: 8910008148090329372, guid: 4a9b875474e17ba4dafaf563e8219695, type: 3}
+  ResearchPage: {fileID: 2009858280}
 --- !u!4 &58958493
 Transform:
   m_ObjectHideFlags: 0
@@ -12716,7 +12712,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7c268522bd69698418faf5d2753de1d5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 044aad577bb906a49bb1b831a0a388ae, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13088,7 +13084,7 @@ RectTransform:
   m_GameObject: {fileID: 1400437871}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1502019801}
@@ -17244,7 +17240,7 @@ RectTransform:
   m_GameObject: {fileID: 1794151058}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1341501753}
@@ -17545,7 +17541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1844470193}
   m_Layer: 5
-  m_Name: WeaponDetail
+  m_Name: ResearchDetail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18940,7 +18936,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2009858281
 RectTransform:
   m_ObjectHideFlags: 0
