@@ -1,10 +1,5 @@
 ﻿using Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ProductionController
@@ -40,7 +35,7 @@ public class ProductionController
     private Vector3 StartPosition = Vector3.zero;
 
     public int[] Factories = { 0, 0, 0, 0, 0 };
-    public int[] UsedFactories = { 0, 0, 0, 0, 0};
+    public int[] UsedFactories = { 0, 0, 0, 0, 0 };
     #endregion
 
     #region Methods
@@ -50,7 +45,7 @@ public class ProductionController
         AllWeapons = weapons;
         ProdItems = new List<ProductionItem>();
         StartPosition.y = -95;
-        PosYChange = (((RectTransform)ProductionItemPrefab.transform).rect.height + 10)*-1;
+        PosYChange = (((RectTransform)ProductionItemPrefab.transform).rect.height + 10) * -1;
 
         LoadContent(data);
         GenerateWeaponContent();

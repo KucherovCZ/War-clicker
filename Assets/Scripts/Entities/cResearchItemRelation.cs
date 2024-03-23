@@ -1,7 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
-
-namespace Entities
+﻿namespace Entities
 {
     public class cResearchItemRelation
     {

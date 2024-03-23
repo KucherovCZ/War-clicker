@@ -1,16 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.Profiling.LowLevel;
-using Unity.VisualScripting;
-using UnityEditor.Advertisements;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using Entities;
 using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -199,7 +191,7 @@ public class UIController : MonoBehaviour
 
     public bool CheckFreeFactories()
     {
-        return ProductionController.Instance.GetFreeFactories(openPrItem.Weapon.Type) > 0;   
+        return ProductionController.Instance.GetFreeFactories(openPrItem.Weapon.Type) > 0;
     }
 
     public void AddFactoryButtonOnClick()
@@ -234,7 +226,7 @@ public class UIController : MonoBehaviour
 
     //public void SendWeaponsToWar()
     //{ 
-        
+
     //}
 
     public void SellWeaponsButtonOnClick()

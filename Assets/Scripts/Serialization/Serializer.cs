@@ -7,7 +7,7 @@ public static class Serializer
     public static string SavedDataPath = Application.persistentDataPath + "/save.dat";
 
     public static void SaveData()
-    { 
+    {
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(SavedDataPath, FileMode.Create);
 
@@ -18,8 +18,8 @@ public static class Serializer
     }
 
     public static SavedData LoadData()
-    { 
-        if(File.Exists(SavedDataPath))
+    {
+        if (File.Exists(SavedDataPath))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(SavedDataPath, FileMode.Open);

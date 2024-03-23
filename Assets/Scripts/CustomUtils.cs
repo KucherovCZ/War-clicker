@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-
-public static class CustomUtils
+﻿public static class CustomUtils
 {
     public static int ProductionPerFactory = 5; // 1 factory production per second
     public static int UpdateFrequency = 25; // updates per second

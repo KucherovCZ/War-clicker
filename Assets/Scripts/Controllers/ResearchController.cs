@@ -1,10 +1,6 @@
 ﻿using Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ResearchController
@@ -82,7 +78,7 @@ public class ResearchController
         List<ResearchItem> Items = new List<ResearchItem>();
         foreach (cResearchItem item in ResearchItems)
         {
-            
+
 
 
             GameObject newResearchItem = null;

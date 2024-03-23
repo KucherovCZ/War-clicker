@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System;
+﻿using System;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class Dialog : MonoBehaviour
 {

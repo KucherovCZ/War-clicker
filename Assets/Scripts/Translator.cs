@@ -1,10 +1,4 @@
-﻿using Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public static class Translator
@@ -18,7 +12,7 @@ public static class Translator
         EnglishTranslationItems = englishTranslations;
     }
 
-    
+
 
     public static string Translate(string code)
     {

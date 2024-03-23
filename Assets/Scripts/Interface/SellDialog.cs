@@ -1,10 +1,7 @@
-﻿using System.Collections;
+﻿using Entities;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Entities;
-using TMPro;
-using Unity.VisualScripting;
-using TreeEditor;
 
 public class SellDialog : MonoBehaviour
 {
@@ -99,7 +96,7 @@ public class SellDialog : MonoBehaviour
     public void OnInputFieldEndEdit()
     {
         if (int.TryParse(InputField.text, out int value))
-        { 
+        {
             value = Mathf.Clamp(value, 0, Weapon.Stored);
             InputField.text = value.ToString();
             selectedAmount = value;

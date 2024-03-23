@@ -1,12 +1,8 @@
-﻿using Mono.Data.Sqlite;
-using System.Data;
-using System;
-using UnityEngine;
+﻿using Entities;
+using Mono.Data.Sqlite;
 using System.Collections.Generic;
-using Entities;
-using System.Text;
-using Unity.VisualScripting;
-using UnityEditor.U2D.Path.GUIFramework;
+using System.Data;
+using UnityEngine;
 
 public class Database
 {
@@ -118,7 +114,7 @@ public class Database
             cmd.Parameters.AddWithValue("@stored", weapon.Stored);
             cmd.Parameters.AddWithValue("@factoriesAssigned", weapon.FactoriesAssigned);
             cmd.Parameters.AddWithValue("@autosell", weapon.Autosell ? 1 : 0);
-            
+
             cmd.ExecuteNonQuery();
             cmd.Dispose();
         }

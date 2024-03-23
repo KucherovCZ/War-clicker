@@ -1,5 +1,4 @@
-﻿using Entities;
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +35,7 @@ namespace Entities
         }
 
         private void InitUI()
-        {            
+        {
             // button
             ProdItemButton = transform.GetComponent<Button>();
             ProdItemButton.onClick.AddListener(OnProdItemButtonClick);
@@ -81,7 +80,7 @@ namespace Entities
                     counter = 0;
                     remainingTime -= timeChange;
 
-                    
+
                     TimeLabel.text = CustomUtils.FormatTime(remainingTime);
                     StoredLabel.text = Weapon.Stored.ToString();
                     LoadingBar.value = 1.1f - (remainingTime / Weapon.ProductionTime);
@@ -122,7 +121,7 @@ namespace Entities
             Weapon.FactoriesAssigned += change;
             ProductionController.Instance.UseFactories(Weapon.Type, change);
 
-            if(Weapon.FactoriesAssigned == 0)
+            if (Weapon.FactoriesAssigned == 0)
             {
                 Weapon.ProductionTime = 0;
                 StopProduction();
@@ -147,7 +146,7 @@ namespace Entities
             do
             {
                 remainingTime = prodTime;
-                
+
                 yield return wait;
 
                 if (Weapon.Autosell)

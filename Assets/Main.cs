@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -28,7 +25,7 @@ public class Main : MonoBehaviour
     {
         InitDB();
         InitData();
-    } 
+    }
 
     #endregion
 
@@ -56,9 +53,9 @@ public class Main : MonoBehaviour
 
         ResearchController.Instance.InitGameObjects(ResearchItemPrefab, ResearchPage);
         ResearchController.Instance.Init(
-            Database.LoadResearchItems().ToList(), 
-            Database.LoadResearchItemRelations().ToList(), 
-            Database.LoadResearchItemWeapon().ToList(), 
+            Database.LoadResearchItems().ToList(),
+            Database.LoadResearchItemRelations().ToList(),
+            Database.LoadResearchItemWeapon().ToList(),
             data);
     }
 
