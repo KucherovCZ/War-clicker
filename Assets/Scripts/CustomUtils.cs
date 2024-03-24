@@ -18,7 +18,7 @@
         }
         else if (seconds < 600) // under 10 minutes show MM:SS m
         {
-            return string.Format("{0}:{1} m", seconds / 60, seconds % 60);
+            return string.Format("{0}:{1} m", seconds / 60, (seconds % 60).ToString("00"));
         }
         else if (seconds < 3600) // under 1 hour show MM m
         {
@@ -28,7 +28,7 @@
         else if (seconds < 36000) // under 10 hour show H:MM h
         {
             int minutes = seconds / 60;
-            return string.Format("{0}:{1} h", minutes / 60, minutes % 60);
+            return string.Format("{0}:{1} h", minutes / 60, (minutes % 60).ToString("00"));
         }
         else if (seconds < 86400) // under 1 day show H h
         {
