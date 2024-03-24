@@ -13,6 +13,7 @@ namespace Entities
         public cWeapon Weapon { get; set; }
 
         private Image Icon { get; set; }
+        public Sprite Sprite { get; set; }
         private TextMeshProUGUI DisplayNameLabel { get; set; }
         private TextMeshProUGUI FlagsLabel { get; set; }
         private TextMeshProUGUI TimeLabel { get; set; }
@@ -49,20 +50,31 @@ namespace Entities
             StoredLabel = transform.Find("Stored").GetComponent<TextMeshProUGUI>();
             LoadingBar = transform.Find("LoadingBar").GetComponent<Slider>();
 
-            Icon.sprite = UIController.Instance.GetWeaponIcon(Weapon.Name);
+            Sprite = UIController.Instance.GetWeaponIcon(Weapon.Name);
+            Icon.sprite = Sprite;
             DisplayNameLabel.text = Weapon.DisplayName;
             FlagsLabel.text = Weapon.FlagsString;
             PriceLabel.text = CustomUtils.FormatNumber(Weapon.SellPrice);
             StoredLabel.text = Weapon.Stored.ToString();
 
-            // cover UI
-            if (Weapon.State == WeaponState.Locked)
+            UpdateWeaponState(Weapon.State);
+        }
+
+        public void UpdateWeaponState(WeaponState newState)
+        {
+            Weapon.State = newState;
+
+            switch (newState)
             {
-                // TODO add locked GUI
-            }
-            else if (Weapon.State == WeaponState.Researched)
-            {
-                // TODO add researched, but not active GUI (idk?, maybe active but with zero factories)
+                case WeaponState.Locked:
+                    // show overlay for production item: locked
+                    break;
+                case WeaponState.Researched:
+                    // show overlay for prodctuon item: researched, but disabled
+                    break;
+                case WeaponState.Active:
+                    // dont show any overlay
+                    break;
             }
         }
 

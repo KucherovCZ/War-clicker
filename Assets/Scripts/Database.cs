@@ -104,7 +104,7 @@ public class Database
         if (!CheckConnection()) return;
 
         string query = "UPDATE " + weaponTable +
-                       " SET Stored = @stored, FactoriesAssigned = @factoriesAssigned, Autosell = @autosell" +
+                       " SET Stored = @stored, FactoriesAssigned = @factoriesAssigned, Autosell = @autosell, State = @state" +
                        " WHERE Id = @id";
 
         foreach (cWeapon weapon in weapons)
@@ -114,6 +114,7 @@ public class Database
             cmd.Parameters.AddWithValue("@stored", weapon.Stored);
             cmd.Parameters.AddWithValue("@factoriesAssigned", weapon.FactoriesAssigned);
             cmd.Parameters.AddWithValue("@autosell", weapon.Autosell ? 1 : 0);
+            cmd.Parameters.AddWithValue("@state", (int)weapon.State);
 
             cmd.ExecuteNonQuery();
             cmd.Dispose();
@@ -163,6 +164,25 @@ public class Database
 
         reader.Close();
         cmd.Dispose();
+    }
+
+    public void SaveResearchItems(List<cResearchItem> resItems)
+    {
+        if (!CheckConnection()) return;
+
+        string query = "UPDATE " + researchItemTable +
+                       " SET Researched = @researched" +
+                       " WHERE Id = @id";
+
+        foreach (cResearchItem resItem in resItems)
+        {
+            SqliteCommand cmd = new SqliteCommand(query, m_Connection);
+            cmd.Parameters.AddWithValue("@id", resItem.Id);
+            cmd.Parameters.AddWithValue("@researched", resItem.Researched);
+
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+        }
     }
 
     public void SaveResearchItem(cResearchItem researchItem)

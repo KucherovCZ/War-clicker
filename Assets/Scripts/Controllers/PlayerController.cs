@@ -20,9 +20,6 @@
     public UIController UIController { get; set; }
     public long Money { get; private set; } = 500;
     public long WarFunds { get; private set; } = 0;
-
-    //private double MoneyPerSecond { get; set; }
-    //private double WarFundsPerSecond { get; set; }
     #endregion
 
     #region Methods
@@ -31,6 +28,9 @@
     {
         Money = data.money;
         WarFunds = data.warFunds;
+
+        Money = 500000;
+        WarFunds = 1000000;
 
         // try to get player with his GUID from server (to check his real stats) -- AFTER LEADERBOARDS UPDATE
     }
@@ -44,27 +44,6 @@
     {
         WarFunds += amount;
     }
-    //public void AddMoneyPerSecond(long oldProduction, long newProduction, int time)
-    //{
-    //    double difference = ((double)newProduction) - ((double)oldProduction);
-    //    AddMoneyPerSecond(difference / (double)time);
-    //}
-
-    //public void AddMoneyPerSecond(double diffPerSecond)
-    //{
-    //    MoneyPerSecond += diffPerSecond;
-    //}
-
-    //public void AddWarFundPerSecond(long oldProduction, long newProduction, int time)
-    //{
-    //    double difference = ((double)newProduction) - ((double)oldProduction);
-    //    AddWarFundPerSecond(difference / (double)time);
-    //}
-
-    //public void AddWarFundPerSecond(double diffPerSecond)
-    //{
-    //    WarFundsPerSecond += diffPerSecond;
-    //}
 
     #endregion
 }

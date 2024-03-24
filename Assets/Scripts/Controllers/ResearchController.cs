@@ -21,7 +21,9 @@ public class ResearchController
     #endregion
 
     #region Fields and properties
-    public List<cResearchItem> ResearchItems { get; set; }
+    public List<cResearchItem> ResearchItemsDB { get; set; }
+
+    public List<ResearchItem> ResearchItems { get; set; }
     public List<cResearchItemRelation> Relations { get; set; }
     public List<cResearchItemWeapon> ItemWeapons { get; set; }
 
@@ -44,7 +46,7 @@ public class ResearchController
 
     public void Init(List<cResearchItem> researchItems, List<cResearchItemRelation> relations, List<cResearchItemWeapon> itemWeapons, SavedData data)
     {
-        ResearchItems = researchItems;
+        ResearchItemsDB = researchItems;
         Relations = relations;
         ItemWeapons = itemWeapons;
 
@@ -70,17 +72,13 @@ public class ResearchController
         NavyContent = viewPort.Find("Navy");
     }
 
-
     public void GenerateResearchItems()
     {
-        ResearchEra currentEra = ResearchEra.PreWW1;
+        //ResearchEra currentEra = ResearchEra.PreWW1;
+        ResearchItems = new List<ResearchItem>();
 
-        List<ResearchItem> Items = new List<ResearchItem>();
-        foreach (cResearchItem item in ResearchItems)
+        foreach (cResearchItem item in ResearchItemsDB)
         {
-
-
-
             GameObject newResearchItem = null;
             Transform currentContent = null;
             switch (item.Type)
@@ -101,19 +99,12 @@ public class ResearchController
             resItemScript.Children = Relations.Where(r => r.ChildId == item.Id).ToList();
             List<int> WeaponIds = ItemWeapons.Where(w => w.ResearchItemId == item.Id).Select(w => w.WeaponId).ToList();
             resItemScript.Weapons = ProductionController.Instance.AllWeapons.Where(w => WeaponIds.Contains(w.Id)).ToList();
+            if (resItemScript.Weapons.Count > 4) Debug.LogWarning("ResearchItem: " + item.Name + ", ID: " + item.Id + " has too many weapons assigned (over 4). This will cause UI issues");
 
             resItemScript.Init(item);
 
-            Items.Add(resItemScript);
+            ResearchItems.Add(resItemScript);
         }
-
-
-        //foreach (cWeapon weapon in AllWeapons)
-        //{
-        //    if (newProductionItem == null) continue;
-        //    newProductionItem.name = weapon.Name;
-        //    ProductionItem prItemScript = newProductionItem.AddComponent<ProductionItem>();
-        //}
     }
 
     #endregion 

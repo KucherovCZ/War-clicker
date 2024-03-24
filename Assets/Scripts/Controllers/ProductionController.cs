@@ -1,6 +1,8 @@
 ﻿using Entities;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class ProductionController
 {
@@ -77,63 +79,26 @@ public class ProductionController
 
     public void GenerateWeaponContent()
     {
-        int infCount = 0;
-        int artCount = 0;
-        int armCount = 0;
-        int airCount = 0;
-        int navCount = 0;
+        int[] weaponCounts = new int[] { 0, 0, 0, 0, 0 };
 
         foreach (cWeapon weapon in AllWeapons)
         {
             GameObject newProductionItem = null;
+            Transform currentContent = null;
             switch (weapon.Type)
             {
-                case WeaponType.Infantry:
-                    {
-                        newProductionItem = GameObject.Instantiate(ProductionItemPrefab, InfantryContent);
-                        Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * infCount, 0f);
-                        newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
-                        infCount++;
-                        break;
-                    }
-
-                case WeaponType.Artillery:
-                    {
-                        newProductionItem = GameObject.Instantiate(ProductionItemPrefab, ArtilleryContent);
-                        Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * artCount, 0f);
-                        newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
-                        artCount++;
-                        break;
-                    }
-
-                case WeaponType.Armor:
-                    {
-                        newProductionItem = GameObject.Instantiate(ProductionItemPrefab, ArmorContent);
-                        Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * armCount, 0f);
-                        newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
-                        armCount++;
-                        break;
-                    }
-
-                case WeaponType.Air:
-                    {
-                        newProductionItem = GameObject.Instantiate(ProductionItemPrefab, AirContent);
-                        Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * airCount, 0f);
-                        newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
-                        airCount++;
-                        break;
-                    }
-
-                case WeaponType.Navy:
-                    {
-                        newProductionItem = GameObject.Instantiate(ProductionItemPrefab, NavyContent);
-                        Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * navCount, 0f);
-                        newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
-                        navCount++;
-                        break;
-                    }
+                case WeaponType.Infantry: currentContent = InfantryContent; break;
+                case WeaponType.Artillery: currentContent = ArtilleryContent; break;
+                case WeaponType.Armor: currentContent = ArmorContent; break;
+                case WeaponType.Air: currentContent = AirContent; break;
+                case WeaponType.Navy: currentContent = NavyContent; break;
             }
 
+            newProductionItem = GameObject.Instantiate(ProductionItemPrefab, currentContent);
+            Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * weaponCounts[(int)weapon.Type], 0f);
+            newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
+            weaponCounts[(int)weapon.Type]++;
+            
             if (newProductionItem == null) continue;
 
             newProductionItem.name = weapon.Name;
@@ -157,6 +122,15 @@ public class ProductionController
     public void UseFactories(WeaponType type, int amount)
     {
         UsedFactories[(int)type] += amount;
+    }
+
+    public void ChangeProductionItemState(List<int> itemIds, WeaponState state)
+    {
+        List<ProductionItem> itemsToUpdate = ProdItems.Where(pr => itemIds.Contains(pr.Weapon.Id)).ToList();
+        foreach (ProductionItem item in itemsToUpdate)
+        {
+            item.UpdateWeaponState(state);
+        }
     }
     #endregion 
 }

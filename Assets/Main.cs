@@ -62,6 +62,7 @@ public class Main : MonoBehaviour
     public void SaveData()
     {
         Database.SaveWeapons(ProductionController.Instance.AllWeapons);
+        Database.SaveResearchItems(ResearchController.Instance.ResearchItemsDB);
         Serializer.SaveData();
     }
     #endregion

@@ -38,7 +38,7 @@ public class UIController : MonoBehaviour
         {
             counter = 0;
             MoneyLabel.text = CustomUtils.FormatNumber(PlayerController.Instance.Money);
-            WarXPLabel.text = PlayerController.Instance.WarFunds.ToString();
+            WarXPLabel.text = CustomUtils.FormatNumber(PlayerController.Instance.WarFunds);
         }
     }
 
@@ -67,14 +67,12 @@ public class UIController : MonoBehaviour
         topMenu = transform.Find("TopMenu");
 
         MoneyLabel = topMenu.Find("Money").GetComponent<TextMeshProUGUI>();
-        WarXPLabel = topMenu.Find("WarXP").GetComponent<TextMeshProUGUI>();
+        WarXPLabel = topMenu.Find("WarFunds").GetComponent<TextMeshProUGUI>();
         MoneyGlobalPosLabel = topMenu.Find("MoneyGlobalPos").GetComponent<TextMeshProUGUI>();
         WarXPGlobalPosLabel = topMenu.Find("WarXPGlobalPos").GetComponent<TextMeshProUGUI>();
     }
 
     #endregion
-
-
 
     #region Production
 
@@ -170,10 +168,10 @@ public class UIController : MonoBehaviour
         weaponDetail.gameObject.SetActive(true);
 
         openPrItem = prItem;
-        weaponDetail.Find("IconBackground").Find("Icon").GetComponent<Image>().sprite = GetWeaponIcon(weapon.Name);
+        weaponDetail.Find("IconBackground").Find("Icon").GetComponent<Image>().sprite = prItem.Sprite;
         weaponDetail.Find("WeaponName").GetComponent<TextMeshProUGUI>().text = weapon.DisplayName;
         weaponDetail.Find("Flags").GetComponent<TextMeshProUGUI>().text = weapon.FlagsString;
-        weaponDetail.Find("Price").GetComponent<TextMeshProUGUI>().text = weapon.SellPrice.ToString();
+        weaponDetail.Find("Price").GetComponent<TextMeshProUGUI>().text = CustomUtils.FormatNumber(weapon.SellPrice);
         ProdTimeLabel.text = CustomUtils.FormatTime(weapon.ProductionTime);
         weaponDetail.Find("Damage").GetComponent<TextMeshProUGUI>().text = weapon.Damage.ToString();
         weaponDetail.Find("Bonus").GetComponent<TextMeshProUGUI>().text = weapon.Bonus.ToString();
@@ -243,6 +241,8 @@ public class UIController : MonoBehaviour
     private ScrollRect researchScrollview;
     private Image lastChangedIconRes = null, lastChangedButtonRes = null;
 
+    private ResearchItem openResItem = null;
+
     private void LoadResearchItems()
     {
         researchView = transform.Find("Research");
@@ -286,31 +286,30 @@ public class UIController : MonoBehaviour
     {
         researchDetail.gameObject.SetActive(true);
 
-        string result = "";
+        string weaponNamesList = "";
         string[] weaponNames = resItem.Weapons.Select(w => w.DisplayName).ToArray();
         foreach (string name in weaponNames)
-            result += name + "\n";
+            weaponNamesList += name + "\n";
 
-        // TODO FILL
+        openResItem = resItem;
+        researchDetail.Find("IconBackground").Find("Icon").GetComponent<Image>().sprite = resItem.Sprite;
+        researchDetail.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.DisplayName;
+        researchDetail.Find("WeaponsList").GetComponent<TextMeshProUGUI>().text = weaponNamesList;
+        researchDetail.Find("Price").GetComponent<TextMeshProUGUI>().text = CustomUtils.FormatNumber(item.Price);
+    }
 
-
-        //openPrItem = prItem;
-        //weaponDetail.Find("IconBackground").Find("Icon").GetComponent<Image>().sprite = GetWeaponIcon(weapon.Name);
-        //weaponDetail.Find("WeaponName").GetComponent<TextMeshProUGUI>().text = weapon.DisplayName;
-        //weaponDetail.Find("Flags").GetComponent<TextMeshProUGUI>().text = weapon.FlagsString;
-        //weaponDetail.Find("Price").GetComponent<TextMeshProUGUI>().text = weapon.SellPrice.ToString();
-        //ProdTimeLabel.text = CustomUtils.FormatTime(weapon.ProductionTime);
-        //weaponDetail.Find("Damage").GetComponent<TextMeshProUGUI>().text = weapon.Damage.ToString();
-        //weaponDetail.Find("Bonus").GetComponent<TextMeshProUGUI>().text = weapon.Bonus.ToString();
-        //weaponDetail.Find("AntiTank").GetComponent<TextMeshProUGUI>().text = weapon.AntiTank.ToString();
-        //weaponDetail.Find("AntiAir").GetComponent<TextMeshProUGUI>().text = weapon.AntiAir.ToString();
-        //weaponDetail.Find("AntiNavy").GetComponent<TextMeshProUGUI>().text = weapon.AntiNavy.ToString();
-        //weaponDetail.Find("Factories").Find("Text").GetComponent<TextMeshProUGUI>().text = weapon.FactoriesAssigned.ToString();
-        //StoredLabel.text = weapon.Stored.ToString();
-        //weaponDetail.Find("Autosell").GetComponent<SliderColorChange>().SetSlider(weapon.Autosell);
-        //weaponDetail.Find("Description").Find("Text").GetComponent<TextMeshProUGUI>().text = weapon.Description;
-        //FactoryInput.text = weapon.FactoriesAssigned.ToString();
-
+    public void ResearchButtonOnClick()
+    {
+        if (openResItem.UnlockResearchItem())
+        {
+            // succeeded, close detail
+            researchDetail.gameObject.SetActive(false);
+        }
+        else
+        {
+            // not enough warfunds, show dialog, or warning (just popup warning for 1s is better)
+            Debug.Log("Player doesnt have enough WarFunds -> show popup warning");
+        }
     }
 
     public Sprite GetResearchIcon(string researchItemName)
