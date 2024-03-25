@@ -50,6 +50,20 @@ namespace Entities
             Icon.sprite = Sprite;
             DisplayNameLabel.text = researchItem.DisplayName;
             PriceLabel.text = CustomUtils.FormatNumber(researchItem.Price);
+
+            UpdateItem();
+        }
+
+        public void UpdateItem()
+        {
+            if (researchItem.Researched)
+            {
+                transform.GetComponent<Image>().color = new Color(0.25f, 0.55f, 0.2f, 1f);
+                transform.Find("Background").GetComponent<Image>().color = new Color(0.2f, 0.4392157f, 0.1607843f, 1f);
+            }
+
+
+            // TODO update all lines coming to and out of researchItem
         }
 
         public void OnResearchItemButtonClick()
@@ -68,6 +82,9 @@ namespace Entities
             PlayerController.Instance.AddWarFunds(researchItem.Price * -1);
 
             researchItem.Researched = true;
+
+            // set color to green (as unlocked)
+            UpdateItem();
 
             ProductionController.Instance.ChangeProductionItemState(
                 Weapons.Select(w => w.Id).ToList(),

@@ -184,7 +184,7 @@ public class UIController : MonoBehaviour
         weaponDetail.Find("Description").Find("Text").GetComponent<TextMeshProUGUI>().text = weapon.Description;
         FactoryInput.text = weapon.FactoriesAssigned.ToString();
 
-        Plus.enabled = CheckFreeFactories();
+        Plus.interactable = CheckFreeFactories();
     }
 
     public bool CheckFreeFactories()
@@ -203,7 +203,7 @@ public class UIController : MonoBehaviour
         }
 
         if (freeFactories == 1)
-            Plus.enabled = false;
+            Plus.interactable = false;
     }
 
     public void RemoveFactoryButtonOnClick()
@@ -213,7 +213,7 @@ public class UIController : MonoBehaviour
             openPrItem.FactoriesUpdated(-1);
             FactoryInput.text = openPrItem.Weapon.FactoriesAssigned.ToString();
             ProdTimeLabel.text = CustomUtils.FormatTime(openPrItem.Weapon.ProductionTime);
-            Plus.enabled = true;
+            Plus.interactable = true;
         }
     }
 
@@ -296,6 +296,13 @@ public class UIController : MonoBehaviour
         researchDetail.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.DisplayName;
         researchDetail.Find("WeaponsList").GetComponent<TextMeshProUGUI>().text = weaponNamesList;
         researchDetail.Find("Price").GetComponent<TextMeshProUGUI>().text = CustomUtils.FormatNumber(item.Price);
+        researchDetail.Find("ResearchButton").GetComponent<Button>().interactable = !item.Researched;
+
+        TextMeshProUGUI buttonLabel = researchDetail.Find("ResearchButton").Find("Label").GetComponent<TextMeshProUGUI>();
+        buttonLabel.text = item.Researched ? "Researched" : "Research";
+        buttonLabel.color = item.Researched ? Color.gray : Color.white;
+
+        
     }
 
     public void ResearchButtonOnClick()

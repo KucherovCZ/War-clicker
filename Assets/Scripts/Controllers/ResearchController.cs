@@ -37,7 +37,7 @@ public class ResearchController
     private Transform NavyContent { get; set; }
 
     private float RowYChange = 0;
-    private int[] columnPos = { -200, 0, 200 };
+    private int[] columnPos = { -190, 0, 190 };
     private Vector3 StarterPos = new Vector3(0f, -150f);
 
     #endregion
