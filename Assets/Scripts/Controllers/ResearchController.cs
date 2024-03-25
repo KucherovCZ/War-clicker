@@ -99,7 +99,11 @@ public class ResearchController
             resItemScript.Children = Relations.Where(r => r.ChildId == item.Id).ToList();
             List<int> WeaponIds = ItemWeapons.Where(w => w.ResearchItemId == item.Id).Select(w => w.WeaponId).ToList();
             resItemScript.Weapons = ProductionController.Instance.AllWeapons.Where(w => WeaponIds.Contains(w.Id)).ToList();
-            if (resItemScript.Weapons.Count > 4) Debug.LogWarning("ResearchItem: " + item.Name + ", ID: " + item.Id + " has too many weapons assigned (over 4). This will cause UI issues");
+
+            if (resItemScript.Weapons.Count > 4)
+                Debug.LogWarning("ResearchItem: " + item.Name + ", ID: " + item.Id + " has too many weapons assigned (over 4). This will cause UI issues");
+            if (resItemScript.Weapons.Where(w => w.Type != item.Type).Any())
+                Debug.LogWarning("ResearchItem: " + item.Name + ", ID: " + item.Id + " has links to weapons of other types, this is against game logic, fix data");
 
             resItemScript.Init(item);
 

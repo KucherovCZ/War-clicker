@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +23,10 @@ namespace Entities
         private TextMeshProUGUI StoredLabel { get; set; }
         private Button ProdItemButton { get; set; }
         private Slider LoadingBar { get; set; }
+        private GameObject LockedOverlay { get; set; }
+        private GameObject ResearchedOverlay { get; set; }
+        private Button BuyEquipButton { get; set; }
+        private TextMeshProUGUI UnlockPriceLabel { get; set; }
 
         public void Init(cWeapon weapon)
         {
@@ -37,9 +43,16 @@ namespace Entities
 
         private void InitUI()
         {
+            // gameObjects
+            LockedOverlay = transform.Find("LockedOverlay").gameObject;
+            ResearchedOverlay = transform.Find("ResearchedOverlay").gameObject;
+
             // button
             ProdItemButton = transform.GetComponent<Button>();
             ProdItemButton.onClick.AddListener(OnProdItemButtonClick);
+
+            BuyEquipButton = ResearchedOverlay.transform.Find("BuyEquipButton").GetComponent<Button>();
+            BuyEquipButton.onClick.AddListener(OnBuyEquipButtonClick);
 
             // labels
             Icon = transform.Find("IconBackground").Find("Icon").GetComponent<Image>();
@@ -49,6 +62,7 @@ namespace Entities
             PriceLabel = transform.Find("Price").GetComponent<TextMeshProUGUI>();
             StoredLabel = transform.Find("Stored").GetComponent<TextMeshProUGUI>();
             LoadingBar = transform.Find("LoadingBar").GetComponent<Slider>();
+            UnlockPriceLabel = ResearchedOverlay.transform.Find("BuyEquipButton").Find("UnlockPrice").GetComponent<TextMeshProUGUI>();
 
             Sprite = UIController.Instance.GetWeaponIcon(Weapon.Name);
             Icon.sprite = Sprite;
@@ -56,6 +70,7 @@ namespace Entities
             FlagsLabel.text = Weapon.FlagsString;
             PriceLabel.text = CustomUtils.FormatNumber(Weapon.SellPrice);
             StoredLabel.text = Weapon.Stored.ToString();
+            UnlockPriceLabel.text = CustomUtils.FormatNumber(Weapon.UnlockPrice);
 
             UpdateWeaponState(Weapon.State);
         }
@@ -64,18 +79,10 @@ namespace Entities
         {
             Weapon.State = newState;
 
-            switch (newState)
-            {
-                case WeaponState.Locked:
-                    // show overlay for production item: locked
-                    break;
-                case WeaponState.Researched:
-                    // show overlay for prodctuon item: researched, but disabled
-                    break;
-                case WeaponState.Active:
-                    // dont show any overlay
-                    break;
-            }
+            LockedOverlay.SetActive(newState == WeaponState.Locked);
+            ResearchedOverlay.SetActive(newState == WeaponState.Researched);
+            LoadingBar.gameObject.SetActive(newState == WeaponState.Active);
+            ProdItemButton.enabled = (newState == WeaponState.Active);
         }
 
         // this method is called 50 times / second (every 20 miliseconds)
@@ -181,7 +188,22 @@ namespace Entities
 
         public void OnProdItemButtonClick()
         {
-            ProductionController.Instance.UIController.OpenWeaponDetail(Weapon, this);
+            UIController.Instance.OpenWeaponDetail(Weapon, this);
+        }
+
+        public void OnBuyEquipButtonClick()
+        {
+            if (PlayerController.Instance.Money > Weapon.UnlockPrice)
+            {
+                PlayerController.Instance.AddMoney(Weapon.UnlockPrice * -1);
+                UpdateWeaponState(WeaponState.Active);
+                Weapon.Autosell = CustomUtils.DefaultAutosellSettings;  
+            }
+            else
+            {
+                // not enough money, show dialog, or warning (just popup warning for 1s is better)
+                Debug.Log("Player doesnt have enough Money -> show popup warning");
+            }
         }
 
         #endregion

@@ -2,6 +2,7 @@
 {
     public static int ProductionPerFactory = 5; // 1 factory production per second
     public static int UpdateFrequency = 25; // updates per second
+    public static bool DefaultAutosellSettings = false;
 
     public static string FormatTime(float seconds)
     {
