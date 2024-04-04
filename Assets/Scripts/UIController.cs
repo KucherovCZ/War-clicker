@@ -1,6 +1,7 @@
 using Entities;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -278,7 +279,7 @@ public class UIController : MonoBehaviour
 
         if (researchScrollview.content != null)
             researchScrollview.content.localScale = new Vector3(0, 1, 1);
-        researchScrollview.content = content;
+        researchScrollview.content = content; 
         content.localScale = new Vector3(1, 1, 1);
     }
 

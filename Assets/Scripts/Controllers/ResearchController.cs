@@ -109,6 +109,11 @@ public class ResearchController
 
             ResearchItems.Add(resItemScript);
         }
+
+        ArtilleryContent.localScale = new Vector3(0, 1, 1);
+        ArmorContent.localScale = new Vector3(0, 1, 1);
+        AirContent.localScale = new Vector3(0, 1, 1);
+        NavyContent.localScale = new Vector3(0, 1, 1);
     }
 
     #endregion 
