@@ -297,13 +297,19 @@ public class UIController : MonoBehaviour
         researchDetail.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.DisplayName;
         researchDetail.Find("WeaponsList").GetComponent<TextMeshProUGUI>().text = weaponNamesList;
         researchDetail.Find("Price").GetComponent<TextMeshProUGUI>().text = CustomUtils.FormatNumber(item.Price);
-        researchDetail.Find("ResearchButton").GetComponent<Button>().interactable = !item.Researched;
+        researchDetail.Find("ResearchButton").GetComponent<Button>().interactable = !item.Researched && resItem.IsUnlocked;
 
         TextMeshProUGUI buttonLabel = researchDetail.Find("ResearchButton").Find("Label").GetComponent<TextMeshProUGUI>();
-        buttonLabel.text = item.Researched ? "Researched" : "Research";
-        buttonLabel.color = item.Researched ? Color.gray : Color.white;
-
-        
+        if (resItem.IsUnlocked)
+        {
+            buttonLabel.text = item.Researched ? "Researched" : "Research";
+            buttonLabel.color = item.Researched ? Color.gray : Color.white;
+        }
+        else
+        {
+            buttonLabel.text = "Locked";
+            buttonLabel.color = Color.gray;
+        }
     }
 
     public void ResearchButtonOnClick()

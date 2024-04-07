@@ -14,15 +14,27 @@ namespace Entities
         public List<ResearchItem> Parents { get; set; }
         public List<cResearchItemRelation> Children { get; set; }
         public List<cWeapon> Weapons { get; set; }
-        public List<GameObject> Lines { get; set; }
+        public bool IsUnlocked {
+            get {
+                return Parents.Where(p => !p.researchItem.Researched).Count() == 0;  
+            } 
+        }
 
         private Image Icon { get; set; }
         public Sprite Sprite { get; set; }
         private TextMeshProUGUI DisplayNameLabel { get; set; }
         private TextMeshProUGUI PriceLabel { get; set; }
         private Button ResItemButton { get; set; }
+
+        public List<GameObject> Lines { get; set; }
+        public List<GameObject> LinesOut { get; set; }
         private Transform TopAnchor { get; set; }
         private Transform BottomAnchor { get; set; }
+        private static Vector3 LineChange {
+            get {
+                return new Vector3(0f , 84f);
+            } 
+        }
 
         #endregion
 
@@ -31,6 +43,7 @@ namespace Entities
         {
             researchItem = item;
             Lines = new();
+            LinesOut = new();
 
             InitUI();
         }
@@ -58,8 +71,11 @@ namespace Entities
 
             foreach (ResearchItem item in Parents)
             {
+                if (this.researchItem.Researched) transform.SetAsFirstSibling();
                 Color color = this.researchItem.Researched ? new Color(0.25f, 0.55f, 0.2f, 1f) : item.researchItem.Researched ? Color.yellow : Color.white;
-                Lines.AddRange(CreateLines(item.BottomAnchor.position, this.TopAnchor.position, color));
+                List<GameObject> newLines = CreateLines(item.BottomAnchor.position, this.TopAnchor.position, color);
+                item.LinesOut.AddRange(newLines);
+                Lines.AddRange(newLines);
             }
 
             UpdateItem();
@@ -69,11 +85,16 @@ namespace Entities
         {
             if (researchItem.Researched)
             {
+                transform.SetAsLastSibling();
+
                 transform.GetComponent<Image>().color = new Color(0.25f, 0.55f, 0.2f, 1f);
                 transform.Find("Background").GetComponent<Image>().color = new Color(0.2f, 0.4392157f, 0.1607843f, 1f);
 
                 foreach (GameObject line in Lines)
                     line.GetComponent<Image>().color = new Color(0.25f, 0.55f, 0.2f, 1f);
+
+                foreach (GameObject line in LinesOut)
+                    line.GetComponent<Image>().color = Color.yellow;
             }
         }
 
@@ -92,8 +113,8 @@ namespace Entities
                 return returnList;
             }
 
-            Vector3 FromMidPoint = new Vector3(from.x, from.y + (to.y - from.y) / 2);
-            Vector3 ToMidPoint = new Vector3(to.x, to.y - (to.y - from.y) / 2);
+            Vector3 FromMidPoint = from - LineChange; // new Vector3(from.x, from.y + (to.y - from.y) / 2);
+            Vector3 ToMidPoint = new Vector3(to.x, from.y - LineChange.y); // new Vector3(to.x, to.y - (to.y - from.y) / 2);
 
             returnList.Add(CreateLine(from, FromMidPoint, color));
             returnList.Add(CreateLine(FromMidPoint, ToMidPoint, color));
