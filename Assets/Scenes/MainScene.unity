@@ -399,7 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProductionItemPrefab: {fileID: 5460389198001291342, guid: 495143348e6f5cb419e9b837b4e48dbe, type: 3}
   ProductionPage: {fileID: 54999314}
-  ResearchItemPrefab: {fileID: 8910008148090329372, guid: 14ec98d27c01ecd4b97827b13be89cd7, type: 3}
+  ResearchItemPrefab: {fileID: 8910008148090329372, guid: 4a9b875474e17ba4dafaf563e8219695, type: 3}
   ResearchPage: {fileID: 2009858280}
 --- !u!4 &58958493
 Transform:
@@ -9951,7 +9951,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7c268522bd69698418faf5d2753de1d5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 044aad577bb906a49bb1b831a0a388ae, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

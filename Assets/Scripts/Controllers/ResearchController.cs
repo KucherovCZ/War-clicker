@@ -95,7 +95,7 @@ public class ResearchController
             newResearchItem.transform.position = newResearchItem.transform.TransformPoint(newPos);
 
             ResearchItem resItemScript = newResearchItem.AddComponent<ResearchItem>();
-            resItemScript.Parents = Relations.Where(r => r.ParentId == item.Id).ToList();
+            resItemScript.Parents = ResearchItems.Where(it => Relations.Where(r => r.ChildId == item.Id).Select(p => p.ParentId).Contains(it.researchItem.Id)).ToList();
             resItemScript.Children = Relations.Where(r => r.ChildId == item.Id).ToList();
             List<int> WeaponIds = ItemWeapons.Where(w => w.ResearchItemId == item.Id).Select(w => w.WeaponId).ToList();
             resItemScript.Weapons = ProductionController.Instance.AllWeapons.Where(w => WeaponIds.Contains(w.Id)).ToList();

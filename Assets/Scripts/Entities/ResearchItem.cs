@@ -9,17 +9,20 @@ namespace Entities
     public class ResearchItem : MonoBehaviour
     {
         #region Properties
-        cResearchItem researchItem;
+        public cResearchItem researchItem;
 
-        public List<cResearchItemRelation> Parents { get; set; }
+        public List<ResearchItem> Parents { get; set; }
         public List<cResearchItemRelation> Children { get; set; }
         public List<cWeapon> Weapons { get; set; }
+        public List<GameObject> Lines { get; set; }
 
         private Image Icon { get; set; }
         public Sprite Sprite { get; set; }
         private TextMeshProUGUI DisplayNameLabel { get; set; }
         private TextMeshProUGUI PriceLabel { get; set; }
         private Button ResItemButton { get; set; }
+        private Transform TopAnchor { get; set; }
+        private Transform BottomAnchor { get; set; }
 
         #endregion
 
@@ -27,16 +30,13 @@ namespace Entities
         public void Init(cResearchItem item)
         {
             researchItem = item;
+            Lines = new();
 
             InitUI();
         }
 
         public void InitUI()
         {
-            // if item.researched show as finished (green?)
-            // if all parents are researched, show as unlocked
-            // else show as locked
-
             // button
             ResItemButton = transform.GetComponent<Button>();
             ResItemButton.onClick.AddListener(OnResearchItemButtonClick);
@@ -46,10 +46,21 @@ namespace Entities
             DisplayNameLabel = transform.Find("DisplayName").GetComponent<TextMeshProUGUI>();
             PriceLabel = transform.Find("Price").GetComponent<TextMeshProUGUI>();
 
-            Sprite = UIController.Instance.GetResearchIcon(researchItem.Name);
-            Icon.sprite = Sprite;
+            //Sprite = UIController.Instance.GetResearchIcon(researchItem.Name); TODO JUST FOR DEBUG PICTURE
+            //Icon.sprite = Sprite;
+            Debug.LogWarning("ResearchItem.InitUI() is using default research icon");
+
             DisplayNameLabel.text = researchItem.DisplayName;
             PriceLabel.text = CustomUtils.FormatNumber(researchItem.Price);
+
+            TopAnchor = transform.Find("TopAnchor");
+            BottomAnchor = transform.Find("BottomAnchor");
+
+            foreach (ResearchItem item in Parents)
+            {
+                Color color = this.researchItem.Researched ? new Color(0.25f, 0.55f, 0.2f, 1f) : item.researchItem.Researched ? Color.yellow : Color.white;
+                Lines.AddRange(CreateLines(item.BottomAnchor.position, this.TopAnchor.position, color));
+            }
 
             UpdateItem();
         }
@@ -60,15 +71,64 @@ namespace Entities
             {
                 transform.GetComponent<Image>().color = new Color(0.25f, 0.55f, 0.2f, 1f);
                 transform.Find("Background").GetComponent<Image>().color = new Color(0.2f, 0.4392157f, 0.1607843f, 1f);
+
+                foreach (GameObject line in Lines)
+                    line.GetComponent<Image>().color = new Color(0.25f, 0.55f, 0.2f, 1f);
             }
-
-
-            // TODO update all lines coming to and out of researchItem
         }
 
         public void OnResearchItemButtonClick()
         {
             ProductionController.Instance.UIController.OpenResearchDetail(researchItem, this);
+        }
+
+        public List<GameObject> CreateLines(Vector3 from, Vector3 to, Color color)
+        {
+            List<GameObject> returnList = new();
+
+            if (from.x == to.x)
+            {
+                returnList.Add(CreateLine(from, to, color));
+                return returnList;
+            }
+
+            Vector3 FromMidPoint = new Vector3(from.x, from.y + (to.y - from.y) / 2);
+            Vector3 ToMidPoint = new Vector3(to.x, to.y - (to.y - from.y) / 2);
+
+            returnList.Add(CreateLine(from, FromMidPoint, color));
+            returnList.Add(CreateLine(FromMidPoint, ToMidPoint, color));
+            returnList.Add(CreateLine(ToMidPoint, to, color));
+
+            return returnList;
+        }
+
+        /// <summary>
+        /// Generates lines with NULL sprite between two world points
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="color"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public GameObject CreateLine(Vector3 from, Vector3 to, Color color)
+        {
+            GameObject line = new GameObject();
+            line.name = "ResItem line";
+
+            Image newImage = line.AddComponent<Image>();
+            newImage.sprite = Sprite.Create(null, new Rect(0, 0, 1, 1), new Vector2());
+            newImage.color = color;
+
+            RectTransform rect = line.GetComponent<RectTransform>();
+            rect.SetParent(transform);
+            rect.localScale = Vector3.one;
+
+            rect.position = (from + to) / 2;
+            Vector3 dif = from - to;
+            rect.sizeDelta = new Vector3(Vector3.Distance(from, to) * 0.42f, 5);
+            rect.rotation = dif.x == 0 ? Quaternion.Euler(0, 0, 90) : Quaternion.Euler(0, 0, 0);
+
+            return line;
         }
 
         /// <summary>
