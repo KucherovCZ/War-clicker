@@ -15,5 +15,25 @@ public static class EnumUtils
         }
         return value.ToString();
     }
+
+    public static WeaponType GetWeaponType(string type)
+    {
+        switch (type)
+        {
+            case "Infantry":
+                return WeaponType.Infantry;
+            case "Artillery":
+                return WeaponType.Artillery;
+            case "Armor":
+                return WeaponType.Armor;
+            case "Air":
+                return WeaponType.Air;
+            case "Navy":
+                return WeaponType.Navy;
+            default:
+                //Debug.LogError("Invalid weapon type: " + type);
+                return WeaponType.Infantry;
+        }
+    }
 }
 

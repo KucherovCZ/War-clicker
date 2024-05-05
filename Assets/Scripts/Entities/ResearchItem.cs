@@ -158,20 +158,20 @@ namespace Entities
         /// <returns>TRUE when item is researched FALSE when player doesnt have enough warfunds</returns>
         public bool UnlockResearchItem()
         {
-            if (PlayerController.Instance.WarFunds < researchItem.Price) return false;
+            bool buyResult = PlayerController.Instance.TryBuyWarFunds(researchItem.Price);
+            if (buyResult)
+            {
+                researchItem.Researched = true;
 
-            PlayerController.Instance.AddWarFunds(researchItem.Price * -1);
+                // set color to green (as unlocked)
+                UpdateItem();
 
-            researchItem.Researched = true;
+                ProductionController.Instance.ChangeProductionItemState(
+                    Weapons.Select(w => w.Id).ToList(),
+                    WeaponState.Researched);
+            }
 
-            // set color to green (as unlocked)
-            UpdateItem();
-
-            ProductionController.Instance.ChangeProductionItemState(
-                Weapons.Select(w => w.Id).ToList(),
-                WeaponState.Researched);
-
-            return true;
+            return buyResult;
         }
         #endregion
     }

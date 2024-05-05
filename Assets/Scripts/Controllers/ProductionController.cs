@@ -36,8 +36,11 @@ public class ProductionController
     private float PosYChange = 0;
     private Vector3 StartPosition = Vector3.zero;
 
+    public int[] FactoryLevel = { 0, 0, 0, 0, 0 }; // TODO SAVE
     public int[] Factories = { 0, 0, 0, 0, 0 };
     public int[] UsedFactories = { 0, 0, 0, 0, 0 };
+
+    public int[] WarehouseLevel = { 0, 0, 0, 0, 0 }; // TODO SAVE
     #endregion
 
     #region Methods
@@ -98,7 +101,7 @@ public class ProductionController
             Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * weaponCounts[(int)weapon.Type], 0f);
             newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
             weaponCounts[(int)weapon.Type]++;
-            
+
             if (newProductionItem == null) continue;
 
             newProductionItem.name = weapon.Name;
@@ -109,6 +112,17 @@ public class ProductionController
         }
     }
 
+    public void ChangeProductionItemState(List<int> itemIds, WeaponState state)
+    {
+        List<ProductionItem> itemsToUpdate = ProdItems.Where(pr => itemIds.Contains(pr.Weapon.Id)).ToList();
+        foreach (ProductionItem item in itemsToUpdate)
+        {
+            item.UpdateWeaponState(state);
+        }
+    }
+    #endregion
+
+    #region Factories
     public int GetFactories(WeaponType type)
     {
         return Factories[(int)type];
@@ -124,13 +138,20 @@ public class ProductionController
         UsedFactories[(int)type] += amount;
     }
 
-    public void ChangeProductionItemState(List<int> itemIds, WeaponState state)
+    public int GetNewFactoryPrice(WeaponType type)
     {
-        List<ProductionItem> itemsToUpdate = ProdItems.Where(pr => itemIds.Contains(pr.Weapon.Id)).ToList();
-        foreach (ProductionItem item in itemsToUpdate)
-        {
-            item.UpdateWeaponState(state);
-        }
+        int newPrice = (int)(10000 * Mathf.Pow(1.25f, FactoryLevel[(int)type] + 1));
+        return newPrice;
     }
-    #endregion 
+
+    public int GetCurrentFactoryPrice(WeaponType type)
+    {
+        int newPrice = (int)(10000 * Mathf.Pow(1.25f, FactoryLevel[(int)type]));
+        return newPrice;
+    }
+    #endregion
+
+    #region Stockpile
+
+    #endregion
 }

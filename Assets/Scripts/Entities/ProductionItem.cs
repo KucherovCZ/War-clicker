@@ -193,16 +193,10 @@ namespace Entities
 
         public void OnBuyEquipButtonClick()
         {
-            if (PlayerController.Instance.Money > Weapon.UnlockPrice)
+            if (PlayerController.Instance.TryBuyMoney(Weapon.UnlockPrice))
             {
-                PlayerController.Instance.AddMoney(Weapon.UnlockPrice * -1);
                 UpdateWeaponState(WeaponState.Active);
                 Weapon.Autosell = CustomUtils.DefaultAutosellSettings;  
-            }
-            else
-            {
-                // not enough money, show dialog, or warning (just popup warning for 1s is better)
-                Debug.Log("Player doesnt have enough Money -> show popup warning");
             }
         }
 

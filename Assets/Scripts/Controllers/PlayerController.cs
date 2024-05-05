@@ -45,6 +45,36 @@
         WarFunds += amount;
     }
 
+    public bool TryBuyMoney(long price)
+    {
+        if (price < Money)
+        {
+            AddMoney(-1 * price);
+            return true;
+        }
+        else
+        {
+            // TODO Show message box with "Not enough money"
+            //Debug.Log("Player doesnt have enough Money -> show popup warning");
+            return false;
+        }
+    }
+
+    public bool TryBuyWarFunds(long price)
+    {
+        if (price < WarFunds)
+        {
+            AddWarFunds(-1 * price);
+            return true;
+        }
+        else
+        {
+            // TODO Show message box with "Not enough warfunds"
+            //Debug.Log("Player doesnt have enough WarFunds -> show popup warning");
+            return false;
+        }
+    }
+
     #endregion
 }
 

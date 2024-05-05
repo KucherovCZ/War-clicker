@@ -77,6 +77,7 @@ public class UIController : MonoBehaviour
 
     #region Production
 
+
     private bool ProductionDetailOpen
     {
         get
@@ -92,11 +93,18 @@ public class UIController : MonoBehaviour
 
     private ProductionItem openPrItem = null;
 
+    private WeaponType currentWeaponType;
     private Transform weaponDetail, researchDetail;
     private Button Plus, Minus;
     private TMP_InputField FactoryInput;
     private TextMeshProUGUI ProdTimeLabel;
     private TextMeshProUGUI StoredLabel;
+
+    private Transform FactoryManager, WarehouseManager;
+    private Button BuyFactory, BuyWarehouse;
+    private TextMeshProUGUI BuyFactoryPriceLabel, BuyWarehousePriceLabel;
+    private TextMeshProUGUI FactoryAmountLabel, WarehouseCapacityLabel;
+    private TextMeshProUGUI FactoryLevelLabel, WarehouseLevelLabel;
 
     private void LoadProductionItems()
     {
@@ -113,6 +121,18 @@ public class UIController : MonoBehaviour
         FactoryInput = weaponDetail.Find("Factories").Find("Input").GetComponent<TMP_InputField>();
         ProdTimeLabel = weaponDetail.Find("ProdTime").GetComponent<TextMeshProUGUI>();
         StoredLabel = weaponDetail.Find("Stored").GetComponent<TextMeshProUGUI>();
+
+        FactoryManager = productionView.Find("FactoryManager");
+        BuyFactory = FactoryManager.Find("UpgradeButton").GetComponent<Button>();
+        BuyFactoryPriceLabel = FactoryManager.Find("UpgradeButton").Find("Price").GetComponent<TextMeshProUGUI>();
+        FactoryLevelLabel = FactoryManager.Find("Level").GetComponent<TextMeshProUGUI>();
+        FactoryAmountLabel = FactoryManager.Find("Amount").GetComponent<TextMeshProUGUI>();
+
+        WarehouseManager = productionView.Find("WarehouseManager");
+        BuyWarehouse = WarehouseManager.Find("UpgradeButton").GetComponent<Button>();
+        BuyWarehousePriceLabel = WarehouseManager.Find("UpgradeButton").Find("Price").GetComponent<TextMeshProUGUI>();
+        WarehouseLevelLabel = WarehouseManager.Find("Level").GetComponent<TextMeshProUGUI>();
+        WarehouseCapacityLabel = FactoryManager.Find("IIIDDKK").GetComponent<TextMeshProUGUI>();
     }
 
     public void OnProductionButtonClick(string type)
@@ -120,6 +140,8 @@ public class UIController : MonoBehaviour
         // Update button and icon color
         if (string.IsNullOrEmpty(type))
             Debug.LogError("Production button click - passed empty string");
+
+        currentWeaponType = EnumUtils.GetWeaponType(type);
 
         Transform button = productionView.Find("Button" + type);
         Image btnBackground = button.GetComponent<Image>();
@@ -231,6 +253,27 @@ public class UIController : MonoBehaviour
     public void SellWeaponsButtonOnClick()
     {
         SellDialog.Instance.ShowDialog(openPrItem.Weapon);
+    }
+
+    public void BuyFactoryButtonOnClick()
+    {
+        if (PlayerController.Instance.TryBuyMoney(ProductionController.Instance.GetCurrentFactoryPrice(currentWeaponType)))
+        {
+            ProductionController.Instance.FactoryLevel[(int)currentWeaponType] += 1;
+            ProductionController.Instance.Factories[(int)currentWeaponType] += 1; // TODO calculate amount added based on level
+            UpdateFactoryUI();
+        }
+
+    }
+
+    public void UpdateFactoryUI()
+    {
+        // $LEVEL lvl
+        FactoryLevelLabel.text = ProductionController.Instance.FactoryLevel[(int)currentWeaponType].ToString() + " lvl";
+        // $PRICE
+        BuyFactoryPriceLabel.text = CustomUtils.FormatNumber(ProductionController.Instance.GetNewFactoryPrice(currentWeaponType));
+        // $USED/$TOTAL
+        FactoryAmountLabel.text = ProductionController.Instance.UsedFactories[(int)currentWeaponType].ToString() + "/" + ProductionController.Instance.Factories[(int)currentWeaponType].ToString();
     }
 
     #endregion
