@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -25,6 +26,8 @@ public class Main : MonoBehaviour
     {
         InitDB();
         InitData();
+
+        StartCoroutine(Autosave());
     }
 
     #endregion
@@ -64,6 +67,13 @@ public class Main : MonoBehaviour
         Database.SaveWeapons(ProductionController.Instance.AllWeapons);
         Database.SaveResearchItems(ResearchController.Instance.ResearchItemsDB);
         Serializer.SaveData();
+    }
+
+    public IEnumerator Autosave()
+    {
+        yield return new WaitForSeconds(PlayerController.Instance.AutosaveInterval);
+
+        SaveData();
     }
     #endregion
 

@@ -37,12 +37,12 @@ public class ProductionController
     private float PosYChange = 0;
     private Vector3 StartPosition = Vector3.zero;
 
-    public int[] FactoryLevel = { 0, 0, 0, 0, 0 }; // TODO SAVE
-    public int[] Factories = { 0, 0, 0, 0, 0 };
+    public int[] FactoryLevel = { 1, 0, 0, 0, 0 };
+    public int[] Factories = { 1, 0, 0, 0, 0 };
     public int[] UsedFactories = { 0, 0, 0, 0, 0 };
 
-    public int[] WarehouseLevel = { 0, 0, 0, 0, 0 }; // TODO SAVE
-    public int[] WarehouseUsed = { 0, 0, 0, 0, 0 };
+    public int[] WarehouseLevel = { 1, 0, 0, 0, 0 };
+    public int[] WarehouseUsed = { 50, 0, 0, 0, 0 };
     public int[] WarehouseCapacity = { 0, 0, 0, 0, 0 };
     #endregion
 

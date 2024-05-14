@@ -1,17 +1,19 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public static class Serializer
 {
     public static string SavedDataPath = Application.persistentDataPath + "/save.dat";
 
-    public static void SaveData()
+    public static void SaveData(SavedData data = null)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(SavedDataPath, FileMode.Create);
 
-        SavedData data = new SavedData();
+        if(data == null)
+            data = new SavedData();
 
         formatter.Serialize(stream, data);
         stream.Close();
@@ -29,7 +31,17 @@ public static class Serializer
 
             return data;
         }
-        Debug.LogWarning("SavedData not found at " + SavedDataPath);
-        return new SavedData();
+        else if (!PlayerPrefs.HasKey("FirstLaunchDone"))
+        {
+            PlayerPrefs.SetInt("FirstLaunchDone", 1);
+            SavedData NewData = new SavedData(true);
+            SaveData(NewData);
+            return NewData;
+        }
+        else
+        {
+            Debug.LogWarning("SavedData not found at " + SavedDataPath);
+            return new SavedData();
+        }
     }
 }

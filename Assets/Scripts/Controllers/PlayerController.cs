@@ -1,4 +1,6 @@
-﻿public class PlayerController
+﻿using UnityEngine;
+
+public class PlayerController
 {
     #region Singleton
     private static PlayerController m_Instance;
@@ -11,26 +13,25 @@
             return m_Instance;
         }
     }
-
-    //private PlayerController() { }
     #endregion
-
-    #region Fields and properties
 
     public UIController UIController { get; set; }
+
+    #region Player
     public long Money { get; private set; } = 500;
     public long WarFunds { get; private set; } = 0;
-    #endregion
-
-    #region Methods
 
     public void Init(SavedData data)
     {
         Money = data.money;
         WarFunds = data.warFunds;
+        AutosaveInterval = data.autosaveInterval;
 
-        Money = 500000;
-        WarFunds = 1000000;
+        if (Application.isEditor)
+        {
+            Money = 500000;
+            WarFunds = 1000000;
+        }
 
         // try to get player with his GUID from server (to check his real stats) -- AFTER LEADERBOARDS UPDATE
     }
@@ -54,8 +55,7 @@
         }
         else
         {
-            // TODO Show message box with "Not enough money"
-            //Debug.Log("Player doesnt have enough Money -> show popup warning");
+            UIController.Instance.PopupDialog("Not enough money", Color.red);
             return false;
         }
     }
@@ -69,11 +69,16 @@
         }
         else
         {
-            // TODO Show message box with "Not enough warfunds"
-            //Debug.Log("Player doesnt have enough WarFunds -> show popup warning");
+            UIController.Instance.PopupDialog("Not enough warfunds", Color.red);
             return false;
         }
     }
+
+    #endregion
+
+    #region Settings
+
+    public int AutosaveInterval { get; set; } = 300;
 
     #endregion
 }
