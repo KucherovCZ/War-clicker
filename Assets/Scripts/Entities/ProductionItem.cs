@@ -174,8 +174,17 @@ namespace Entities
                 }
                 else
                 {
-                    Weapon.Stored++;
-                    UIController.Instance.UpdateDetailStored();
+                    if (ProductionController.Instance.WarehouseCapacity[(int)Weapon.Type] - ProductionController.Instance.WarehouseUsed[(int)Weapon.Type] <= 0)
+                    {
+                        Weapon.Autosell = true;
+                        PlayerController.Instance.AddMoney(Weapon.SellPrice);
+                    }
+                    else
+                    {
+                        Weapon.Stored++;
+                        ProductionController.Instance.WarehouseUsed[(int)Weapon.Type]++;
+                        UIController.Instance.UpdateDetailStored();
+                    }
                 }
             } while (prodTime == Weapon.ProductionTime);
 

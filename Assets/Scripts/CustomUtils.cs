@@ -60,4 +60,16 @@
         else
             return string.Format("{0}", money);
     }
+
+    public static string FormatNumberShort(long money)
+    {
+        if (money < 0) money = 0;
+
+        if(money < 1000)
+            return string.Format("{0}", money);
+        else if(money < 1000000)
+            return string.Format("{0}k", money / 1000);
+        else
+            return string.Format("{0}M", money / 1000000);
+    }
 }

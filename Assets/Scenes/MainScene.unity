@@ -154,10 +154,10 @@ RectTransform:
   m_Father: {fileID: 1341501753}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.026611328}
-  m_SizeDelta: {x: 14.000011, y: 14.000011}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 568, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &51399378
 GameObject:
@@ -337,9 +337,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -28.343506}
-  m_SizeDelta: {x: 0, y: -294.6873}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.000061035156, y: 119.00159}
+  m_SizeDelta: {x: 0, y: -294.69}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &54999316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Content: {fileID: 0}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -1341,7 +1341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -236.2, y: -22.616028}
+  m_AnchoredPosition: {x: -236.19995, y: -22.616089}
   m_SizeDelta: {x: -510.492, y: -62.9079}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &194648711
@@ -2029,7 +2029,7 @@ GameObject:
   - component: {fileID: 267639792}
   - component: {fileID: 267639791}
   m_Layer: 5
-  m_Name: Label
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2845,9 +2845,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Sell ALL
-
-'
+  m_text: Sell
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4abd889ab7ee43b4580603279aa1b989, type: 2}
   m_sharedMaterial: {fileID: -5686830914812736056, guid: 4abd889ab7ee43b4580603279aa1b989, type: 2}
@@ -4386,10 +4384,10 @@ RectTransform:
   m_Father: {fileID: 1341501753}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.026611328}
-  m_SizeDelta: {x: 14.000011, y: 14.000011}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 568, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &569681589
 GameObject:
@@ -4569,7 +4567,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1863927293}
         m_TargetAssemblyTypeName: UIController, Assembly-CSharp
-        m_MethodName: SellWeaponsButtonOnClick
+        m_MethodName: BuyWarehouseButtonOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4880,7 +4878,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -236.2, y: -22.616028}
+  m_AnchoredPosition: {x: -236.19995, y: -22.616089}
   m_SizeDelta: {x: -510.492, y: -62.9079}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &612475390
@@ -6690,8 +6688,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 25.912445, y: 60.520065}
-  m_SizeDelta: {x: 875.5188, y: 1391.9557}
+  m_AnchoredPosition: {x: -9.2271, y: -60.470726}
+  m_SizeDelta: {x: 945.798, y: 1633.9374}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &809094288
 MonoBehaviour:
@@ -8069,10 +8067,10 @@ RectTransform:
   m_Father: {fileID: 1341501753}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.026611328}
-  m_SizeDelta: {x: 14.000011, y: 14.000011}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 568, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &937276723
 GameObject:
@@ -10270,7 +10268,7 @@ GameObject:
   - component: {fileID: 1141834280}
   - component: {fileID: 1141834279}
   m_Layer: 5
-  m_Name: Amount
+  m_Name: Capacity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11260,10 +11258,10 @@ RectTransform:
   m_Father: {fileID: 54999315}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 89.168}
-  m_SizeDelta: {x: -31.4818, y: -209.82}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -375.315}
+  m_SizeDelta: {x: 568.5182, y: 720.63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1341501754
 MonoBehaviour:
@@ -11469,10 +11467,10 @@ RectTransform:
   m_Father: {fileID: 1341501753}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.026611328}
-  m_SizeDelta: {x: 14.000011, y: 14.000011}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 568, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1381348922
 GameObject:
@@ -11598,7 +11596,7 @@ GameObject:
   - component: {fileID: 1404420412}
   - component: {fileID: 1404420411}
   m_Layer: 5
-  m_Name: Label
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12019,7 +12017,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1863927293}
         m_TargetAssemblyTypeName: UIController, Assembly-CSharp
-        m_MethodName: SellWeaponsButtonOnClick
+        m_MethodName: BuyFactoryButtonOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15147,16 +15145,16 @@ RectTransform:
   m_GameObject: {fileID: 1794151058}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0.99999994, z: 0.99999994}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1341501753}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 14.000011, y: 14.000011}
+  m_SizeDelta: {x: 568, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1809465500
 GameObject:
@@ -17416,7 +17414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.026604}
+  m_AnchoredPosition: {x: 0, y: 96.69}
   m_SizeDelta: {x: 549.817, y: 531.851}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2091191761

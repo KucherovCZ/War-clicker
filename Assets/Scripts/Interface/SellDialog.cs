@@ -75,6 +75,7 @@ public class SellDialog : MonoBehaviour
         {
             PlayerController.Instance.AddMoney(Weapon.SellPrice * selectedAmount);
             Weapon.Stored -= selectedAmount;
+            ProductionController.Instance.WarehouseUsed[(int)Weapon.Type] -= selectedAmount;
 
             UIController.Instance.UpdateDetailStored();
         }

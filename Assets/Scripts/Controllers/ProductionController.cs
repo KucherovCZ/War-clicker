@@ -1,4 +1,5 @@
 ﻿using Entities;
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,6 +42,8 @@ public class ProductionController
     public int[] UsedFactories = { 0, 0, 0, 0, 0 };
 
     public int[] WarehouseLevel = { 0, 0, 0, 0, 0 }; // TODO SAVE
+    public int[] WarehouseUsed = { 0, 0, 0, 0, 0 };
+    public int[] WarehouseCapacity = { 0, 0, 0, 0, 0 };
     #endregion
 
     #region Methods
@@ -49,7 +52,7 @@ public class ProductionController
     {
         AllWeapons = weapons;
         ProdItems = new List<ProductionItem>();
-        StartPosition.y = -140;
+        StartPosition.y = -90;
         PosYChange = (((RectTransform)ProductionItemPrefab.transform).rect.height + 10) * -1;
 
         LoadContent(data);
@@ -58,14 +61,24 @@ public class ProductionController
 
     public void LoadContent(SavedData data)
     {
-        // TODO load all factories from PlayerPrefs (or sql, doesnt matter)
-        Factories = data.factories;
+        Factories = data.factories ??  new int[5];
+        FactoryLevel = data.factoryLevels ?? new int[5];
+        WarehouseCapacity = data.warehouses ?? new int[5];
+        WarehouseLevel = data.warehouseLevels ?? new int[5];
+
+        // foreach weapontype
+        for (int i = 0; i < 5; i++)
+        {
+            WarehouseUsed[i] = AllWeapons.Where(w => (int)w.Type == i).Sum(w => w.Stored);
+        }
 
         // TEMP
         //Factories[(int)WeaponType.Infantry] = 5;
         //Factories[(int)WeaponType.Artillery] = 5;
         //Factories[(int)WeaponType.Armor] = 10;
         // TEMP
+
+        UIController.Instance.UpdateProductionUI();
     }
 
     public void InitGameObjects(GameObject prefab, GameObject productionPage)
@@ -98,12 +111,14 @@ public class ProductionController
             }
 
             newProductionItem = GameObject.Instantiate(ProductionItemPrefab, currentContent);
+            if (newProductionItem == null) continue;
+
             Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * weaponCounts[(int)weapon.Type], 0f);
             newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
             weaponCounts[(int)weapon.Type]++;
-
-            if (newProductionItem == null) continue;
-
+            RectTransform currentRectContent = ((RectTransform)currentContent);
+            currentRectContent.sizeDelta = new Vector3(currentRectContent.sizeDelta.x, currentRectContent.sizeDelta.y + -1 * PosYChange); // poschange is negated prItem size + space between
+            currentContent.position = currentContent.position + new Vector3(0, -5000);
             newProductionItem.name = weapon.Name;
             ProductionItem prItemScript = newProductionItem.AddComponent<ProductionItem>();
             prItemScript.Init(weapon);
@@ -144,6 +159,12 @@ public class ProductionController
         return newPrice;
     }
 
+    public int GetNewFactoryAmount(WeaponType type)
+    {
+        int newAmount = 1;
+        return newAmount;
+    }
+
     public int GetCurrentFactoryPrice(WeaponType type)
     {
         int newPrice = (int)(10000 * Mathf.Pow(1.25f, FactoryLevel[(int)type]));
@@ -151,7 +172,25 @@ public class ProductionController
     }
     #endregion
 
-    #region Stockpile
+    #region Warehouse
+
+    public int GetNewWarehousePrice(WeaponType type)
+    {
+        int newPrice = (int)(10000 * Mathf.Pow(1.25f, WarehouseLevel[(int)type] + 1));
+        return newPrice;
+    }
+
+    public int GetNewWarehouseAmount(WeaponType type)
+    {
+        int newAmount = 1000;
+        return newAmount;
+    }
+
+    public int GetCurrentWarehousePrice(WeaponType type)
+    {
+        int newPrice = (int)(10000 * Mathf.Pow(1.25f, WarehouseLevel[(int)type]));
+        return newPrice;
+    }
 
     #endregion
 }

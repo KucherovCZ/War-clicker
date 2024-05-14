@@ -87,6 +87,7 @@ public class UIController : MonoBehaviour
     }
 
     private Transform productionView;
+    private Transform scrollRect;
     private Transform viewport;
     private ScrollRect productionScrollView;
     private Image lastChangedIcon = null, lastChangedButton = null;
@@ -103,6 +104,7 @@ public class UIController : MonoBehaviour
     private Transform FactoryManager, WarehouseManager;
     private Button BuyFactory, BuyWarehouse;
     private TextMeshProUGUI BuyFactoryPriceLabel, BuyWarehousePriceLabel;
+    private TextMeshProUGUI BuyFactoryAmountLabel, BuyWarehouseAmountLabel;
     private TextMeshProUGUI FactoryAmountLabel, WarehouseCapacityLabel;
     private TextMeshProUGUI FactoryLevelLabel, WarehouseLevelLabel;
 
@@ -125,14 +127,16 @@ public class UIController : MonoBehaviour
         FactoryManager = productionView.Find("FactoryManager");
         BuyFactory = FactoryManager.Find("UpgradeButton").GetComponent<Button>();
         BuyFactoryPriceLabel = FactoryManager.Find("UpgradeButton").Find("Price").GetComponent<TextMeshProUGUI>();
+        BuyFactoryAmountLabel = FactoryManager.Find("UpgradeButton").Find("Amount").GetComponent<TextMeshProUGUI>();
         FactoryLevelLabel = FactoryManager.Find("Level").GetComponent<TextMeshProUGUI>();
         FactoryAmountLabel = FactoryManager.Find("Amount").GetComponent<TextMeshProUGUI>();
 
         WarehouseManager = productionView.Find("WarehouseManager");
         BuyWarehouse = WarehouseManager.Find("UpgradeButton").GetComponent<Button>();
         BuyWarehousePriceLabel = WarehouseManager.Find("UpgradeButton").Find("Price").GetComponent<TextMeshProUGUI>();
+        BuyWarehouseAmountLabel = WarehouseManager.Find("UpgradeButton").Find("Amount").GetComponent<TextMeshProUGUI>();
         WarehouseLevelLabel = WarehouseManager.Find("Level").GetComponent<TextMeshProUGUI>();
-        WarehouseCapacityLabel = FactoryManager.Find("IIIDDKK").GetComponent<TextMeshProUGUI>();
+        WarehouseCapacityLabel = WarehouseManager.Find("Capacity").GetComponent<TextMeshProUGUI>();
     }
 
     public void OnProductionButtonClick(string type)
@@ -162,6 +166,9 @@ public class UIController : MonoBehaviour
         // Update scrollView content
         RectTransform content = (RectTransform)viewport.Find(type);
 
+        // update factory manager content
+        UpdateProductionUI();
+
         if (productionScrollView.content != null)
             productionScrollView.content.localScale = new Vector3(0, 1, 1);
         productionScrollView.content = content;
@@ -173,6 +180,7 @@ public class UIController : MonoBehaviour
     {
         if (ProductionDetailOpen)
             StoredLabel.text = openPrItem.Weapon.Stored.ToString();
+        WarehouseCapacityLabel.text = ProductionController.Instance.WarehouseUsed[(int)currentWeaponType].ToString() + "/" + ProductionController.Instance.WarehouseCapacity[(int)currentWeaponType].ToString();
     }
 
     public Sprite GetWeaponIcon(string weaponName)
@@ -223,6 +231,7 @@ public class UIController : MonoBehaviour
             openPrItem.FactoriesUpdated(1);
             FactoryInput.text = openPrItem.Weapon.FactoriesAssigned.ToString();
             ProdTimeLabel.text = CustomUtils.FormatTime(openPrItem.Weapon.ProductionTime);
+            UpdateProductionUI();
         }
 
         if (freeFactories == 1)
@@ -237,6 +246,7 @@ public class UIController : MonoBehaviour
             FactoryInput.text = openPrItem.Weapon.FactoriesAssigned.ToString();
             ProdTimeLabel.text = CustomUtils.FormatTime(openPrItem.Weapon.ProductionTime);
             Plus.interactable = true;
+            UpdateProductionUI();
         }
     }
 
@@ -259,22 +269,40 @@ public class UIController : MonoBehaviour
     {
         if (PlayerController.Instance.TryBuyMoney(ProductionController.Instance.GetCurrentFactoryPrice(currentWeaponType)))
         {
+            ProductionController.Instance.Factories[(int)currentWeaponType] += ProductionController.Instance.GetNewFactoryAmount(currentWeaponType);
             ProductionController.Instance.FactoryLevel[(int)currentWeaponType] += 1;
-            ProductionController.Instance.Factories[(int)currentWeaponType] += 1; // TODO calculate amount added based on level
-            UpdateFactoryUI();
+            UpdateProductionUI();
         }
-
     }
 
-    public void UpdateFactoryUI()
+    public void BuyWarehouseButtonOnClick()
     {
-        // $LEVEL lvl
-        FactoryLevelLabel.text = ProductionController.Instance.FactoryLevel[(int)currentWeaponType].ToString() + " lvl";
+        if (PlayerController.Instance.TryBuyMoney(ProductionController.Instance.GetCurrentWarehousePrice(currentWeaponType)))
+        {
+            ProductionController.Instance.WarehouseCapacity[(int)currentWeaponType] += ProductionController.Instance.GetNewWarehouseAmount(currentWeaponType);
+            ProductionController.Instance.WarehouseLevel[(int)currentWeaponType] += 1;
+            UpdateProductionUI();
+        }
+    }
+
+    public void UpdateProductionUI()
+    {
+        // lvl $LEVEL
+        FactoryLevelLabel.text = "lvl " + ProductionController.Instance.FactoryLevel[(int)currentWeaponType].ToString();
+        WarehouseLevelLabel.text = "lvl " + ProductionController.Instance.WarehouseLevel[(int)currentWeaponType].ToString();
         // $PRICE
-        BuyFactoryPriceLabel.text = CustomUtils.FormatNumber(ProductionController.Instance.GetNewFactoryPrice(currentWeaponType));
+        BuyFactoryPriceLabel.text = CustomUtils.FormatNumberShort(ProductionController.Instance.GetNewFactoryPrice(currentWeaponType));
+        BuyWarehousePriceLabel.text = CustomUtils.FormatNumberShort(ProductionController.Instance.GetNewWarehousePrice(currentWeaponType));
         // $USED/$TOTAL
         FactoryAmountLabel.text = ProductionController.Instance.UsedFactories[(int)currentWeaponType].ToString() + "/" + ProductionController.Instance.Factories[(int)currentWeaponType].ToString();
+        WarehouseCapacityLabel.text = ProductionController.Instance.WarehouseUsed[(int)currentWeaponType].ToString() + "/" + ProductionController.Instance.WarehouseCapacity[(int)currentWeaponType].ToString();
+
+        // $ + $NEXTLEVELAMOUNT
+        BuyFactoryAmountLabel.text = "+ " + CustomUtils.FormatNumberShort(ProductionController.Instance.GetNewFactoryAmount(currentWeaponType));
+        BuyWarehouseAmountLabel.text = "+ " + CustomUtils.FormatNumberShort(ProductionController.Instance.GetNewWarehouseAmount(currentWeaponType));
     }
+
+
 
     #endregion
 
