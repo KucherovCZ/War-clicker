@@ -2,6 +2,7 @@ using Entities;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,8 @@ public class UIController : MonoBehaviour
     void Start()
     {
         Instance = this;
+
+        InitPopup();
 
         LoadPlayerItems();
 
@@ -350,7 +353,7 @@ public class UIController : MonoBehaviour
 
         if (researchScrollview.content != null)
             researchScrollview.content.localScale = new Vector3(0, 1, 1);
-        researchScrollview.content = content; 
+        researchScrollview.content = content;
         content.localScale = new Vector3(1, 1, 1);
     }
 
@@ -435,24 +438,45 @@ public class UIController : MonoBehaviour
 
         // button
         if (lastChangedButtonMain != null)
-            lastChangedButtonMain.color = new Color(0f, 0f, 0f);
+            lastChangedButtonMain.color = new Color(0.4424517f, 0.5849056f, 0.305696f);
         btnBackground.color = new Color(1f, 1f, 1f);
         lastChangedButtonMain = btnBackground;
 
         // icon
-        if (lastChangedIconMain != null)
-            lastChangedIconMain.color = new Color(1f, 1f, 1f);
-        btnImage.color = new Color(0.5f, 0.5f, 0.5f);
-        lastChangedIconMain = btnImage;
+        //if (lastChangedIconMain != null)
+        //    lastChangedIconMain.color = new Color(1f, 1f, 1f);
+        //btnImage.color = new Color(0.7f, 0.7f, 0.7f);
+        //lastChangedIconMain = btnImage;
 
         // production page needs to stay enabled for ProductionItems to work
         if (lastOpenedPage != null && !lastOpenedPage.name.Equals("Production"))
             lastOpenedPage.SetActive(false);
 
         // enable current gameObject
-        var idk = transform.Find("Research");
         lastOpenedPage = transform.Find(btnName).gameObject;
         lastOpenedPage.SetActive(true);
+    }
+    #endregion
+
+    #region Popup
+
+    private Animator PopupAnimator = null;
+    private AudioSource PopupSound = null;
+    private TextMeshProUGUI PopupText = null;
+
+    private void InitPopup()
+    {
+        PopupAnimator = transform.Find("Popup").GetComponent<Animator>();
+        PopupSound = transform.Find("Popup").GetComponent<AudioSource>();
+        PopupText = transform.Find("Popup").Find("Text").GetComponent<TextMeshProUGUI>();
+    }
+
+    public void PopupDialog(string message, Color? textColor = null)
+    {
+        PopupText.color = textColor ?? Color.white;
+        PopupText.text = message;
+        PopupAnimator.SetTrigger("Show"); // shows popup for 3s
+        PopupSound.Play();
     }
     #endregion
 }
