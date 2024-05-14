@@ -65,7 +65,6 @@ public class SellDialog : MonoBehaviour
         // set gameObject to active (maybe add shadow BG to it)
         gameObject.SetActive(true);
 
-        // TODO reset slider and text input
         SliderObject.value = 1f;
     }
 
