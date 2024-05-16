@@ -466,6 +466,7 @@ public class UIController : MonoBehaviour
 
     private void InitPopup()
     {
+        transform.Find("Popup").gameObject.SetActive(true); // Popup is disabled for easier work in editor
         PopupAnimator = transform.Find("Popup").GetComponent<Animator>();
         PopupSound = transform.Find("Popup").GetComponent<AudioSource>();
         PopupText = transform.Find("Popup").Find("Text").GetComponent<TextMeshProUGUI>();
