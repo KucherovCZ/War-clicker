@@ -1,8 +1,6 @@
 using Entities;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
