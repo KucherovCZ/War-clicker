@@ -416,7 +416,7 @@ public class UIController : MonoBehaviour
     #region MainMenu
 
     public Transform mainMenu;
-    private Image lastChangedIconMain = null, lastChangedButtonMain = null;
+    private Image lastChangedButtonMain = null;
     private GameObject lastOpenedPage = null;
 
 

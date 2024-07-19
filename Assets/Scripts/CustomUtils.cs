@@ -1,4 +1,8 @@
-﻿public static class CustomUtils
+﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+
+public static class CustomUtils
 {
     public static int ProductionPerFactory = 5; // 1 factory production per second
     public static int UpdateFrequency = 25; // updates per second
@@ -54,7 +58,7 @@
         else if (money < 1000000) // under 1M show as Xk $
             return string.Format("{0}k", money / 1000);
         else if (money < 100000000) // under 100M show XX XXXk $
-            return string.Format("{0} {1:D3}k", money / 1000000, money % 1000000);
+            return string.Format("{0} {1:D3}k", money / 1000000, (money / 1000) % 1000);
         else if (money < 1000000000) // under 1B show XM $
             return string.Format("{0}M", money / 1000000);
         else
@@ -71,5 +75,15 @@
             return string.Format("{0}k", money / 1000);
         else
             return string.Format("{0}M", money / 1000000);
+    }
+
+    public static IList<Transform> GetAllChildren(Transform parent)
+    {
+        List<Transform> children = new List<Transform>();
+        foreach (Transform child in parent)
+        {
+            children.Add(child);
+        }
+        return children;
     }
 }

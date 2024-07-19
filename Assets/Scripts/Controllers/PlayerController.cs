@@ -29,7 +29,7 @@ public class PlayerController
 
         if (Application.isEditor)
         {
-            Money = 500000;
+            //Money = 500000;
             WarFunds = 1000000;
         }
 

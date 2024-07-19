@@ -1,6 +1,7 @@
 ﻿using Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class ResearchController
@@ -53,11 +54,13 @@ public class ResearchController
         RowYChange = (((RectTransform)ResearchItemPrefab.transform).rect.height + 70) * -1;
 
         LoadContent(data);
+        RemoveResearchItems();
         GenerateResearchItems();
     }
 
     public void LoadContent(SavedData data)
     {
+        // stays here, will be used after ERA implementation
     }
 
     public void InitGameObjects(GameObject researchItemPrefab, GameObject ResearchPage)
@@ -69,7 +72,7 @@ public class ResearchController
         ArtilleryContent = viewPort.Find("Artillery");
         ArmorContent = viewPort.Find("Armor");
         AirContent = viewPort.Find("Air");
-        NavyContent = viewPort.Find("Navy");
+        NavyContent = viewPort.Find("Navy");        
     }
 
     public void GenerateResearchItems()
@@ -114,6 +117,18 @@ public class ResearchController
         ArmorContent.localScale = new Vector3(0, 1, 1);
         AirContent.localScale = new Vector3(0, 1, 1);
         NavyContent.localScale = new Vector3(0, 1, 1);
+    }
+
+    public void RemoveResearchItems()
+    {
+        List<Transform> contents = new List<Transform>() { InfantryContent, ArtilleryContent, ArmorContent, AirContent, NavyContent };
+        foreach (Transform content in contents)
+        {
+            foreach (Transform item in CustomUtils.GetAllChildren(content))
+            { 
+                GameObject.Destroy(item.gameObject);
+            }
+        }
     }
 
     #endregion 

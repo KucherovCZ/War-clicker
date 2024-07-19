@@ -54,6 +54,7 @@ public class ProductionController
         PosYChange = (((RectTransform)ProductionItemPrefab.transform).rect.height + 10) * -1;
 
         LoadContent(data);
+        RemoveWeaponContent();
         GenerateWeaponContent();
     }
 
@@ -122,6 +123,23 @@ public class ProductionController
             prItemScript.Init(weapon);
 
             ProdItems.Add(prItemScript);
+        }
+    }
+
+    public void RemoveWeaponContent()
+    {
+        List<Transform> contents = new List<Transform>() { InfantryContent, ArtilleryContent, ArmorContent, AirContent, NavyContent };
+        foreach (Transform content in contents)
+        {
+            int itemCounter = 0;
+            foreach (Transform item in CustomUtils.GetAllChildren(content))
+            {
+                itemCounter++;
+                GameObject.Destroy(item.gameObject);
+            }
+
+            RectTransform rectContent = ((RectTransform)content);
+            rectContent.sizeDelta = new Vector3(rectContent.sizeDelta.x, rectContent.sizeDelta.y + itemCounter * PosYChange); // vrati zvetseni contentu o pocet itemu 
         }
     }
 

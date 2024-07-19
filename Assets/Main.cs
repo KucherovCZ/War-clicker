@@ -75,6 +75,16 @@ public class Main : MonoBehaviour
 
         SaveData();
     }
+
+    public void ResetData()
+    {
+        Database.ResetWeapons();
+        Database.ResetReserach();
+        Serializer.ResetData();
+        InitData();
+
+        
+    }
     #endregion
 
     #region EventHandlers

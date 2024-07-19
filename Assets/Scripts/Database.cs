@@ -29,7 +29,6 @@ public class Database
     private const string researchItemWeaponTable = "ResearchItemWeapon";
     #endregion
 
-    #region Table methods
 
     public Dictionary<string, string> LoadTranslations(eLanguage language)
     {
@@ -58,6 +57,7 @@ public class Database
         return translations;
     }
 
+    #region Weapons
     public IEnumerable<cWeapon> LoadWeapons()
     {
         if (!CheckConnection()) yield break;
@@ -136,7 +136,9 @@ public class Database
 
         cmd.ExecuteNonQuery();
     }
+    #endregion
 
+    #region Research
     public IEnumerable<cResearchItem> LoadResearchItems()
     {
         if (!CheckConnection()) yield break;
@@ -245,9 +247,28 @@ public class Database
         reader.Close();
         cmd.Dispose();
     }
-
-
     #endregion
+
+    public void ResetWeapons()
+    {
+        if (!CheckConnection()) return;
+
+        string query = "UPDATE Weapon SET Stored = 0, FactoriesAssigned = 0, Autosell = 1, Level = 1, State = 0;" +
+            "UPDATE Weapon SET State = 2 WHERE Id = 1";
+        SqliteCommand cmd = new SqliteCommand(query, m_Connection);
+        cmd.ExecuteNonQuery();
+        cmd.Dispose();
+    }
+
+    public void ResetReserach()
+    {
+        if (!CheckConnection()) return;
+
+        string query = "UPDATE ResearchItem SET Researched = 0";
+        SqliteCommand cmd = new SqliteCommand(query, m_Connection);
+        cmd.ExecuteNonQuery();
+        cmd.Dispose();
+    }
 
     public bool CheckConnection()
     {

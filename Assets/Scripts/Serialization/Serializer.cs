@@ -43,4 +43,9 @@ public static class Serializer
             return new SavedData();
         }
     }
+
+    public static void ResetData()
+    {
+        SaveData(new SavedData(true));
+    }
 }
