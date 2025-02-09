@@ -671,7 +671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProductionItemPrefab: {fileID: 5460389198001291342, guid: 495143348e6f5cb419e9b837b4e48dbe, type: 3}
   ProductionPage: {fileID: 54999314}
-  ResearchItemPrefab: {fileID: 8910008148090329372, guid: 14ec98d27c01ecd4b97827b13be89cd7, type: 3}
+  ResearchItemPrefab: {fileID: 8910008148090329372, guid: 4a9b875474e17ba4dafaf563e8219695, type: 3}
   ResearchPage: {fileID: 2009858280}
 --- !u!4 &58958493
 Transform:
@@ -2977,7 +2977,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &297365973
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4892,7 +4892,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 486452354}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44ce1af9031060d48b81924ee3fcb8d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 670e50f7f7e787a47a2aa09e0e3d51ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   main: {fileID: 58958492}
@@ -5318,7 +5318,7 @@ Animator:
   m_GameObject: {fileID: 527589935}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 25fd09499c8596943860a7c3f390d0a5, type: 2}
+  m_Controller: {fileID: 9100000, guid: fe0c8d84aed93694a8c100d818f8b0bc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5350,7 +5350,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3db05d614a70fc04d9a9d686e0e46488, type: 3}
+  m_audioClip: {fileID: 8300000, guid: cce6ee267b7d28e408e4c1381b06baa2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -13006,7 +13006,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7c268522bd69698418faf5d2753de1d5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 044aad577bb906a49bb1b831a0a388ae, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -19790,7 +19790,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2009858281
 RectTransform:
   m_ObjectHideFlags: 0

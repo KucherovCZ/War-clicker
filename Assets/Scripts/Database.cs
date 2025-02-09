@@ -143,7 +143,7 @@ public class Database
     {
         if (!CheckConnection()) yield break;
 
-        string query = queryStart + researchItemTable;
+        string query = queryStart + researchItemTable + " ORDER BY Era ASC";
 
         SqliteCommand cmd = new SqliteCommand(query, m_Connection);
         SqliteDataReader reader = cmd.ExecuteReader();

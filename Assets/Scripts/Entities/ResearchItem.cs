@@ -45,6 +45,11 @@ namespace Entities
             Lines = new();
             LinesOut = new();
 
+            if (Weapons.Count > 4)
+                Debug.LogWarning("ResearchItem: " + item.Name + ", ID: " + item.Id + " has too many weapons assigned (over 4). This will cause UI issues");
+            if (Weapons.Where(w => w.Type != item.Type).Any())
+                Debug.LogWarning("ResearchItem: " + item.Name + ", ID: " + item.Id + " has links to weapons of other types, this is against game logic, fix data");
+
             InitUI();
         }
 
