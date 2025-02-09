@@ -64,7 +64,7 @@ namespace Entities
             DisplayNameLabel = transform.Find("DisplayName").GetComponent<TextMeshProUGUI>();
             PriceLabel = transform.Find("Price").GetComponent<TextMeshProUGUI>();
 
-            //Sprite = UIController.Instance.GetResearchIcon(researchItem.Name); TODO JUST FOR DEBUG PICTURE
+            //Sprite = UIController.Instance.GetResearchIcon(researchItem.Name);
             //Icon.sprite = Sprite;
             Debug.LogWarning("ResearchItem.InitUI() is using default research icon");
 

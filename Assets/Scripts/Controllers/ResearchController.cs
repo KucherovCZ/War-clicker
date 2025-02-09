@@ -1,9 +1,10 @@
 ﻿using Entities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
+using System.Resources;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class ResearchController
 {
@@ -57,11 +58,8 @@ public class ResearchController
         LoadContent(data);
         RemoveResearchItems();
         GenerateResearchItems();
-    }
 
-    public void LoadContent(SavedData data)
-    {
-        // stays here, will be used after ERA implementation
+        SetDefaultContent();
     }
 
     public void InitGameObjects(GameObject researchItemPrefab, GameObject ResearchPage)
@@ -76,11 +74,27 @@ public class ResearchController
         NavyContent = viewPort.Find("Navy");      
     }
 
-    public void GenerateResearchItems()
+    public void LoadContent(SavedData data)
+    {
+        // stays here, will be used after ERA implementation
+    }
+
+    private void SetDefaultContent()
+    {
+        ArtilleryContent.localScale = new Vector3(0, 1, 1);
+        ArmorContent.localScale = new Vector3(0, 1, 1);
+        AirContent.localScale = new Vector3(0, 1, 1);
+        NavyContent.localScale = new Vector3(0, 1, 1);
+    }
+
+    private void GenerateResearchItems()
     {
         // split research items by ERA, and calculate each size, then adjust background size by total calculation
         Dictionary<WeaponType, List<cResearchItem>> ResearchItemsByType = ResearchItemsDB.GroupBy(t => t.Type).ToDictionary(group => group.Key, group => group.ToList());
 
+        ResearchItems = new List<ResearchItem>();
+
+        // For each UI tab (by weapon type)
         foreach (var typeGroup in ResearchItemsByType)
         { 
             Dictionary<ResearchEra, List<cResearchItem>> ResearchItemsByEra = typeGroup.Value.GroupBy(t => t.Era).ToDictionary(group => group.Key, group => group.ToList());
@@ -95,74 +109,27 @@ public class ResearchController
                 case WeaponType.Navy: currentContent = NavyContent; break;
             }
 
+            int typeStartRow = typeGroup.Value.Min(r => r.Row);
+            int typeRowCount = typeGroup.Value.Max(r => r.Row) - typeStartRow + 1;
+
+            AdjustContentSize(currentContent as RectTransform, typeRowCount);
+
             foreach (var eraGroup in ResearchItemsByEra)
             {
-                // create new background gameobject
-                GameObject background = new GameObject($"Background{eraGroup.Key}");
-                background.transform.parent = currentContent;
-                Image bgImage = background.AddComponent<Image>(); // Canvas renderer is auto added with image
+                int eraStartRow = eraGroup.Value.Min(r => r.Row);
+                int eraRowCount = eraGroup.Value.Max(r => r.Row) - eraStartRow + 1;
 
-                RectTransform rectTransform = background.transform as RectTransform;
-                rectTransform.anchorMin = new Vector2(0, 0);
-                rectTransform.anchorMax = new Vector2(1, 1);
-                rectTransform.localScale = new Vector3(1, 1, 1);
+                GameObject background = CreateBackground(eraGroup.Key.ToString(), currentContent, eraStartRow, eraRowCount);
 
-                bgImage.color = new Color(0.5f, 0.8f, 1f);
-
-
-                // set gameobject height by items
-                int rowCount = eraGroup.Value.Max(r => r.Row) - eraGroup.Value.Min(r => r.Row);
-
-
-
-                rectTransform.sizeDelta = new Vector3(1, 1); //RowYChange * rowCount * -1);
-                rectTransform.localPosition = new Vector3(0, 0);
-                //Vector3 newPos = StarterPos + new Vector3(rectTransform.position.x, RowYChange * rowCount * -1);
-                //rectTransform.position = rectTransform.TransformPoint(newPos);
+                foreach (var item in eraGroup.Value)
+                {
+                    ResearchItems.Add(CreateResearchItem(item, currentContent));
+                }
             }
-
         }
-
-        ResearchItems = new List<ResearchItem>();
-
-        foreach (cResearchItem item in ResearchItemsDB)
-        {
-            Transform currentContent = null;
-            switch (item.Type)
-            {
-                case WeaponType.Infantry: currentContent = InfantryContent; break;
-                case WeaponType.Artillery: currentContent = ArtilleryContent; break;
-                case WeaponType.Armor: currentContent = ArmorContent; break;
-                case WeaponType.Air: currentContent = AirContent; break;
-                case WeaponType.Navy: currentContent = NavyContent; break;
-            }
-
-            // Set researchItem transform
-            GameObject newResearchItem = GameObject.Instantiate(ResearchItemPrefab, currentContent);
-            Vector3 newPos = StarterPos + new Vector3(columnPos[item.Column], RowYChange * item.Row);
-            newResearchItem.transform.position = newResearchItem.transform.TransformPoint(newPos);
-
-            // Load research links
-            ResearchItem resItemScript = newResearchItem.AddComponent<ResearchItem>();
-            resItemScript.Parents = ResearchItems.Where(it => Relations.Where(r => r.ChildId == item.Id).Select(p => p.ParentId).Contains(it.researchItem.Id)).ToList();
-            resItemScript.Children = Relations.Where(r => r.ChildId == item.Id).ToList();
-
-            // Load weapon links
-            List<int> WeaponIds = ItemWeapons.Where(w => w.ResearchItemId == item.Id).Select(w => w.WeaponId).ToList();
-            resItemScript.Weapons = ProductionController.Instance.AllWeapons.Where(w => WeaponIds.Contains(w.Id)).ToList();
-
-            resItemScript.Init(item);
-
-            ResearchItems.Add(resItemScript);
-        }
-
-        ArtilleryContent.localScale = new Vector3(0, 1, 1);
-        ArmorContent.localScale = new Vector3(0, 1, 1);
-        AirContent.localScale = new Vector3(0, 1, 1);
-        NavyContent.localScale = new Vector3(0, 1, 1);
     }
 
-    public void RemoveResearchItems()
+    private void RemoveResearchItems()
     {
         List<Transform> contents = new List<Transform>() { InfantryContent, ArtilleryContent, ArmorContent, AirContent, NavyContent };
         foreach (Transform content in contents)
@@ -172,6 +139,71 @@ public class ResearchController
                 GameObject.Destroy(item.gameObject);
             }
         }
+    }
+
+    private void AdjustContentSize(RectTransform content, int rowCount) {
+        content.position += new Vector3(0, -10000); // -10000 so its scrolled all the way up
+
+        if (rowCount > 3)
+            content.sizeDelta = new Vector3(content.sizeDelta.x, content.sizeDelta.y + (-1 * rowCount * RowYChange));
+        else
+            // if too few rows, get size from parent Viewport
+            content.sizeDelta = new Vector3(content.sizeDelta.x, ((RectTransform)(content.parent.transform)).sizeDelta.y);
+    }
+
+    private GameObject CreateBackground(string name, Transform parent, int startRow, int rowCount)
+    {
+        // create new background gameobject
+        GameObject background = new GameObject($"{name}_Background");
+        background.transform.parent = parent;
+        Image bgImage = background.AddComponent<Image>(); // Canvas renderer is auto added with image
+
+        RectTransform rectTransform = background.transform as RectTransform;
+        rectTransform.anchorMin = new Vector2(0.5f, 1);
+        rectTransform.anchorMax = new Vector2(0.5f, 1);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+
+        bgImage.color = new Color(0.2f * startRow, 0.2f, 0.2f);
+
+        if (startRow == 0)
+        {
+            rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, (StarterPos.y / -5) + (rowCount * RowYChange * -1));
+            rectTransform.localPosition = new Vector3(0, rectTransform.sizeDelta.y / 2 * -1);
+        }
+        else
+        {
+            rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, rowCount * RowYChange * -1);
+            rectTransform.localPosition = new Vector3(0, (StarterPos.y / 5) + startRow * RowYChange + (rectTransform.sizeDelta.y / 2 * -1));
+        }        
+
+        //rectTransform.sizeDelta = new Vector3(1, 1); //RowYChange * rowCount * -1);
+        //rectTransform.localPosition = new Vector3(0, 0);
+        //Vector3 newPos = StarterPos + new Vector3(rectTransform.position.x, RowYChange * rowCount * -1);
+        //rectTransform.position = rectTransform.TransformPoint(newPos);
+
+        return background;
+    }
+
+    private ResearchItem CreateResearchItem(cResearchItem item, Transform currentContent)
+    {
+        // Set researchItem transform
+        GameObject newResearchItem = GameObject.Instantiate(ResearchItemPrefab, currentContent);
+        Vector3 newPos = StarterPos + new Vector3(columnPos[item.Column], RowYChange * item.Row);
+        newResearchItem.transform.position = newResearchItem.transform.TransformPoint(newPos);
+
+        // Load research links
+        ResearchItem resItemScript = newResearchItem.AddComponent<ResearchItem>();
+        resItemScript.Parents = ResearchItems.Where(it => Relations.Where(r => r.ChildId == item.Id).Select(p => p.ParentId).Contains(it.researchItem.Id)).ToList();
+        resItemScript.Children = Relations.Where(r => r.ChildId == item.Id).ToList();
+
+        // Load weapon links
+        List<int> WeaponIds = ItemWeapons.Where(w => w.ResearchItemId == item.Id).Select(w => w.WeaponId).ToList();
+        resItemScript.Weapons = ProductionController.Instance.AllWeapons.Where(w => WeaponIds.Contains(w.Id)).ToList();
+
+        resItemScript.Init(item);
+
+        return resItemScript;
     }
 
     #endregion 

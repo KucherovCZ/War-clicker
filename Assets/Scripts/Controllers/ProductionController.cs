@@ -117,7 +117,7 @@ public class ProductionController
             weaponCounts[(int)weapon.Type]++;
             RectTransform currentRectContent = ((RectTransform)currentContent);
             currentRectContent.sizeDelta = new Vector3(currentRectContent.sizeDelta.x, currentRectContent.sizeDelta.y + -1 * PosYChange); // poschange is negated prItem size + space between
-            currentContent.position = currentContent.position + new Vector3(0, -5000);
+            currentContent.position += new Vector3(0, -5000);
             newProductionItem.name = weapon.Name;
             ProductionItem prItemScript = newProductionItem.AddComponent<ProductionItem>();
             prItemScript.Init(weapon);
