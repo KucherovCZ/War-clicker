@@ -1,10 +1,8 @@
 ﻿using Entities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class ResearchController
 {
@@ -41,7 +39,7 @@ public class ResearchController
 
     private float RowYChange = 0;
     private int[] columnPos = { -190, 0, 190 };
-    private Vector3 StarterPos = new Vector3(0f, -150f);
+    private Vector3 StarterPos = new Vector3(0f, -120);
 
     #endregion
 
@@ -119,7 +117,7 @@ public class ResearchController
                 int eraStartRow = eraGroup.Value.Min(r => r.Row);
                 int eraRowCount = eraGroup.Value.Max(r => r.Row) - eraStartRow + 1;
 
-                GameObject background = CreateBackground(eraGroup.Key.ToString(), currentContent, eraStartRow, eraRowCount);
+                GameObject background = CreateBackground(eraGroup.Key.ToString(), currentContent, eraStartRow, eraRowCount, eraGroup.Key);
 
                 foreach (var item in eraGroup.Value)
                 {
@@ -152,7 +150,7 @@ public class ResearchController
             content.sizeDelta = new Vector3(content.sizeDelta.x, ((RectTransform)(content.parent.transform)).sizeDelta.y);
     }
 
-    private GameObject CreateBackground(string name, Transform parent, int startRow, int rowCount)
+    private GameObject CreateBackground(string name, Transform parent, int startRow, int rowCount, ResearchEra era)
     {
         // create new background gameobject
         GameObject background = new GameObject($"{name}_Background");
@@ -164,18 +162,19 @@ public class ResearchController
         rectTransform.anchorMax = new Vector2(0.5f, 1);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
-        bgImage.color = new Color(0.2f * startRow, 0.2f, 0.2f);
-        // TODO add Image Map for Eras
+        bgImage.type = Image.Type.Sliced;
+        bgImage.color = CustomMapping.EraColorMap[era];
+        bgImage.sprite = AssetReferences.Instance.ResearchBackground;
 
         if (startRow == 0)
         {
-            rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, (StarterPos.y / -5) + (rowCount * RowYChange * -1));
+            rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, (rowCount * RowYChange * -1));
             rectTransform.localPosition = new Vector3(0, rectTransform.sizeDelta.y / 2 * -1);
         }
         else
         {
             rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, rowCount * RowYChange * -1);
-            rectTransform.localPosition = new Vector3(0, (StarterPos.y / 5) + startRow * RowYChange + (rectTransform.sizeDelta.y / 2 * -1));
+            rectTransform.localPosition = new Vector3(0, startRow * RowYChange + (rectTransform.sizeDelta.y / 2 * -1));
         }
 
         return background;

@@ -19,6 +19,7 @@ public class Main : MonoBehaviour
     #region Fields and properties
     private string connectionString;
     public Database Database { get; set; }
+    public AssetReferences Assets { get; set; }
     #endregion
 
     #region Unity
