@@ -71,7 +71,7 @@ public class ResearchController
         ArtilleryContent = viewPort.Find("Artillery");
         ArmorContent = viewPort.Find("Armor");
         AirContent = viewPort.Find("Air");
-        NavyContent = viewPort.Find("Navy");      
+        NavyContent = viewPort.Find("Navy");
     }
 
     public void LoadContent(SavedData data)
@@ -96,9 +96,9 @@ public class ResearchController
 
         // For each UI tab (by weapon type)
         foreach (var typeGroup in ResearchItemsByType)
-        { 
+        {
             Dictionary<ResearchEra, List<cResearchItem>> ResearchItemsByEra = typeGroup.Value.GroupBy(t => t.Era).ToDictionary(group => group.Key, group => group.ToList());
-            
+
             Transform currentContent = null;
             switch (typeGroup.Key)
             {
@@ -135,13 +135,14 @@ public class ResearchController
         foreach (Transform content in contents)
         {
             foreach (Transform item in CustomUtils.GetAllChildren(content))
-            { 
+            {
                 GameObject.Destroy(item.gameObject);
             }
         }
     }
 
-    private void AdjustContentSize(RectTransform content, int rowCount) {
+    private void AdjustContentSize(RectTransform content, int rowCount)
+    {
         content.position += new Vector3(0, -10000); // -10000 so its scrolled all the way up
 
         if (rowCount > 3)
@@ -163,8 +164,8 @@ public class ResearchController
         rectTransform.anchorMax = new Vector2(0.5f, 1);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
-
         bgImage.color = new Color(0.2f * startRow, 0.2f, 0.2f);
+        // TODO add Image Map for Eras
 
         if (startRow == 0)
         {
@@ -175,12 +176,7 @@ public class ResearchController
         {
             rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, rowCount * RowYChange * -1);
             rectTransform.localPosition = new Vector3(0, (StarterPos.y / 5) + startRow * RowYChange + (rectTransform.sizeDelta.y / 2 * -1));
-        }        
-
-        //rectTransform.sizeDelta = new Vector3(1, 1); //RowYChange * rowCount * -1);
-        //rectTransform.localPosition = new Vector3(0, 0);
-        //Vector3 newPos = StarterPos + new Vector3(rectTransform.position.x, RowYChange * rowCount * -1);
-        //rectTransform.position = rectTransform.TransformPoint(newPos);
+        }
 
         return background;
     }

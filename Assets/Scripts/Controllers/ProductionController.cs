@@ -96,11 +96,12 @@ public class ProductionController
     {
         int[] weaponCounts = new int[] { 0, 0, 0, 0, 0 };
 
-        foreach (cWeapon weapon in AllWeapons)
+        Dictionary<WeaponType, List<cWeapon>> WeaponsByType = AllWeapons.GroupBy(w => w.Type).ToDictionary(group => group.Key, group => group.ToList());
+
+        foreach(var  weaponGroup in WeaponsByType)
         {
-            GameObject newProductionItem = null;
             Transform currentContent = null;
-            switch (weapon.Type)
+            switch (weaponGroup.Key)
             {
                 case WeaponType.Infantry: currentContent = InfantryContent; break;
                 case WeaponType.Artillery: currentContent = ArtilleryContent; break;
@@ -109,20 +110,25 @@ public class ProductionController
                 case WeaponType.Navy: currentContent = NavyContent; break;
             }
 
-            newProductionItem = GameObject.Instantiate(ProductionItemPrefab, currentContent);
-            if (newProductionItem == null) continue;
+            AdjustContentSize(currentContent as RectTransform, weaponGroup.Value.Count());
 
-            Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * weaponCounts[(int)weapon.Type], 0f);
-            newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
-            weaponCounts[(int)weapon.Type]++;
-            RectTransform currentRectContent = ((RectTransform)currentContent);
-            currentRectContent.sizeDelta = new Vector3(currentRectContent.sizeDelta.x, currentRectContent.sizeDelta.y + -1 * PosYChange); // poschange is negated prItem size + space between
-            currentContent.position += new Vector3(0, -5000);
-            newProductionItem.name = weapon.Name;
-            ProductionItem prItemScript = newProductionItem.AddComponent<ProductionItem>();
-            prItemScript.Init(weapon);
+            foreach (cWeapon weapon in weaponGroup.Value)
+            {
+                GameObject newProductionItem = null;
+                newProductionItem = GameObject.Instantiate(ProductionItemPrefab, currentContent);
+                if (newProductionItem == null) continue;
 
-            ProdItems.Add(prItemScript);
+                // update item position
+                Vector3 newPos = StartPosition + new Vector3(0f, PosYChange * weaponCounts[(int)weapon.Type], 0f);
+                newProductionItem.transform.position = newProductionItem.transform.TransformPoint(newPos);
+                weaponCounts[(int)weapon.Type]++;
+
+                newProductionItem.name = weapon.Name;
+                ProductionItem prItemScript = newProductionItem.AddComponent<ProductionItem>();
+                prItemScript.Init(weapon);
+
+                ProdItems.Add(prItemScript);
+            }
         }
     }
 
@@ -141,6 +147,22 @@ public class ProductionController
             RectTransform rectContent = ((RectTransform)content);
             rectContent.sizeDelta = new Vector3(rectContent.sizeDelta.x, rectContent.sizeDelta.y + itemCounter * PosYChange); // vrati zvetseni contentu o pocet itemu 
         }
+    }
+
+    private void AdjustContentSize(RectTransform content, int itemCount)
+    {
+        content.position += new Vector3(0, -10000);
+        
+        if (itemCount < 5) // clamps minimal size for content
+        {
+            content.sizeDelta = new Vector3(content.sizeDelta.x, (int)(PosYChange * 4.5f * -1));
+            return;
+        }
+
+        content.sizeDelta = new Vector3(content.sizeDelta.x, PosYChange * itemCount * -1);
+
+        //currentRectContent.sizeDelta = new Vector3(currentRectContent.sizeDelta.x, currentRectContent.sizeDelta.y + -1 * PosYChange); // poschange is negated prItem size + space between
+        //currentContent.position += new Vector3(0, -5000);
     }
 
     public void ChangeProductionItemState(List<int> itemIds, WeaponState state)
