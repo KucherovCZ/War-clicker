@@ -6,7 +6,7 @@ public class AssetReferences : MonoBehaviour
 {
     #region Singleton
     public static AssetReferences Instance;
-    public void Start()
+    public void Awake()
     {
         if (Instance != null)
             Debug.LogError("Instance of AssetReferences already exists");
@@ -15,10 +15,8 @@ public class AssetReferences : MonoBehaviour
     }
     #endregion
 
-
-
     [SerializeField]
-    public Sprite ResearchBackground;
+    public GameObject ResearchBackgroundPrefab;
 
 
 }

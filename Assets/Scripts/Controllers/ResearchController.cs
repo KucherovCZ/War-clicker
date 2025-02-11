@@ -1,6 +1,8 @@
 ﻿using Entities;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,9 +39,11 @@ public class ResearchController
     private Transform AirContent { get; set; }
     private Transform NavyContent { get; set; }
 
-    private float RowYChange = 0;
+    private float RowYChange = 0; // calculated at start
     private int[] columnPos = { -190, 0, 190 };
     private Vector3 StarterPos = new Vector3(0f, -120);
+    private Vector3 EraGap = new Vector3(0f, 80f);
+    private Vector3 ResItemGap = new Vector3(0f, 80f);
 
     #endregion
 
@@ -51,7 +55,7 @@ public class ResearchController
         Relations = relations;
         ItemWeapons = itemWeapons;
 
-        RowYChange = (((RectTransform)ResearchItemPrefab.transform).rect.height + 70) * -1;
+        RowYChange = (((RectTransform)ResearchItemPrefab.transform).rect.height + ResItemGap.y) * -1;
 
         LoadContent(data);
         RemoveResearchItems();
@@ -110,20 +114,24 @@ public class ResearchController
             int typeStartRow = typeGroup.Value.Min(r => r.Row);
             int typeRowCount = typeGroup.Value.Max(r => r.Row) - typeStartRow + 1;
 
-            AdjustContentSize(currentContent as RectTransform, typeRowCount);
+            float yOffset = 0;
 
             foreach (var eraGroup in ResearchItemsByEra)
             {
                 int eraStartRow = eraGroup.Value.Min(r => r.Row);
                 int eraRowCount = eraGroup.Value.Max(r => r.Row) - eraStartRow + 1;
 
-                GameObject background = CreateBackground(eraGroup.Key.ToString(), currentContent, eraStartRow, eraRowCount, eraGroup.Key);
+                yOffset -= EraGap.y;
+
+                GameObject background = CreateBackground(eraGroup.Key.ToString(), currentContent, eraStartRow, eraRowCount, eraGroup.Key, yOffset);
 
                 foreach (var item in eraGroup.Value)
                 {
-                    ResearchItems.Add(CreateResearchItem(item, currentContent));
+                    ResearchItems.Add(CreateResearchItem(item, currentContent, yOffset));
                 }
             }
+
+            AdjustContentSize(currentContent as RectTransform, typeRowCount, yOffset);
         }
     }
 
@@ -139,52 +147,46 @@ public class ResearchController
         }
     }
 
-    private void AdjustContentSize(RectTransform content, int rowCount)
+    private void AdjustContentSize(RectTransform content, int rowCount, float yOffset)
     {
         content.position += new Vector3(0, -10000); // -10000 so its scrolled all the way up
 
         if (rowCount > 3)
-            content.sizeDelta = new Vector3(content.sizeDelta.x, content.sizeDelta.y + (-1 * rowCount * RowYChange));
+            content.sizeDelta = new Vector3(content.sizeDelta.x, content.sizeDelta.y + (-1 * rowCount * RowYChange) + yOffset * -1);
         else
             // if too few rows, get size from parent Viewport
-            content.sizeDelta = new Vector3(content.sizeDelta.x, ((RectTransform)(content.parent.transform)).sizeDelta.y);
+            content.sizeDelta = new Vector3(content.sizeDelta.x, ((RectTransform)(content.parent.transform)).sizeDelta.y + yOffset * -1);
     }
 
-    private GameObject CreateBackground(string name, Transform parent, int startRow, int rowCount, ResearchEra era)
+    private GameObject CreateBackground(string name, Transform parent, int startRow, int rowCount, ResearchEra era, float yOffset)
     {
         // create new background gameobject
-        GameObject background = new GameObject($"{name}_Background");
-        background.transform.parent = parent;
-        Image bgImage = background.AddComponent<Image>(); // Canvas renderer is auto added with image
-
-        RectTransform rectTransform = background.transform as RectTransform;
-        rectTransform.anchorMin = new Vector2(0.5f, 1);
-        rectTransform.anchorMax = new Vector2(0.5f, 1);
-        rectTransform.localScale = new Vector3(1, 1, 1);
-
-        bgImage.type = Image.Type.Sliced;
+        GameObject background = GameObject.Instantiate(AssetReferences.Instance.ResearchBackgroundPrefab, parent);
+        background.name = ($"{name}_Background");
+        background.transform.Find("Label").Find("Text").GetComponent<TextMeshProUGUI>().text = EnumUtils.GetEnumDescription(era);
+        Image bgImage = background.GetComponent<Image>();
         bgImage.color = CustomMapping.EraColorMap[era];
-        bgImage.sprite = AssetReferences.Instance.ResearchBackground;
+        RectTransform rectTransform = background.transform as RectTransform;
 
         if (startRow == 0)
         {
-            rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, (rowCount * RowYChange * -1));
-            rectTransform.localPosition = new Vector3(0, rectTransform.sizeDelta.y / 2 * -1);
+            rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, (rowCount * RowYChange * -1) + EraGap.y);
+            rectTransform.localPosition = new Vector3(0, (yOffset + EraGap.y) + rectTransform.sizeDelta.y / 2 * -1);
         }
         else
         {
-            rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, rowCount * RowYChange * -1);
-            rectTransform.localPosition = new Vector3(0, startRow * RowYChange + (rectTransform.sizeDelta.y / 2 * -1));
+            rectTransform.sizeDelta = new Vector2((rectTransform.parent as RectTransform).sizeDelta.x, rowCount * RowYChange * -1 + EraGap.y);
+            rectTransform.localPosition = new Vector3(0, (yOffset + EraGap.y) + startRow * RowYChange + (rectTransform.sizeDelta.y / 2 * -1));
         }
 
         return background;
     }
 
-    private ResearchItem CreateResearchItem(cResearchItem item, Transform currentContent)
+    private ResearchItem CreateResearchItem(cResearchItem item, Transform currentContent, float yOffset)
     {
         // Set researchItem transform
         GameObject newResearchItem = GameObject.Instantiate(ResearchItemPrefab, currentContent);
-        Vector3 newPos = StarterPos + new Vector3(columnPos[item.Column], RowYChange * item.Row);
+        Vector3 newPos = StarterPos + new Vector3(columnPos[item.Column], RowYChange * item.Row + yOffset);
         newResearchItem.transform.position = newResearchItem.transform.TransformPoint(newPos);
 
         // Load research links

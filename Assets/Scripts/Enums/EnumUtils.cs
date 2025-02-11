@@ -11,7 +11,7 @@ public static class EnumUtils
         DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
         if (attributes != null && attributes.Any())
         {
-            return attributes.First().Description;
+            return Translator.Translate(attributes.First().Description);
         }
         return value.ToString();
     }
