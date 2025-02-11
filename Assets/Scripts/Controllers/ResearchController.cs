@@ -155,7 +155,7 @@ public class ResearchController
             content.sizeDelta = new Vector3(content.sizeDelta.x, content.sizeDelta.y + (-1 * rowCount * RowYChange) + yOffset * -1);
         else
             // if too few rows, get size from parent Viewport
-            content.sizeDelta = new Vector3(content.sizeDelta.x, ((RectTransform)(content.parent.transform)).sizeDelta.y);
+            content.sizeDelta = new Vector3(content.sizeDelta.x, ((RectTransform)(content.parent.transform)).sizeDelta.y + yOffset * -1);
     }
 
     private GameObject CreateBackground(string name, Transform parent, int startRow, int rowCount, ResearchEra era, float yOffset)
