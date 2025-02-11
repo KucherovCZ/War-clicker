@@ -27,7 +27,7 @@ public enum WeaponState
 
 public enum ResearchEra
 {
-    [Description("$reserach.era.preww1")]
+    [Description("$research.era.preww1")]
     PreWW1 = 2,
     [Description("$research.era.ww1")]
     WW1 = 3,

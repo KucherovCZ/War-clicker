@@ -701,7 +701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b757e2ba7cd4341afcb5dced76dd4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResearchBackground: {fileID: 680599616, guid: 879dfd3435d1af549b0d5578b9894995, type: 3}
+  ResearchBackgroundPrefab: {fileID: 8776477147393484565, guid: 42905a0d5b9ef3b4ebf8753c5c596b69, type: 3}
 --- !u!1 &72341910
 GameObject:
   m_ObjectHideFlags: 0
@@ -6791,7 +6791,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 7.4999695}
-  m_SizeDelta: {x: 568, y: 15}
+  m_SizeDelta: {x: 568, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &661738541
 GameObject:
@@ -10146,7 +10146,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 7.4999695}
-  m_SizeDelta: {x: 568, y: 15}
+  m_SizeDelta: {x: 568, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &976579730
 GameObject:
@@ -13402,8 +13402,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: -465931378, guid: 17b452c968bfe4249b35cb9f999874ec, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -14075,7 +14075,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 7.5}
-  m_SizeDelta: {x: 568, y: 15}
+  m_SizeDelta: {x: 568, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1404420409
 GameObject:
@@ -14668,7 +14668,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 7.4999695}
-  m_SizeDelta: {x: 568, y: 15}
+  m_SizeDelta: {x: 568, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1502019800
 GameObject:
@@ -14734,8 +14734,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: -465931378, guid: 17b452c968bfe4249b35cb9f999874ec, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -19152,7 +19152,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 7.4999695}
-  m_SizeDelta: {x: 568, y: 15}
+  m_SizeDelta: {x: 568, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1964443677
 GameObject:
