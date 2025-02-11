@@ -7,7 +7,7 @@ public class SellDialog : MonoBehaviour
 {
     public static SellDialog Instance;
 
-    public cWeapon Weapon { get; set; }
+    public DbWeapon Weapon { get; set; }
 
     private GameObject UIObject;
     private Slider SliderObject;
@@ -55,7 +55,7 @@ public class SellDialog : MonoBehaviour
         }
     }
 
-    public void ShowDialog(cWeapon weapon)
+    public void ShowDialog(DbWeapon weapon)
     {
         this.Weapon = weapon;
         StoredText.text = CustomUtils.FormatNumber(Weapon.Stored);

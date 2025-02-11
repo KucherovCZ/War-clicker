@@ -11,6 +11,6 @@ public class CustomMapping
         [ResearchEra.Interwar] = new Color(0.6603774f, 0.6369464f, 0.239231f),
         [ResearchEra.EarlyWW2] = new Color(0.3257395f, 0.4433962f, 0.1564436f),
         [ResearchEra.LateWW2] = new Color(0.3497864f, 0.4056604f, 0.384596f),
-        [ResearchEra.Postwar] = new Color(0.3599323f, 0.5115679f, 0.6886792f)
+        [ResearchEra.Coldwar] = new Color(0.3599323f, 0.5115679f, 0.6886792f)
     };
 }

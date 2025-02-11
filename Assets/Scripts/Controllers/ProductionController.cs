@@ -21,7 +21,7 @@ public class ProductionController
     #endregion
 
     #region Fields and properties
-    public List<cWeapon> AllWeapons { get; set; }
+    public List<DbWeapon> AllWeapons { get; set; }
     public List<ProductionItem> ProdItems { get; set; }
     public UIController UIController { get; set; }
 
@@ -46,7 +46,7 @@ public class ProductionController
 
     #region Methods
 
-    public void Init(List<cWeapon> weapons, SavedData data)
+    public void Init(List<DbWeapon> weapons, SavedData data)
     {
         AllWeapons = weapons;
         ProdItems = new List<ProductionItem>();
@@ -96,7 +96,7 @@ public class ProductionController
     {
         int[] weaponCounts = new int[] { 0, 0, 0, 0, 0 };
 
-        Dictionary<WeaponType, List<cWeapon>> WeaponsByType = AllWeapons.GroupBy(w => w.Type).ToDictionary(group => group.Key, group => group.ToList());
+        Dictionary<WeaponType, List<DbWeapon>> WeaponsByType = AllWeapons.GroupBy(w => w.Type).ToDictionary(group => group.Key, group => group.ToList());
 
         foreach(var  weaponGroup in WeaponsByType)
         {
@@ -112,7 +112,7 @@ public class ProductionController
 
             AdjustContentSize(currentContent as RectTransform, weaponGroup.Value.Count());
 
-            foreach (cWeapon weapon in weaponGroup.Value)
+            foreach (DbWeapon weapon in weaponGroup.Value)
             {
                 GameObject newProductionItem = null;
                 newProductionItem = GameObject.Instantiate(ProductionItemPrefab, currentContent);
@@ -159,7 +159,7 @@ public class ProductionController
             return;
         }
 
-        content.sizeDelta = new Vector3(content.sizeDelta.x, PosYChange * itemCount * -1);
+        content.sizeDelta = new Vector3(content.sizeDelta.x, PosYChange * itemCount * -1 + 15);
 
         //currentRectContent.sizeDelta = new Vector3(currentRectContent.sizeDelta.x, currentRectContent.sizeDelta.y + -1 * PosYChange); // poschange is negated prItem size + space between
         //currentContent.position += new Vector3(0, -5000);

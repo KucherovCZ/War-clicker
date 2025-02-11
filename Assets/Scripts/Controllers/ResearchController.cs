@@ -24,11 +24,11 @@ public class ResearchController
     #endregion
 
     #region Fields and properties
-    public List<cResearchItem> ResearchItemsDB { get; set; }
+    public List<DbResearchItem> ResearchItemsDB { get; set; }
 
     public List<ResearchItem> ResearchItems { get; set; }
-    public List<cResearchItemRelation> Relations { get; set; }
-    public List<cResearchItemWeapon> ItemWeapons { get; set; }
+    public List<DbResearchItemRelation> Relations { get; set; }
+    public List<DbResearchItemWeapon> ItemWeapons { get; set; }
 
     public UIController UIController { get; set; }
 
@@ -49,7 +49,7 @@ public class ResearchController
 
     #region Methods
 
-    public void Init(List<cResearchItem> researchItems, List<cResearchItemRelation> relations, List<cResearchItemWeapon> itemWeapons, SavedData data)
+    public void Init(List<DbResearchItem> researchItems, List<DbResearchItemRelation> relations, List<DbResearchItemWeapon> itemWeapons, SavedData data)
     {
         ResearchItemsDB = researchItems;
         Relations = relations;
@@ -92,14 +92,14 @@ public class ResearchController
     private void GenerateResearchItems()
     {
         // split research items by ERA, and calculate each size, then adjust background size by total calculation
-        Dictionary<WeaponType, List<cResearchItem>> ResearchItemsByType = ResearchItemsDB.GroupBy(t => t.Type).ToDictionary(group => group.Key, group => group.ToList());
+        Dictionary<WeaponType, List<DbResearchItem>> ResearchItemsByType = ResearchItemsDB.GroupBy(t => t.Type).ToDictionary(group => group.Key, group => group.ToList());
 
         ResearchItems = new List<ResearchItem>();
 
         // For each UI tab (by weapon type)
         foreach (var typeGroup in ResearchItemsByType)
         {
-            Dictionary<ResearchEra, List<cResearchItem>> ResearchItemsByEra = typeGroup.Value.GroupBy(t => t.Era).ToDictionary(group => group.Key, group => group.ToList());
+            Dictionary<ResearchEra, List<DbResearchItem>> ResearchItemsByEra = typeGroup.Value.GroupBy(t => t.Era).ToDictionary(group => group.Key, group => group.ToList());
 
             Transform currentContent = null;
             switch (typeGroup.Key)
@@ -182,7 +182,7 @@ public class ResearchController
         return background;
     }
 
-    private ResearchItem CreateResearchItem(cResearchItem item, Transform currentContent, float yOffset)
+    private ResearchItem CreateResearchItem(DbResearchItem item, Transform currentContent, float yOffset)
     {
         // Set researchItem transform
         GameObject newResearchItem = GameObject.Instantiate(ResearchItemPrefab, currentContent);

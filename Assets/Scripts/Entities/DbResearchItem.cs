@@ -1,8 +1,7 @@
 ﻿namespace Entities
 {
-    public class cResearchItem
+    public class DbResearchItem : DbEntity
     {
-        public int Id { get; set; }
         public bool Researched { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }

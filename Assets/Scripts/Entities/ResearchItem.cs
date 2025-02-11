@@ -9,11 +9,11 @@ namespace Entities
     public class ResearchItem : MonoBehaviour
     {
         #region Properties
-        public cResearchItem researchItem;
+        public DbResearchItem researchItem;
 
         public List<ResearchItem> Parents { get; set; }
-        public List<cResearchItemRelation> Children { get; set; }
-        public List<cWeapon> Weapons { get; set; }
+        public List<DbResearchItemRelation> Children { get; set; }
+        public List<DbWeapon> Weapons { get; set; }
         public bool IsUnlocked {
             get {
                 return Parents.Where(p => !p.researchItem.Researched).Count() == 0;  
@@ -39,7 +39,7 @@ namespace Entities
         #endregion
 
         #region Methods
-        public void Init(cResearchItem item)
+        public void Init(DbResearchItem item)
         {
             researchItem = item;
             Lines = new();

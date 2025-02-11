@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class cEntity
+    public class DbEntity
     {
         public int Id { get; set; }
     }

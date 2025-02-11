@@ -10,7 +10,7 @@ namespace Entities
     /// </summary>
     public class ProductionItem : MonoBehaviour
     {
-        public cWeapon Weapon { get; set; }
+        public DbWeapon Weapon { get; set; }
 
         private Image Icon { get; set; }
         public Sprite Sprite { get; set; }
@@ -26,7 +26,7 @@ namespace Entities
         private Button BuyEquipButton { get; set; }
         private TextMeshProUGUI UnlockPriceLabel { get; set; }
 
-        public void Init(cWeapon weapon)
+        public void Init(DbWeapon weapon)
         {
             Weapon = weapon;
 

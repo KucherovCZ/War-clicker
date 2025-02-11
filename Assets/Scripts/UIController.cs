@@ -195,7 +195,7 @@ public class UIController : MonoBehaviour
         return Sprite.Create(tempPic, new Rect(0, 0, 128, 128), new Vector2());
     }
 
-    public void OpenWeaponDetail(cWeapon weapon, ProductionItem prItem)
+    public void OpenWeaponDetail(DbWeapon weapon, ProductionItem prItem)
     {
         weaponDetail.gameObject.SetActive(true);
 
@@ -355,7 +355,7 @@ public class UIController : MonoBehaviour
         content.localScale = new Vector3(1, 1, 1);
     }
 
-    public void OpenResearchDetail(cResearchItem item, ResearchItem resItem)
+    public void OpenResearchDetail(DbResearchItem item, ResearchItem resItem)
     {
         researchDetail.gameObject.SetActive(true);
 

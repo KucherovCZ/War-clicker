@@ -58,9 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetReferences.cs" />
-    <Compile Include="Assets\Scripts\Entities\cResearchItemRelation.cs" />
-    <Compile Include="Assets\Scripts\Entities\cWeapon.cs" />
-    <Compile Include="Assets\Scripts\Entities\cResearchItem.cs" />
+    <Compile Include="Assets\Scripts\Entities\DbResearchItemRelation.cs" />
+    <Compile Include="Assets\Scripts\Entities\DbWeapon.cs" />
+    <Compile Include="Assets\Scripts\Entities\DbResearchItem.cs" />
     <Compile Include="Assets\Scripts\Enums\CustomMapping.cs" />
     <Compile Include="Assets\Scripts\Interface\Dialog.cs" />
     <Compile Include="Assets\Main.cs" />
@@ -75,12 +75,12 @@
     <Compile Include="Assets\Scripts\Entities\ResearchItem.cs" />
     <Compile Include="Assets\Scripts\Translator.cs" />
     <Compile Include="Assets\Scripts\UIController.cs" />
-    <Compile Include="Assets\Scripts\Entities\cResearchItemWeapon.cs" />
-    <Compile Include="Assets\Scripts\Entities\cTranslationItem.cs" />
+    <Compile Include="Assets\Scripts\Entities\DbResearchItemWeapon.cs" />
+    <Compile Include="Assets\Scripts\Entities\DbTranslationItem.cs" />
     <Compile Include="Assets\Scripts\Enums\GlobalEnums.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Entities\ProductionItem.cs" />
-    <Compile Include="Assets\Scripts\Entities\cEntity.cs" />
+    <Compile Include="Assets\Scripts\Entities\DbEntity.cs" />
     <Compile Include="Assets\Scripts\Serialization\SavedData.cs" />
     <Compile Include="Assets\Scripts\Controllers\ProductionController.cs" />
     <Compile Include="Assets\Scripts\Interface\DebugConsole.cs" />

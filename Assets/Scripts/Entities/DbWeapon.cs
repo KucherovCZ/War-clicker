@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class cWeapon : cEntity
+    public class DbWeapon : DbEntity
     {
         public string Name { get; set; }
         public string DisplayName { get; set; }

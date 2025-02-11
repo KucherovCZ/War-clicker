@@ -37,8 +37,10 @@ public enum ResearchEra
     EarlyWW2 = 5,
     [Description("$research.era.lateWW2")]
     LateWW2 = 6,
-    [Description("$research.era.postwar")]
-    Postwar = 7,
+    [Description("$research.era.coldwar")]
+    Coldwar = 7,
+    [Description("$research.era.modern")]
+    Modern = 8,
 }
 
 [Flags]

@@ -58,7 +58,7 @@ public class Database
     }
 
     #region Weapons
-    public IEnumerable<cWeapon> LoadWeapons()
+    public IEnumerable<DbWeapon> LoadWeapons()
     {
         if (!CheckConnection()) yield break;
 
@@ -69,7 +69,7 @@ public class Database
 
         while (reader.Read())
         {
-            yield return new cWeapon()
+            yield return new DbWeapon()
             {
                 Id = reader.GetInt32("Id"),
                 Name = reader.GetString("Name"),
@@ -99,7 +99,7 @@ public class Database
         cmd.Dispose();
     }
 
-    public void SaveWeapons(List<cWeapon> weapons)
+    public void SaveWeapons(List<DbWeapon> weapons)
     {
         if (!CheckConnection()) return;
 
@@ -107,7 +107,7 @@ public class Database
                        " SET Stored = @stored, FactoriesAssigned = @factoriesAssigned, Autosell = @autosell, State = @state" +
                        " WHERE Id = @id";
 
-        foreach (cWeapon weapon in weapons)
+        foreach (DbWeapon weapon in weapons)
         {
             SqliteCommand cmd = new SqliteCommand(query, m_Connection);
             cmd.Parameters.AddWithValue("@id", weapon.Id);
@@ -121,7 +121,7 @@ public class Database
         }
     }
 
-    public void SaveWeapon(cWeapon weapon)
+    public void SaveWeapon(DbWeapon weapon)
     {
         if (!CheckConnection()) return;
 
@@ -139,7 +139,7 @@ public class Database
     #endregion
 
     #region Research
-    public IEnumerable<cResearchItem> LoadResearchItems()
+    public IEnumerable<DbResearchItem> LoadResearchItems()
     {
         if (!CheckConnection()) yield break;
 
@@ -150,7 +150,7 @@ public class Database
 
         while (reader.Read())
         {
-            yield return new cResearchItem()
+            yield return new DbResearchItem()
             {
                 Id = reader.GetInt32("Id"),
                 Researched = reader.GetBoolean("Researched"),
@@ -168,7 +168,7 @@ public class Database
         cmd.Dispose();
     }
 
-    public void SaveResearchItems(List<cResearchItem> resItems)
+    public void SaveResearchItems(List<DbResearchItem> resItems)
     {
         if (!CheckConnection()) return;
 
@@ -176,7 +176,7 @@ public class Database
                        " SET Researched = @researched" +
                        " WHERE Id = @id";
 
-        foreach (cResearchItem resItem in resItems)
+        foreach (DbResearchItem resItem in resItems)
         {
             SqliteCommand cmd = new SqliteCommand(query, m_Connection);
             cmd.Parameters.AddWithValue("@id", resItem.Id);
@@ -187,7 +187,7 @@ public class Database
         }
     }
 
-    public void SaveResearchItem(cResearchItem researchItem)
+    public void SaveResearchItem(DbResearchItem researchItem)
     {
         if (!CheckConnection()) return;
 
@@ -202,7 +202,7 @@ public class Database
         cmd.ExecuteNonQuery();
     }
 
-    public IEnumerable<cResearchItemRelation> LoadResearchItemRelations()
+    public IEnumerable<DbResearchItemRelation> LoadResearchItemRelations()
     {
         if (!CheckConnection()) yield break;
 
@@ -213,7 +213,7 @@ public class Database
 
         while (reader.Read())
         {
-            yield return new cResearchItemRelation()
+            yield return new DbResearchItemRelation()
             {
                 Id = reader.GetInt32("Id"),
                 ParentId = reader.GetInt32("ParentId"),
@@ -225,7 +225,7 @@ public class Database
         cmd.Dispose();
     }
 
-    public IEnumerable<cResearchItemWeapon> LoadResearchItemWeapon()
+    public IEnumerable<DbResearchItemWeapon> LoadResearchItemWeapon()
     {
         if (!CheckConnection()) yield break;
 
@@ -236,7 +236,7 @@ public class Database
 
         while (reader.Read())
         {
-            yield return new cResearchItemWeapon()
+            yield return new DbResearchItemWeapon()
             {
                 Id = reader.GetInt32("Id"),
                 ResearchItemId = reader.GetInt32("ResearchItemId"),

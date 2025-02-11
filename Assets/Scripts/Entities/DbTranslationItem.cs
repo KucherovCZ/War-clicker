@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class cTranslationItem : cEntity
+    public class DbTranslationItem : DbEntity
     {
         public string Code { get; set; }
         public string Value { get; set; }
