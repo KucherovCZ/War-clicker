@@ -38,6 +38,8 @@ public class Main : MonoBehaviour
     {
         connectionString = "URI=file:" + Application.dataPath + "/WarClicker_DB.s3db";
         Database = new Database(connectionString);
+
+        Logger.DB = Database;
     }
 
     public void InitData()
@@ -94,7 +96,7 @@ public class Main : MonoBehaviour
     {
         if (pause)
         {
-            Debug.Log("App paused - saving data");
+            Logger.Log(LogLevel.INFO, "App paused - saving data", "");
             SaveData();
         }
     }

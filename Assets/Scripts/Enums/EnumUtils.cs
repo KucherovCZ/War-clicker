@@ -31,7 +31,6 @@ public static class EnumUtils
             case "Navy":
                 return WeaponType.Navy;
             default:
-                //Debug.LogError("Invalid weapon type: " + type);
                 return WeaponType.Infantry;
         }
     }

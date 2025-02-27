@@ -9,14 +9,12 @@ public class AssetReferences : MonoBehaviour
     public void Awake()
     {
         if (Instance != null)
-            Debug.LogError("Instance of AssetReferences already exists");
-        
+            Logger.Log(LogLevel.WARNING, "Instance of AssetReferences already exists", "");
+
         Instance = this;
     }
     #endregion
 
     [SerializeField]
     public GameObject ResearchBackgroundPrefab;
-
-
 }

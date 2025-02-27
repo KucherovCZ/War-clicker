@@ -58,9 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetReferences.cs" />
+    <Compile Include="Assets\Scripts\Entities\DbLog.cs" />
     <Compile Include="Assets\Scripts\Entities\DbResearchItemRelation.cs" />
     <Compile Include="Assets\Scripts\Entities\DbWeapon.cs" />
     <Compile Include="Assets\Scripts\Entities\DbResearchItem.cs" />
+    <Compile Include="Assets\Scripts\Entities\ResearchFilter.cs" />
     <Compile Include="Assets\Scripts\Enums\CustomMapping.cs" />
     <Compile Include="Assets\Scripts\Interface\Dialog.cs" />
     <Compile Include="Assets\Main.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Assets\Scripts\Enums\EnumUtils.cs" />
     <Compile Include="Assets\Scripts\Interface\SliderColorChange.cs" />
     <Compile Include="Assets\Scripts\Interface\SellDialog.cs" />
+    <Compile Include="Assets\Scripts\Logger.cs" />
     <Compile Include="Assets\Scripts\Serialization\Serializer.cs" />
     <Compile Include="Assets\Scripts\Entities\ResearchItem.cs" />
     <Compile Include="Assets\Scripts\Translator.cs" />

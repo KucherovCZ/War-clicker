@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Mono.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
@@ -246,6 +247,23 @@ public class Database
 
         reader.Close();
         cmd.Dispose();
+    }
+    #endregion
+
+    #region Generic
+    public void SaveLog(DbLog log)
+    {
+        if (!CheckConnection()) return;
+
+        
+
+        string query = $"INSERT INTO Log (Level, Message, Exception, Timestamp)" +
+            $"VALUES({(int)log.Level},'{log.Message}','{log.Exception}',{new DateTimeOffset(log.Timestamp).ToUnixTimeSeconds().ToString()})";
+
+        Debug.Log(query);
+
+        SqliteCommand cmd = new SqliteCommand(query, m_Connection);
+        cmd.ExecuteNonQuery();
     }
     #endregion
 

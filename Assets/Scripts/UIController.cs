@@ -1,4 +1,6 @@
 using Entities;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -144,7 +146,7 @@ public class UIController : MonoBehaviour
     {
         // Update button and icon color
         if (string.IsNullOrEmpty(type))
-            Debug.LogError("Production button click - passed empty string");
+            Logger.Log(LogLevel.ERROR, "Production button click - passed empty string", "");
 
         currentWeaponType = EnumUtils.GetWeaponType(type);
 
@@ -189,7 +191,7 @@ public class UIController : MonoBehaviour
         Texture2D tempPic = Resources.Load("Graphics/Weapons/GE/" + weaponName) as Texture2D;
         if (tempPic == null)
         {
-            Debug.LogWarning("Image for " + weaponName + " has not been found. Please check Graphics/Weapos/GE");
+            Logger.Log(LogLevel.ERROR, "Image for " + weaponName + " has not been found. Please check Graphics/Weapos/GE", "");
             return null;
         }
         return Sprite.Create(tempPic, new Rect(0, 0, 128, 128), new Vector2());
@@ -313,6 +315,7 @@ public class UIController : MonoBehaviour
     private Transform researchViewport;
     private ScrollRect researchScrollview;
     private Image lastChangedIconRes = null, lastChangedButtonRes = null;
+    private Dictionary<ResearchEra, Transform> EraFilters = new Dictionary<ResearchEra, Transform>();
 
     private ResearchItem openResItem = null;
 
@@ -322,15 +325,25 @@ public class UIController : MonoBehaviour
         researchViewport = researchView.Find("Viewport");
         researchScrollview = researchView.GetComponent<ScrollRect>();
         researchDetail = researchView.Find("ResearchDetail");
+
+        Transform filterHolder = researchView.Find("DropdownMask").Find("Dropdown");
+        foreach (var era in Enum.GetValues(typeof(ResearchEra)))
+        {
+            EraFilters.Add((ResearchEra)era, filterHolder.Find(((int)era).ToString()));
+        }
     }
 
-    public void OnResearchButtonClick(string type)
+    /// <summary>
+    /// Menu button handler - changes active content
+    /// </summary>
+    /// <param name="typeName"></param>
+    public void OnResearchButtonClick(string typeName)
     {
         // Update button and icon color
-        if (string.IsNullOrEmpty(type))
-            Debug.LogError("Research button click - passed empty string");
+        if (string.IsNullOrEmpty(typeName))
+            Logger.Log(LogLevel.ERROR, "Research button click - passed empty string", "");
 
-        Transform button = researchView.Find("Button" + type);
+        Transform button = researchView.Find("Button" + typeName);
         Image btnBackground = button.GetComponent<Image>();
         Image btnImage = button.Find("Image").GetComponent<Image>();
 
@@ -347,7 +360,8 @@ public class UIController : MonoBehaviour
         lastChangedIconRes = btnImage;
 
         // Update scrollView content
-        RectTransform content = (RectTransform)researchViewport.Find(type);
+        ResearchController.Instance.ActiveType = EnumUtils.GetWeaponType(typeName);
+        RectTransform content = (RectTransform)researchViewport.Find(typeName);
 
         if (researchScrollview.content != null)
             researchScrollview.content.localScale = new Vector3(0, 1, 1);
@@ -386,8 +400,9 @@ public class UIController : MonoBehaviour
 
     public void ResearchButtonOnClick()
     {
-        if (openResItem.UnlockResearchItem())
+        if (openResItem.CanUnlock())
         {
+            openResItem.Unlock();
             // succeeded, close detail
             researchDetail.gameObject.SetActive(false);
         }
@@ -398,12 +413,28 @@ public class UIController : MonoBehaviour
         }
     }
 
+    public void OnFilterButtonClick(int researchEra)
+    {
+        bool newState = ResearchController.Instance.UpdateFilter((ResearchEra)researchEra);
+
+        Transform btn = EraFilters[(ResearchEra)researchEra];
+        btn.Find("Icon").GetComponent<Image>().color = newState ? Color.green : Color.red; // new Color(0.3385547f, 0.5660378f, 0.3439944f) : Color.red;
+    }
+
+    public void UpdateFilterButtons(ResearchFilter filter)
+    {
+        foreach (var era in filter.EraState)
+        {
+            EraFilters[era.Key].Find("Icon").GetComponent<Image>().color = era.Value ? Color.green : Color.red;
+        }
+    }
+
     public Sprite GetResearchIcon(string researchItemName)
     {
         Texture2D tempPic = Resources.Load("Graphics/Research/GE/" + researchItemName) as Texture2D;
         if (tempPic == null)
         {
-            Debug.LogWarning("Image for " + researchItemName + " has not been found. Please check Graphics/Research/GE");
+            Logger.Log(LogLevel.ERROR, "Image for " + researchItemName + " has not been found. Please check Graphics/Research/GE", "");
             return null;
         }
         return Sprite.Create(tempPic, new Rect(0, 0, 128, 128), new Vector2());
@@ -428,7 +459,7 @@ public class UIController : MonoBehaviour
     public void OnMainMenuButtonClick(string btnName)
     {
         if (string.IsNullOrEmpty(btnName))
-            Debug.LogError("MainMenu button click - passed empty string");
+            Logger.Log(LogLevel.ERROR, "MainMenu button click - passed empty string", "");
 
         Transform button = mainMenu.Find("Button" + btnName);
         Image btnBackground = button.GetComponent<Image>();

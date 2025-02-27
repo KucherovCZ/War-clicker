@@ -39,7 +39,7 @@ public static class Serializer
         }
         else
         {
-            Debug.LogWarning("SavedData not found at " + SavedDataPath);
+            Logger.Log(LogLevel.WARNING, "SavedData not found at " + SavedDataPath, "");
             return new SavedData();
         }
     }

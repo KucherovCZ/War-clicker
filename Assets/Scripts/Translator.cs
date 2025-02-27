@@ -24,7 +24,7 @@ public static class Translator
         }
         else
         {
-            Debug.LogWarning("Missing translation for item: " + code);
+            Logger.Log(LogLevel.WARNING, "Missing translation for item: " + code, "");
             return code;
         }
     }

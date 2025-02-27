@@ -26,8 +26,7 @@ public class DebugConsole : MonoBehaviour
         }
         else
         { 
-            // wtf? sem se to nemuze dostat, inputText je limited na integer
-            Debug.LogError("Wrong input for DebugConsole money. Value: " + MoneyInput.text);
+            Logger.Log(LogLevel.WARNING, "Wrong input for DebugConsole money. Value: " + MoneyInput.text, "");
         }  
     }
 
@@ -40,8 +39,7 @@ public class DebugConsole : MonoBehaviour
         }
         else
         {
-            // wtf? sem se to nemuze dostat, inputText je limited na integer
-            Debug.LogError("Wrong input for DebugConsole warfunds. Value: " + WarfundsInput.text);
+            Logger.Log(LogLevel.WARNING, "Wrong input for DebugConsole warfunds. Value: " + WarfundsInput.text, "");
         }
     }
 

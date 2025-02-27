@@ -64,6 +64,15 @@ public enum WeaponFlag
     PREMIUM = 128,
 }
 
+public enum LogLevel
+{ 
+    TRACE = 0,
+    INFO = 1,
+    WARNING = 2,
+    ERROR = 3,
+    FATAL = 4
+}
+
 //public enum WeaponCountry
 //{
 //    [Description("Germany")]

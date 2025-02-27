@@ -16,8 +16,8 @@ namespace Entities
         public List<DbWeapon> Weapons { get; set; }
         public bool IsUnlocked {
             get {
-                return Parents.Where(p => !p.researchItem.Researched).Count() == 0;  
-            } 
+                return Parents.Where(p => !p.researchItem.Researched).Count() == 0;
+            }
         }
 
         private Image Icon { get; set; }
@@ -32,8 +32,8 @@ namespace Entities
         private Transform BottomAnchor { get; set; }
         private static Vector3 LineChange {
             get {
-                return new Vector3(0f , 84f);
-            } 
+                return new Vector3(0f, 84f);
+            }
         }
 
         #endregion
@@ -46,9 +46,9 @@ namespace Entities
             LinesOut = new();
 
             if (Weapons.Count > 4)
-                Debug.LogWarning("ResearchItem: " + item.Name + ", ID: " + item.Id + " has too many weapons assigned (over 4). This will cause UI issues");
+                Logger.Log(LogLevel.WARNING, "ResearchItem: " + item.Name + ", ID: " + item.Id + " has too many weapons assigned (over 4). This will cause UI issues", "");
             if (Weapons.Where(w => w.Type != item.Type).Any())
-                Debug.LogWarning("ResearchItem: " + item.Name + ", ID: " + item.Id + " has links to weapons of other types, this is against game logic, fix data");
+                Logger.Log(LogLevel.WARNING, "ResearchItem: " + item.Name + ", ID: " + item.Id + " has links to weapons of other types, this is against game logic, fix data", "");
 
             InitUI();
         }
@@ -67,6 +67,7 @@ namespace Entities
             //Sprite = UIController.Instance.GetResearchIcon(researchItem.Name);
             //Icon.sprite = Sprite;
             Debug.LogWarning("ResearchItem.InitUI() is using default research icon");
+            //Logger.Log(LogLevel.WARNING, "ResearchItem.InitUI() is using default research icon", "");
 
             DisplayNameLabel.text = researchItem.DisplayName;
             PriceLabel.text = CustomUtils.FormatNumber(researchItem.Price);
@@ -161,22 +162,21 @@ namespace Entities
         /// Tries to unlock researchItem and update according Weapons
         /// </summary>
         /// <returns>TRUE when item is researched FALSE when player doesnt have enough warfunds</returns>
-        public bool UnlockResearchItem()
+        public void Unlock()
         {
-            bool buyResult = PlayerController.Instance.TryBuyWarFunds(researchItem.Price);
-            if (buyResult)
-            {
-                researchItem.Researched = true;
+            researchItem.Researched = true;
 
-                // set color to green (as unlocked)
-                UpdateItem();
+            // set color to green (as unlocked)
+            UpdateItem();
 
-                ProductionController.Instance.ChangeProductionItemState(
-                    Weapons.Select(w => w.Id).ToList(),
-                    WeaponState.Researched);
-            }
+            ProductionController.Instance.ChangeProductionItemState(
+                Weapons.Select(w => w.Id).ToList(),
+                WeaponState.Researched);
+        }
 
-            return buyResult;
+        public bool CanUnlock()
+        { 
+            return PlayerController.Instance.TryBuyWarFunds(researchItem.Price);
         }
         #endregion
     }

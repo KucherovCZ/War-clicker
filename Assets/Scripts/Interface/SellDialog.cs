@@ -107,7 +107,7 @@ public class SellDialog : MonoBehaviour
         }
         else
         {
-            Debug.Log("SellDialog - Invalid amount input.");
+            Logger.Log(LogLevel.INFO, "SellDialog - Invalid amount input.", "");
         }
     }
 }

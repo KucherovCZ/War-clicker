@@ -1,3 +1,5 @@
+using System.Linq;
+
 [System.Serializable]
 public class SavedData
 {
@@ -11,6 +13,8 @@ public class SavedData
         factoryLevels = ProductionController.Instance.FactoryLevel;
         warehouses = ProductionController.Instance.WarehouseCapacity;
         warehouseLevels = ProductionController.Instance.WarehouseLevel;
+
+        eraFilter = ResearchController.Instance.Filter.EraState.Values.ToArray();
     }
 
     public SavedData(bool defaultValues)
@@ -23,6 +27,8 @@ public class SavedData
         factoryLevels = new[] { 1, 0, 0, 0, 0 };
         warehouses = new[] { 50, 0, 0, 0, 0 };
         warehouseLevels = new[] { 1, 0, 0, 0, 0 };
+
+        eraFilter = new[] { true, true, true, true, true, true, true };
     }
 
     public long money;
@@ -33,5 +39,7 @@ public class SavedData
     public int[] factoryLevels;
     public int[] warehouses;
     public int[] warehouseLevels;
+
+    public bool[] eraFilter;
 
 }

@@ -29,15 +29,21 @@ public class ResearchController
     public List<ResearchItem> ResearchItems { get; set; }
     public List<DbResearchItemRelation> Relations { get; set; }
     public List<DbResearchItemWeapon> ItemWeapons { get; set; }
+    public ResearchFilter Filter { get; set; }
+
+    public Dictionary<WeaponType, List<ResearchEra>> CompletedEras { get; set; }
 
     public UIController UIController { get; set; }
 
     private GameObject ResearchItemPrefab { get; set; }
-    private Transform InfantryContent { get; set; }
+
+    public Transform InfantryContent { get; set; }
     private Transform ArtilleryContent { get; set; }
     private Transform ArmorContent { get; set; }
     private Transform AirContent { get; set; }
     private Transform NavyContent { get; set; }
+
+    public WeaponType ActiveType { get; set; }
 
     private float RowYChange = 0; // calculated at start
     private int[] columnPos = { -190, 0, 190 };
@@ -54,6 +60,10 @@ public class ResearchController
         ResearchItemsDB = researchItems;
         Relations = relations;
         ItemWeapons = itemWeapons;
+
+        Filter = new ResearchFilter(data);
+        UIController.UpdateFilterButtons(Filter);
+        ResearchItems = new List<ResearchItem>();
 
         RowYChange = (((RectTransform)ResearchItemPrefab.transform).rect.height + ResItemGap.y) * -1;
 
@@ -78,7 +88,7 @@ public class ResearchController
 
     public void LoadContent(SavedData data)
     {
-        // stays here, will be used after ERA implementation
+        // Not used
     }
 
     private void SetDefaultContent()
@@ -89,27 +99,20 @@ public class ResearchController
         NavyContent.localScale = new Vector3(0, 1, 1);
     }
 
-    private void GenerateResearchItems()
+    private void GenerateResearchItems(WeaponType? limitType = null)
     {
         // split research items by ERA, and calculate each size, then adjust background size by total calculation
         Dictionary<WeaponType, List<DbResearchItem>> ResearchItemsByType = ResearchItemsDB.GroupBy(t => t.Type).ToDictionary(group => group.Key, group => group.ToList());
+        if (limitType != null)
+            ResearchItemsByType = ResearchItemsByType.Where(g => g.Key == limitType.Value).ToDictionary(group => group.Key, group => group.Value);
 
-        ResearchItems = new List<ResearchItem>();
 
         // For each UI tab (by weapon type)
         foreach (var typeGroup in ResearchItemsByType)
         {
             Dictionary<ResearchEra, List<DbResearchItem>> ResearchItemsByEra = typeGroup.Value.GroupBy(t => t.Era).ToDictionary(group => group.Key, group => group.ToList());
 
-            Transform currentContent = null;
-            switch (typeGroup.Key)
-            {
-                case WeaponType.Infantry: currentContent = InfantryContent; break;
-                case WeaponType.Artillery: currentContent = ArtilleryContent; break;
-                case WeaponType.Armor: currentContent = ArmorContent; break;
-                case WeaponType.Air: currentContent = AirContent; break;
-                case WeaponType.Navy: currentContent = NavyContent; break;
-            }
+            Transform currentContent = GetContent(typeGroup.Key);
 
             int typeStartRow = typeGroup.Value.Min(r => r.Row);
             int typeRowCount = typeGroup.Value.Max(r => r.Row) - typeStartRow + 1;
@@ -118,6 +121,12 @@ public class ResearchController
 
             foreach (var eraGroup in ResearchItemsByEra)
             {
+                if (!Filter.EraState[eraGroup.Key])
+                    continue;
+
+                if (eraGroup.Value.Where(r => !r.Researched).Count() == 0)
+                    CompletedEras[typeGroup.Key].Add(eraGroup.Key);
+
                 int eraStartRow = eraGroup.Value.Min(r => r.Row);
                 int eraRowCount = eraGroup.Value.Max(r => r.Row) - eraStartRow + 1;
 
@@ -135,16 +144,44 @@ public class ResearchController
         }
     }
 
-    private void RemoveResearchItems()
+    private void RemoveResearchItems(WeaponType? limitType = null)
     {
-        List<Transform> contents = new List<Transform>() { InfantryContent, ArtilleryContent, ArmorContent, AirContent, NavyContent };
+        List<Transform> contents = null;
+
+        if (limitType != null)
+        {
+            contents = new List<Transform>() { GetContent(limitType.Value) };
+        }
+        else
+        {
+            contents = new List<Transform>() { InfantryContent, ArtilleryContent, ArmorContent, AirContent, NavyContent };
+        }
+
         foreach (Transform content in contents)
         {
             foreach (Transform item in CustomUtils.GetAllChildren(content))
             {
+                if(item.name.Contains("Research"))
+                    ResearchItems.Remove(item.GetComponent<ResearchItem>());
+
                 GameObject.Destroy(item.gameObject);
             }
         }
+    }
+
+    /// <summary>
+    /// Updates filter, redraws UI and returns new state of selected filter
+    /// </summary>
+    /// <param name="era"></param>
+    /// <returns></returns>
+    public bool UpdateFilter(ResearchEra era)
+    {
+        Filter.EraState[era] = !Filter.EraState[era];
+
+        RemoveResearchItems(ActiveType);
+        GenerateResearchItems(ActiveType);
+
+        return Filter.EraState[era];
     }
 
     private void AdjustContentSize(RectTransform content, int rowCount, float yOffset)
@@ -201,6 +238,19 @@ public class ResearchController
         resItemScript.Init(item);
 
         return resItemScript;
+    }
+
+    public Transform GetContent(WeaponType type)
+    {
+        switch (type)
+        {
+            case WeaponType.Infantry: return InfantryContent;
+            case WeaponType.Artillery: return ArtilleryContent; 
+            case WeaponType.Armor: return ArmorContent;
+            case WeaponType.Air: return AirContent;
+            case WeaponType.Navy: return NavyContent;
+            default: return null;
+        }
     }
 
     #endregion 
