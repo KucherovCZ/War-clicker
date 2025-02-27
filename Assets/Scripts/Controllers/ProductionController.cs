@@ -60,7 +60,7 @@ public class ProductionController
 
     public void LoadContent(SavedData data)
     {
-        Factories = data.factories ??  new int[5];
+        Factories = data.factories ?? new int[5];
         FactoryLevel = data.factoryLevels ?? new int[5];
         WarehouseCapacity = data.warehouses ?? new int[5];
         WarehouseLevel = data.warehouseLevels ?? new int[5];
@@ -98,7 +98,7 @@ public class ProductionController
 
         Dictionary<WeaponType, List<DbWeapon>> WeaponsByType = AllWeapons.GroupBy(w => w.Type).ToDictionary(group => group.Key, group => group.ToList());
 
-        foreach(var  weaponGroup in WeaponsByType)
+        foreach (var weaponGroup in WeaponsByType)
         {
             Transform currentContent = null;
             switch (weaponGroup.Key)
@@ -152,7 +152,7 @@ public class ProductionController
     private void AdjustContentSize(RectTransform content, int itemCount)
     {
         content.position += new Vector3(0, -10000);
-        
+
         if (itemCount < 5) // clamps minimal size for content
         {
             content.sizeDelta = new Vector3(content.sizeDelta.x, (int)(PosYChange * 4.5f * -1));

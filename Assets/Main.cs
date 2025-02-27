@@ -86,7 +86,7 @@ public class Main : MonoBehaviour
         Serializer.ResetData();
         InitData();
 
-        
+
     }
     #endregion
 

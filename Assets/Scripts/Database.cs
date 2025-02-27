@@ -255,8 +255,6 @@ public class Database
     {
         if (!CheckConnection()) return;
 
-        
-
         string query = $"INSERT INTO Log (Level, Message, Exception, Timestamp)" +
             $"VALUES({(int)log.Level},'{log.Message}','{log.Exception}',{new DateTimeOffset(log.Timestamp).ToUnixTimeSeconds().ToString()})";
 

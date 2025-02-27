@@ -5,7 +5,8 @@ namespace Entities
 {
     public class ResearchFilter
     {
-        public ResearchFilter(SavedData data) {
+        public ResearchFilter(SavedData data)
+        {
             if (data.eraFilter != null)
             {
                 Init(data.eraFilter);

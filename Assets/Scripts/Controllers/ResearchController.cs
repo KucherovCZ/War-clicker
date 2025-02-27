@@ -161,7 +161,7 @@ public class ResearchController
         {
             foreach (Transform item in CustomUtils.GetAllChildren(content))
             {
-                if(item.name.Contains("Research"))
+                if (item.name.Contains("Research"))
                     ResearchItems.Remove(item.GetComponent<ResearchItem>());
 
                 GameObject.Destroy(item.gameObject);
@@ -245,7 +245,7 @@ public class ResearchController
         switch (type)
         {
             case WeaponType.Infantry: return InfantryContent;
-            case WeaponType.Artillery: return ArtilleryContent; 
+            case WeaponType.Artillery: return ArtilleryContent;
             case WeaponType.Armor: return ArmorContent;
             case WeaponType.Air: return AirContent;
             case WeaponType.Navy: return NavyContent;

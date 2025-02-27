@@ -13,7 +13,7 @@ public class DebugConsole : MonoBehaviour
     public TMP_InputField WarfundsInput;
 
     public void ResetData()
-    { 
+    {
         main.ResetData();
     }
 
@@ -25,9 +25,9 @@ public class DebugConsole : MonoBehaviour
             PlayerController.Instance.AddMoney(value);
         }
         else
-        { 
+        {
             Logger.Log(LogLevel.WARNING, "Wrong input for DebugConsole money. Value: " + MoneyInput.text, "");
-        }  
+        }
     }
 
     public void AddWarfunds()

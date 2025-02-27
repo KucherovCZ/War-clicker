@@ -203,7 +203,7 @@ namespace Entities
             if (PlayerController.Instance.TryBuyMoney(Weapon.UnlockPrice))
             {
                 UpdateWeaponState(WeaponState.Active);
-                Weapon.Autosell = CustomUtils.DefaultAutosellSettings;  
+                Weapon.Autosell = CustomUtils.DefaultAutosellSettings;
             }
         }
 

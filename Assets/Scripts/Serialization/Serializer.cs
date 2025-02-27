@@ -11,7 +11,7 @@ public static class Serializer
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(SavedDataPath, FileMode.Create);
 
-        if(data == null)
+        if (data == null)
             data = new SavedData();
 
         formatter.Serialize(stream, data);

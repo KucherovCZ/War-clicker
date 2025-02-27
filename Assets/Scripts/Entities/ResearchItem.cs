@@ -14,8 +14,10 @@ namespace Entities
         public List<ResearchItem> Parents { get; set; }
         public List<DbResearchItemRelation> Children { get; set; }
         public List<DbWeapon> Weapons { get; set; }
-        public bool IsUnlocked {
-            get {
+        public bool IsUnlocked
+        {
+            get
+            {
                 return Parents.Where(p => !p.researchItem.Researched).Count() == 0;
             }
         }
@@ -30,8 +32,10 @@ namespace Entities
         public List<GameObject> LinesOut { get; set; }
         private Transform TopAnchor { get; set; }
         private Transform BottomAnchor { get; set; }
-        private static Vector3 LineChange {
-            get {
+        private static Vector3 LineChange
+        {
+            get
+            {
                 return new Vector3(0f, 84f);
             }
         }
@@ -175,7 +179,7 @@ namespace Entities
         }
 
         public bool CanUnlock()
-        { 
+        {
             return PlayerController.Instance.TryBuyWarFunds(researchItem.Price);
         }
         #endregion
