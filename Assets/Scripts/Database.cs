@@ -258,8 +258,6 @@ public class Database
         string query = $"INSERT INTO Log (Level, Message, Exception, Timestamp)" +
             $"VALUES({(int)log.Level},'{log.Message}','{log.Exception}',{new DateTimeOffset(log.Timestamp).ToUnixTimeSeconds().ToString()})";
 
-        Debug.Log(query);
-
         SqliteCommand cmd = new SqliteCommand(query, m_Connection);
         cmd.ExecuteNonQuery();
     }

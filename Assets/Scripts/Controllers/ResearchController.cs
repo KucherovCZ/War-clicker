@@ -31,7 +31,7 @@ public class ResearchController
     public List<DbResearchItemWeapon> ItemWeapons { get; set; }
     public ResearchFilter Filter { get; set; }
 
-    public Dictionary<WeaponType, List<ResearchEra>> CompletedEras { get; set; }
+    //public Dictionary<WeaponType, List<ResearchEra>> CompletedEras = new Dictionary<WeaponType, List<ResearchEra>>();
 
     public UIController UIController { get; set; }
 
@@ -123,9 +123,9 @@ public class ResearchController
             {
                 if (!Filter.EraState[eraGroup.Key])
                     continue;
-
-                if (eraGroup.Value.Where(r => !r.Researched).Count() == 0)
-                    CompletedEras[typeGroup.Key].Add(eraGroup.Key);
+                    
+                //if (eraGroup.Value.Where(r => !r.Researched).Count() == 0)
+                //    CompletedEras[typeGroup.Key].Add(eraGroup.Key);
 
                 int eraStartRow = eraGroup.Value.Min(r => r.Row);
                 int eraRowCount = eraGroup.Value.Max(r => r.Row) - eraStartRow + 1;

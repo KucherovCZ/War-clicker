@@ -48,7 +48,7 @@ public class PlayerController
 
     public bool TryBuyMoney(long price)
     {
-        if (price < Money)
+        if (price <= Money)
         {
             AddMoney(-1 * price);
             return true;

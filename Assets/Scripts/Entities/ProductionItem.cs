@@ -89,27 +89,24 @@ namespace Entities
         float timeChange = 1f / CustomUtils.UpdateFrequency;
         private void FixedUpdate()
         {
-            if (ActiveCoroutine != null)
+            counter++;
+            if (counter == framesPerUpdate)
             {
-                counter++;
-                if (counter == framesPerUpdate)
-                {
-                    counter = 0;
-                    remainingTime -= timeChange;
+                counter = 0;
+                remainingTime -= timeChange;
 
 
-                    TimeLabel.text = CustomUtils.FormatTime(remainingTime);
-                    StoredLabel.text = Weapon.Stored.ToString();
-                    LoadingBar.value = 1.1f - (remainingTime / Weapon.ProductionTime);
-                }
+                TimeLabel.text = CustomUtils.FormatTime(remainingTime);
+                StoredLabel.text = Weapon.Stored.ToString();
+                
+                LoadingBar.value = ActiveCoroutine == null ? 0f : 1.1f - (remainingTime / Weapon.ProductionTime);
             }
         }
 
         #region ActiveProduction
         public Coroutine ActiveCoroutine = null;
 
-        public float remainingTime = 0;
-
+        private float remainingTime = 0;
         public void StartProduction(float prodTime)
         {
             if (ActiveCoroutine == null)
