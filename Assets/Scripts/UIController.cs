@@ -486,7 +486,7 @@ public class UIController : MonoBehaviour
             Debug.LogWarning("Missing achievement icons, i know");
             return null;
         }
-        return Sprite.Create(tempPic, new Rect(0, 0, 128, 128), new Vector2());
+        return Sprite.Create(tempPic, new Rect(0, 0, 32, 32), new Vector2());
     }
 
     #endregion

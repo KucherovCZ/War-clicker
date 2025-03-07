@@ -34,7 +34,7 @@ public class SettingsController
      */
 
     public List<DbAchievement> AllAchievements;
-    public List<AchievementItem> AchievementItems;
+    public Dictionary<int, AchievementItem> AchievementItems;
 
     private GameObject AchievementItemPrefab;
     private RectTransform content;
@@ -53,12 +53,21 @@ public class SettingsController
             achievement.currentValue = data.achievements[achievement.Id];
         }
 
-        AchievementItems = new List<AchievementItem>();
+        AchievementItems = new Dictionary<int, AchievementItem>();
 
-        StartPosition.y = -90;
+        StartPosition.y = -90; 
         PosYChange = -160;
 
         GenerateAchievements();
+        MapEvents();
+    }
+
+    /// <summary>
+    /// Maps world events to achievements
+    /// </summary>
+    private void MapEvents()
+    {
+        PlayerController.OnMoneyEarned += UpdateAchievement; 
     }
 
     public void InitGameObjects(GameObject achievementItemPrefab, GameObject settingsPage)
@@ -87,9 +96,15 @@ public class SettingsController
             AchievementItem achItemScript = newItem.AddComponent<AchievementItem>();
             achItemScript.Init(achievement);
 
-            AchievementItems.Add(achItemScript);
+            AchievementItems.Add(achievement.Id, achItemScript);
         }
 
         content.sizeDelta = new Vector3(content.sizeDelta.x, PosYChange * index * -1);
+    }
+
+    private void UpdateAchievement(int Id, long amount)
+    {
+        AchievementItems.TryGetValue(Id, out var item);
+        item.achievement.currentValue += amount;
     }
 }

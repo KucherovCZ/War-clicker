@@ -17,30 +17,39 @@ namespace Entities
 
         private TextMeshProUGUI nameLabel;
         private TextMeshProUGUI progressLabel;
-        private Image icon;
+        private Image medalIcon;
+        private Slider progressSlider;
+
+        private int currentGoal;
 
         public void Init(DbAchievement achievement)
         {
             this.achievement = achievement;
-
+            
             nameLabel = transform.Find("DisplayName").GetComponent<TextMeshProUGUI>();
             nameLabel.text = achievement.Name;
 
-            icon = transform.Find("IconBackground").Find("Icon").GetComponent<Image>();
-            icon.sprite = UIController.Instance.GetAchievementIcon(name);
+            medalIcon = transform.Find("IconBackground").Find("Icon").GetComponent<Image>();
+            medalIcon.sprite = UIController.Instance.GetAchievementIcon(name);
 
             progressLabel = transform.Find("ProgressText").GetComponent<TextMeshProUGUI>();
-            UpdateProgressLabel();
+            progressSlider = transform.Find("ProgressBar").GetComponent<Slider>();
+            UpdateProgress();
         }
 
-        public void UpdateProgressLabel()
+        public void UpdateProgress()
         {
+            currentGoal = GetHighestGoal();
+            if (currentGoal == achievement.goals.Length - 1) currentGoal--;
+
             // set needed amount and currentValue
-            int goal = GetHighestGoal();
-            if (goal == achievement.goals.Length - 1) goal--;
-            string progressText = $"{achievement.currentValue} / {achievement.goals[GetHighestGoal() + 1]}";
+            string progressText = $"{achievement.currentValue} / {achievement.goals[currentGoal + 1]}";
 
             progressLabel.text = progressText;
+
+            float progress = (float)achievement.currentValue / (float)achievement.goals[currentGoal+1];
+            progress += 0.1f; // adjust for slider bar
+            progressSlider.value = progress;
         }
 
         /// <summary>
@@ -55,6 +64,19 @@ namespace Entities
             }
 
             return -1;
+        }
+
+        int counter = 0;
+        int framesPerUpdate = 50 / CustomUtils.UpdateFrequency;
+        private void FixedUpdate()
+        {
+            counter++;
+            if (counter == framesPerUpdate)
+            {
+                counter = 0;
+
+                UpdateProgress();
+            }
         }
     }
 }

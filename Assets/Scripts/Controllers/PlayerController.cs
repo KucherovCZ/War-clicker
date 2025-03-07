@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerController
 {
@@ -14,6 +15,9 @@ public class PlayerController
         }
     }
     #endregion
+
+    public static event Action<int, long> OnMoneyEarned;
+    public static event Action<int, long> OnWarFundsEarned;
 
     public UIController UIController { get; set; }
 
@@ -38,6 +42,7 @@ public class PlayerController
 
     public void AddMoney(long amount)
     {
+        OnMoneyEarned.Invoke(1, amount);
         Money += amount;
     }
 

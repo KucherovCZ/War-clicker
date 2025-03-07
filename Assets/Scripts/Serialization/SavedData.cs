@@ -20,12 +20,12 @@ public class SavedData
 
         if (SettingsController.Instance.AllAchievements.Count > 0)
         {
-            achievements = new int[SettingsController.Instance.AllAchievements.Max(a => a.Id)];
+            achievements = new long[SettingsController.Instance.AllAchievements.Max(a => a.Id)];
             achievements = SettingsController.Instance.AllAchievements.OrderBy(a => a.Id).Select(a => a.currentValue).ToArray();
         }
         else
         {
-            achievements = new int[64];
+            achievements = new long[64];
         }
     }
 
@@ -40,7 +40,7 @@ public class SavedData
         warehouses = new[] { 50, 0, 0, 0, 0 };
         warehouseLevels = new[] { 1, 0, 0, 0, 0 };
 
-        achievements = new int[64]; 
+        achievements = new long[64]; 
 
         eraFilter = new[] { true, true, true, true, true, true, true };
     }
@@ -56,6 +56,6 @@ public class SavedData
 
     public bool[] eraFilter;
 
-    public int[] achievements;
+    public long[] achievements;
 
 }

@@ -266,11 +266,11 @@ public class Database
             {
                 Id = reader.GetInt32("Id"),
                 Name = reader.GetString("Name"),
-                goals = new int[] {
-                    reader.GetInt32("Goal0"),
-                    reader.GetInt32("Goal1"),
-                    reader.GetInt32("Goal2"),
-                    reader.GetInt32("Goal3"),
+                goals = new long[] {
+                    reader.GetInt64("Goal0"),
+                    reader.GetInt64("Goal1"),
+                    reader.GetInt64("Goal2"),
+                    reader.GetInt64("Goal3"),
                 }
             };
         }

@@ -6,10 +6,10 @@
 
         public string Name { get; set; }
 
-        public int currentValue;
+        public long currentValue;
 
         // represent bronze, silver, gold and plat levels
-        public int[] goals = { 0, 0, 0, 0 };
+        public long[] goals = { 0, 0, 0, 0 };
 
         public bool HasGoal(int goal)
         { 

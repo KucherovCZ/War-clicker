@@ -6,6 +6,7 @@ public static class CustomUtils
 {
     public static int ProductionPerFactory = 5; // 1 factory production per second
     public static int UpdateFrequency = 25; // updates per second
+    public static int SlowUpdateFrequency = 2; // updates per second for slow changing things
     public static bool DefaultAutosellSettings = false;
 
     public static string FormatTime(float seconds)
