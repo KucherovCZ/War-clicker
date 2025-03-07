@@ -9,7 +9,7 @@ public class AssetReferences : MonoBehaviour
     public void Awake()
     {
         if (Instance != null)
-            Logger.Log(LogLevel.WARNING, "Instance of AssetReferences already exists", "");
+            Logger.Log(LogLevel.ERROR, "Instance of AssetReferences already exists", "");
 
         Instance = this;
     }

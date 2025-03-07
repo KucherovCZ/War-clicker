@@ -28,6 +28,7 @@ public class Database
     private const string researchItemTable = "ResearchItem";
     private const string researchItemRelationTable = "ResearchItemRelations";
     private const string researchItemWeaponTable = "ResearchItemWeapon";
+    private const string achievementTable = "Achievement";
     #endregion
 
 
@@ -242,6 +243,35 @@ public class Database
                 Id = reader.GetInt32("Id"),
                 ResearchItemId = reader.GetInt32("ResearchItemId"),
                 WeaponId = reader.GetInt32("WeaponId")
+            };
+        }
+
+        reader.Close();
+        cmd.Dispose();
+    }
+    #endregion
+
+    #region Achievements
+    public IEnumerable<DbAchievement> LoadAchievements()
+    { 
+        if(!CheckConnection()) yield break;
+
+        string query = queryStart + achievementTable;
+        SqliteCommand cmd = new SqliteCommand( query, m_Connection);
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            yield return new DbAchievement()
+            {
+                Id = reader.GetInt32("Id"),
+                Name = reader.GetString("Name"),
+                goals = new int[] {
+                    reader.GetInt32("Goal0"),
+                    reader.GetInt32("Goal1"),
+                    reader.GetInt32("Goal2"),
+                    reader.GetInt32("Goal3"),
+                }
             };
         }
 

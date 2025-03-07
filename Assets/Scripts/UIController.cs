@@ -25,12 +25,14 @@ public class UIController : MonoBehaviour
         InitControllers();
         LoadProductionItems();
         LoadResearchItems();
+        LoadSettingsItems();
 
         LoadMainMenuItems();
 
         OnMainMenuButtonClick("Production");
         OnProductionButtonClick("Infantry");
         OnResearchButtonClick("Infantry");
+        OnSettingsButtonClick("Settings");
     }
 
     int counter = 0;
@@ -435,6 +437,53 @@ public class UIController : MonoBehaviour
         if (tempPic == null)
         {
             Logger.Log(LogLevel.ERROR, "Image for " + researchItemName + " has not been found. Please check Graphics/Research/GE", "");
+            return null;
+        }
+        return Sprite.Create(tempPic, new Rect(0, 0, 128, 128), new Vector2());
+    }
+
+    #endregion
+
+    #region Settings
+
+    private Transform settingsView;
+    private GameObject lastOpenedSettingsPage;
+    private Image lastChangedSettingsButton;
+
+    public void LoadSettingsItems()
+    {
+        settingsView = transform.Find("Settings");  
+    }
+
+    public void OnSettingsButtonClick(string btnName)
+    {
+        if (string.IsNullOrEmpty(btnName))
+            Logger.Log(LogLevel.ERROR, "Settings button click - passed empty string", "");
+
+        Transform button = settingsView.Find("Button" + btnName);
+        Image btnBackground = button.GetComponent<Image>();
+
+        // button
+        if (lastChangedSettingsButton != null)
+            lastChangedSettingsButton.color = new Color(0.6f, 0.6f, 0.6f);
+        btnBackground.color = new Color(1f, 1f, 1f);
+        lastChangedSettingsButton = btnBackground;
+
+        if (lastOpenedSettingsPage != null)
+            lastOpenedSettingsPage.SetActive(false);
+
+        // enable current gameObject
+        lastOpenedSettingsPage = settingsView.Find(btnName).gameObject;
+        lastOpenedSettingsPage.SetActive(true);
+    }
+
+    public Sprite GetAchievementIcon(string achievementName)
+    {
+        Texture2D tempPic = Resources.Load("Graphics/Achievements/GE/" + achievementName) as Texture2D;
+        if (tempPic == null)
+        {
+            //Logger.Log(LogLevel.ERROR, "Image for " + achievementName + " has not been found. Please check Graphics/Achievements/GE", "");
+            Debug.LogWarning("Missing achievement icons, i know");
             return null;
         }
         return Sprite.Create(tempPic, new Rect(0, 0, 128, 128), new Vector2());

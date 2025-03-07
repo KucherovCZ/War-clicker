@@ -14,6 +14,11 @@ public class Main : MonoBehaviour
     private GameObject ResearchItemPrefab;
     [SerializeField]
     private GameObject ResearchPage;
+
+    [SerializeField]
+    private GameObject AchievementItemPrefab;
+    [SerializeField]
+    private GameObject SettingsPage;
     #endregion
 
     #region Fields and properties
@@ -62,6 +67,11 @@ public class Main : MonoBehaviour
             Database.LoadResearchItems().ToList(),
             Database.LoadResearchItemRelations().ToList(),
             Database.LoadResearchItemWeapon().ToList(),
+            data);
+
+        SettingsController.Instance.InitGameObjects(AchievementItemPrefab, SettingsPage);
+        SettingsController.Instance.Init(
+            Database.LoadAchievements().ToList(),
             data);
     }
 

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 [System.Serializable]
@@ -15,6 +17,16 @@ public class SavedData
         warehouseLevels = ProductionController.Instance.WarehouseLevel;
 
         eraFilter = ResearchController.Instance.Filter.EraState.Values.ToArray();
+
+        if (SettingsController.Instance.AllAchievements.Count > 0)
+        {
+            achievements = new int[SettingsController.Instance.AllAchievements.Max(a => a.Id)];
+            achievements = SettingsController.Instance.AllAchievements.OrderBy(a => a.Id).Select(a => a.currentValue).ToArray();
+        }
+        else
+        {
+            achievements = new int[64];
+        }
     }
 
     public SavedData(bool defaultValues)
@@ -27,6 +39,8 @@ public class SavedData
         factoryLevels = new[] { 1, 0, 0, 0, 0 };
         warehouses = new[] { 50, 0, 0, 0, 0 };
         warehouseLevels = new[] { 1, 0, 0, 0, 0 };
+
+        achievements = new int[64]; 
 
         eraFilter = new[] { true, true, true, true, true, true, true };
     }
@@ -41,5 +55,7 @@ public class SavedData
     public int[] warehouseLevels;
 
     public bool[] eraFilter;
+
+    public int[] achievements;
 
 }
